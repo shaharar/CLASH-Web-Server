@@ -1,20 +1,94 @@
-from os import environ
-
 import pandas as pd
 import pymssql
 from sqlalchemy import create_engine
 
-from sqlalchemy.types import Integer, Text, String, DateTime
-
-server = 'ISE-PROJ-SQL'
-user = 'MirTar'
-password = 'Yhsa2020'
-database = 'MirTarFeaturesDB'
+# server = 'ISE-PROJ-SQL'
+# user = 'MirTar'
+# password = 'Yhsa2020'
+# database = 'MirTarFeaturesDB'
 
 
 def read_csv_file(path):
     data = pd.read_csv(path)
     return data
+
+
+def connect_to_database():
+    engine = create_engine('mssql+pymssql://MirTar:Yhsa2020@132.72.64.102:1433/MirTarFeaturesDB')
+    return engine
+
+
+def insert_into_pos_general_info(data):
+    table_data = data
+    col_list = list(table_data.columns)
+    last_column = col_list.index("full_mrna")
+    table_data.drop(columns=col_list[last_column + 1:], inplace=True)
+
+    columns = ['Unnamed: 0', 'microRNA_name', 'mRNA_name', 'Organism', 'miRNA sequence', 'target sequence', 'mRNA_start', 'mRNA_end', 'full_mrna', 'Source', 'GI_ID', 'number of reads']
+   # print (columns)
+
+    table_data = table_data.ix[:, columns]
+    new_columns = ['mirTar_id', 'miRNA_name', 'target_name', 'organism', 'miRNA_sequence', 'target_sequence', 'mRNA_start', 'mRNA_end', 'full_mRNA', 'source', 'line', 'num_of_reads']
+    table_data.columns = new_columns
+    table_data.astype(str)
+
+    engine = connect_to_database()
+    table_data.to_sql(name="Pos_General_Info",
+                       con=engine,
+                       if_exists='append',
+                       index=False,
+                       chunksize=500)
+
+
+
+def insert_into_features_seed_features(data):
+    table_data = data
+    col_list = list(table_data.columns)
+    mirTar_id_column = table_data['Unnamed: 0']
+    first_column = col_list.index("Seed_match_compact_A")
+    last_column = col_list.index("miRNAMatchPosition_1")
+    table_data = table_data.iloc[:, first_column:last_column]
+    table_data.insert(loc=0, column='mirTar_id', value=mirTar_id_column)
+    table_data.insert(loc=1, column='method', value='V')
+    table_data['mirTar_id'].astype(str)
+   # print(table_data.columns)
+
+    engine = connect_to_database()
+    table_data.to_sql(name="Features_Seed_Features",
+                   con=engine,
+                   if_exists='append',
+                   index=False,
+                   chunksize=500)
+
+
+
+def insert_into_features_free_energy(data):
+    table_data = data
+    col_list = list(table_data.columns)
+    mirTar_id_column = table_data['Unnamed: 0']
+    first_column = col_list.index("Energy_MEF_3p")
+    last_column = col_list.index("Acc_P10_10th")
+    table_data = table_data.iloc[:, first_column:last_column]
+    table_data.insert(loc=0, column='mirTar_id', value=mirTar_id_column)
+    table_data.insert(loc=1, column='method', value='V')
+    table_data['mirTar_id'].astype(str)
+  #  print(table_data.columns)
+
+    engine = connect_to_database()
+    table_data.to_sql("Features_Free_Energy",
+                   engine,
+                   if_exists='append',
+                   index=False,
+                   chunksize=500)
+
+################################### Main #####################################
+path = 'C:\\Users\\User\\Downloads\\mouse_dataset2_duplex_positive_feature.csv'
+data = read_csv_file(path)
+#print(data.head())
+#insert_into_pos_general_info(data)
+#insert_into_features_seed_features(data)
+#insert_into_features_free_energy(data)
+#connect_to_database()
 
 
 # def insert_into_pos_general_info(data):
@@ -38,79 +112,6 @@ def read_csv_file(path):
 # VALUES ('"P+i[0]+"','"+i[4]+"','"+i[8]+"','"+i[2]+"','"+i[5]+"','"+i[6]+"','"+i[9]+"','"+i[10]+"'
 # ,'"+i[11]+"','"+i[1]+"','"+i[3]+"','"+i[7]+"')
 
-
-def connect_to_database():
-    db_URI = environ.get('mssql+pymssql://scott:tiger@hostname:port/MirTarFeaturesDB') # TODO - change URI
-    engine = create_engine(db_URI)
-    return engine
-
-
-
-def insert_into_pos_general_info(data):
-    table_data = data
-    col_list = list(table_data.columns)
-    last_column = col_list.index("full_mrna")
-    table_data.drop(columns=col_list[last_column + 1:], inplace=True)
-
-    columns = ['Unnamed: 0', 'microRNA_name', 'mRNA_name', 'Organism', 'miRNA sequence', 'target sequence', 'mRNA_start', 'mRNA_end', 'full_mrna', 'Source', 'GI_ID', 'number of reads']
-    print (columns)
-
-    table_data = table_data.ix[:, columns]
-    new_columns = ['mirTar_id', 'miRNA_name', 'target_name', 'organism', 'miRNA_sequence', 'target_sequence', 'mRNA_start', 'mRNA_end', 'full_mRNA', 'source', 'line', 'num_of_reads']
-    table_data.columns = new_columns
-    print (table_data.head())
-
-    engine = connect_to_database()
-    table_data.to_sql("Pos_General_Info",
-                       engine,
-                       if_exists='replace',
-                       schema='public',
-                       index=False,
-                       chunksize=500)
-
-
-
-def insert_into_features_seed_features(data):
-    table_data = data
-    col_list = list(table_data.columns)
-    first_column = col_list.index("Seed_match_compact_A")
-    last_column = col_list.index("miRNAMatchPosition_1")
-    table_data = table_data.iloc[:, first_column:last_column]
-  #  print(table_data.columns)
-
-    engine = connect_to_database()
-    table_data.to_sql("Features_Seed_Features",
-                   engine,
-                   if_exists='replace',
-                   schema='public',
-                   index=False,
-                   chunksize=500)
-
-
-
-def insert_into_features_free_energy(data):
-    table_data = data
-    col_list = list(table_data.columns)
-    first_column = col_list.index("Energy_MEF_3p")
-    last_column = col_list.index("Acc_P10_10th")
-    table_data = table_data.iloc[:, first_column:last_column]
-    print(table_data.columns)
-
-    engine = connect_to_database()
-    table_data.to_sql("Features_Free_Energy",
-                   engine,
-                   if_exists='replace',
-                   schema='public',
-                   index=False,
-                   chunksize=500)
-
-
-path = 'C:\\Users\\User\\Downloads\\mouse_dataset2_duplex_positive_feature.csv'
-data = read_csv_file(path)
-#print(data.head())
-insert_into_pos_general_info(data)
-#insert_into_features_seed_features(data)
-#insert_into_features_free_energy(data)
 
 
 
