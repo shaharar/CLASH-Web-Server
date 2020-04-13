@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestComponent implements OnInit {
 
-  public name = "CLASH";
+  public name = "CLASH-WEB-SERVER";
   constructor() { }
 
   ngOnInit(): void {
