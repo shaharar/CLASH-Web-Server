@@ -1,0 +1,7 @@
+[ 
+    {"mirTar_id": "P0", "miRNA_name": "mir1", "target_name": "tar1", "organism": "human"},
+    {"mirTar_id": "P1", "miRNA_name": "mir2", "target_name": "tar2", "organism": "human"},
+    {"mirTar_id": "P2", "miRNA_name": "mir3", "target_name": "tar3", "organism": "human"},
+    {"mirTar_id": "P3", "miRNA_name": "mir4", "target_name": "tar4", "organism": "human"}
+
+]

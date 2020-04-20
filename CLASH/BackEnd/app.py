@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import pymssql
 import pandas as pd
 
 app = Flask(__name__)
+CORS(app)
 
 #app.config['MSSQL_HOST'] = '132.72.64.102'
 #app.config['MSSQL_USER'] = 'MirTar'
@@ -16,20 +18,19 @@ database = 'MirTarFeaturesDB'
 
 @app.route('/')
 def index():
-    return '<h1>Hi</h1>'
+    conn = pymssql.connect(server,user,password,database)
+    cursor = conn.cursor(as_dict = True)
+    #cursor.execute('SELECT * FROM Pos_General_Info')
+    cursor.execute('SELECT TOP 10 mirTar_id, miRNA_name FROM Pos_General_Info')
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
+    print(jsonResult)
+    conn.close()
+    return jsonResult
 
 @app.route('/home')
 def home():
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict = True)
-    cursor.execute('SELECT * FROM Pos_General_Info')
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    #df.columns = result.keys()
-    #for row in cursor:
-        #result.append(row)
-        #print(row)
-    conn.close()
     return '<h1>Hello</h1>'
 
 def retrieve_pos_general_info_by_mir(mirna_name):
