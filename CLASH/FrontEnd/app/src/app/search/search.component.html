@@ -1,1 +1,25 @@
-<p>search works!</p>
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh); text-align: center;">
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-mirna-tab" data-toggle="tab" href="#nav-mirna" role="tab" aria-controls="nav-mirna" aria-selected="true">miRNA</a>
+      <a class="nav-item nav-link" id="nav-target-tab" data-toggle="tab" href="#nav-target" role="tab" aria-controls="nav-target" aria-selected="false">target</a>
+      <a class="nav-item nav-link" id="nav-organism-tab" data-toggle="tab" href="#nav-organism" role="tab" aria-controls="nav-organism" aria-selected="false">organism</a>
+      <a class="nav-item nav-link" id="nav-mti-tab" data-toggle="tab" href="#nav-mti" role="tab" aria-controls="nav-mti" aria-selected="false">MTI</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-mirna" role="tabpanel" aria-labelledby="nav-mirna-tab">
+        <br>
+        <form class="form">
+            <div class="form-group">
+              <label for="mirnaNameInput">Search By miRNA</label>
+              <input type="mirnaName" class="form-control" id="mirnaName" aria-describedby="emailHelp" placeholder="Enter miRNA Name">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+    <div class="tab-pane fade" id="nav-target" role="tabpanel" aria-labelledby="nav-target-tab">Search By Target</div>
+    <div class="tab-pane fade" id="nav-organism" role="tabpanel" aria-labelledby="nav-organism-tab">Search By Organism</div>
+    <div class="tab-pane fade" id="nav-mti" role="tabpanel" aria-labelledby="nav-mti-tab">Search By miRNA-target Interaction</div>
+  </div>
+</div>

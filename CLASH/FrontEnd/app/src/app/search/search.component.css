@@ -1,0 +1,12 @@
+
+.nav-item{
+    color: rgb(2, 116, 116);
+}
+
+.form{
+    text-align: left;
+}
+
+.form-control{
+    width: min-content;
+}
