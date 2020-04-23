@@ -13,9 +13,9 @@
         <form class="form">
             <div class="form-group">
              <b><label for="mirnaNameInput">Search By miRNA</label></b>
-              <input type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
+              <input #mirna type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" (click)="getMTIByMirnaName(mirna.value)" class="btn btn-primary">Submit</button>
           </form>
     </div>
     <div class="tab-pane fade" id="nav-target" role="tabpanel" aria-labelledby="nav-target-tab">
@@ -54,4 +54,9 @@
       </form>
     </div>
   </div>
+  <h2> MTIs: </h2>
+            <h3> {{errorMsg}} </h3>
+            <ul *ngFor="let mti of MTIs">
+              <li>{{mti.mirTar_id}}</li>
+            </ul>
 </div>

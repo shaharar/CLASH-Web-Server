@@ -19,9 +19,9 @@ export class MtiDetailsComponent implements OnInit {
   constructor(private httpRequestsService: HttpRequestsService) { }
 
   ngOnInit(): void {
-    this.httpRequestsService.getPositiveInfo()
-    .subscribe(data => this.MTIs = data,
-              error => this.errorMsg = error);
+    //this.httpRequestsService.get("/")
+    //.subscribe(data => this.MTIs = data,
+         //     error => this.errorMsg = error);
   }
 
 }
