@@ -1,0 +1,23 @@
+ul.no-bullets {
+  list-style-type: none;
+}
+
+.list-group {
+  width: auto;
+}
+
+.page-view{
+  display: flex;
+  flex-direction: column;
+}
+
+.page-btns {
+  display: flex;
+  /* margin: 10px 0px; */
+}
+
+.page-number-btn{
+      color:rgb(43, 33, 185);
+      border-radius: 5px;
+}
+  

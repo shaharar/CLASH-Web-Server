@@ -12,19 +12,46 @@
         <br>
         <form class="form">
             <div class="form-group">
-              <label for="mirnaNameInput">Search By miRNA</label>
-              <input #mirna type="mirnaName" class="form-control" id="mirnaName" aria-describedby="emailHelp" placeholder="Enter miRNA Name">
+             <b><label for="mirnaNameInput">Search By miRNA</label></b>
+              <input #mirna type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
             </div>
             <button type="submit" (click)="getMTIByMirnaName(mirna.value)" class="btn btn-primary">Submit</button>
           </form>
     </div>
-    <div class="tab-pane fade" id="nav-target" role="tabpanel" aria-labelledby="nav-target-tab">Search By Target</div>
-    <div class="tab-pane fade" id="nav-organism" role="tabpanel" aria-labelledby="nav-organism-tab">Search By Organism</div>
-    <div class="tab-pane fade" id="nav-mti" role="tabpanel" aria-labelledby="nav-mti-tab">Search By miRNA-target Interaction</div>
+    <div class="tab-pane fade" id="nav-target" role="tabpanel" aria-labelledby="nav-target-tab">
+      <br>
+      <form class="form">
+        <div class="form-group">
+          <b><label for="targetNameInput">Search By Target</label></b>
+          <input type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="nav-organism" role="tabpanel" aria-labelledby="nav-organism-tab">
+      <br>
+      <form class="form">
+        <div class="form-group">
+          <b><label for="organismInput">Search By Organism</label></b>
+          <input type="organism" class="form-control" id="organism" placeholder="Enter organism">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="nav-mti" role="tabpanel" aria-labelledby="nav-mti-tab">
+      <br>
+      <form class="form">
+        <div class="form-group">
+          <b><label for="mtiInputs">Search By miRNA-Target Interaction</label></b>
+          <br><br>
+          <label for="mirnaNameInput">miRNA</label>
+          <input type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
+          <br>
+          <label for="targetNameInput">Target</label>
+          <input type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
   </div>
-  <h2> MTIs: </h2>
-            <h3> {{errorMsg}} </h3>
-            <ul *ngFor="let mti of MTIs">
-              <li>{{mti.mirTar_id}}</li>
-            </ul>
 </div>
