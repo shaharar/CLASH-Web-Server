@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpRequestsService } from '../http-requests.service';
 import { HttpParams } from "@angular/common/http";
+import { Router } from '@angular/router'
 
 
 
@@ -14,7 +15,8 @@ export class SearchComponent implements OnInit {
   public MTIs = [];
   public errorMsg;
 
-  constructor(private httpRequestsService: HttpRequestsService) { }
+  constructor(private httpRequestsService: HttpRequestsService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -25,6 +27,7 @@ export class SearchComponent implements OnInit {
     this.httpRequestsService.getWithParams("getInfoByMir" , {params})
     .subscribe(data => this.MTIs = data,
               error => this.errorMsg = error);
+    this.router.navigate(['/path', this.MTIs])
   }
 
   getMTIByTargetName(targetName): void {
