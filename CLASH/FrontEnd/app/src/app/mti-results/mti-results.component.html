@@ -1,0 +1,18 @@
+<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
+    <h1>MTIs Results:</h1>
+    <br>
+    
+    <div class="page-view">
+        <div class="list-group">
+            <ul class="no-bullets" *ngFor="let mti of resultsPerPage">
+                <li><a href="mti-results" class="list-group-item list-group-item-action">{{mti}}</a></li>
+            </ul>
+        </div>
+       <nav aria-label="page-navigation" class="page-btns">
+            <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
+                <button class="page-number-btn" (click)= "updateIndexMtisView(page)"> {{page}} </button>
+              <!-- <li class="page-item"><a class="page-link" href="mti-results">1</a></li> -->
+            </ul>
+        </nav>
+    </div>
+</div>
