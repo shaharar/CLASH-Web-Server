@@ -23,9 +23,9 @@
       <form class="form">
         <div class="form-group">
           <b><label for="targetNameInput">Search By Target</label></b>
-          <input type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+          <input #target type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit"  (click)="getMTIByTargetName(target.value)" class="btn btn-primary">Submit</button>
       </form>
     </div>
     <div class="tab-pane fade" id="nav-organism" role="tabpanel" aria-labelledby="nav-organism-tab">
@@ -33,9 +33,9 @@
       <form class="form">
         <div class="form-group">
           <b><label for="organismInput">Search By Organism</label></b>
-          <input type="organism" class="form-control" id="organism" placeholder="Enter organism">
+          <input #organism type="organism" class="form-control" id="organism" placeholder="Enter organism">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" (click)="getMTIByOrganism(organism.value)" class="btn btn-primary">Submit</button>
       </form>
     </div>
     <div class="tab-pane fade" id="nav-mti" role="tabpanel" aria-labelledby="nav-mti-tab">
@@ -45,12 +45,12 @@
           <b><label for="mtiInputs">Search By miRNA-Target Interaction</label></b>
           <br><br>
           <label for="mirnaNameInput">miRNA</label>
-          <input type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
+          <input #mir type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
           <br>
           <label for="targetNameInput">Target</label>
-          <input type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+          <input #tar type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" (click)=" getMTIByMirTar(mir.value,tar.value)" class="btn btn-primary">Submit</button>
       </form>
     </div>
   </div>

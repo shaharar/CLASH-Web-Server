@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpRequestsService } from '../http-requests.service';
-import { HttpParams } from "@angular/common/http";
+import { Router, NavigationExtras } from '@angular/router'
 
 
 
@@ -11,45 +11,69 @@ import { HttpParams } from "@angular/common/http";
 })
 export class SearchComponent implements OnInit {
 
-  public MTIs = [];
-  public errorMsg;
+ 
+  constructor(private httpRequestsService: HttpRequestsService,
+    private router: Router) { }
 
-  constructor(private httpRequestsService: HttpRequestsService) { }
-
+    
   ngOnInit(): void {
   }
 
   getMTIByMirnaName(mirnaName): void {
-    const params = new HttpParams()
-    .set('mirnaName', mirnaName)
-    this.httpRequestsService.getWithParams("getInfoByMir" , {params})
-    .subscribe(data => this.MTIs = data,
-              error => this.errorMsg = error);
+    const queryParams: any = {};
+    // Add the array of values to the query parameter as a JSON string
+    queryParams.values = JSON.stringify([mirnaName]);
+    queryParams.searchInput = 'mirnaName'
+    queryParams.path = 'getInfoByMir'
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    // Navigate to component mti-results
+    this.router.navigate(['/mti-results'], navigationExtras);
   }
 
+
   getMTIByTargetName(targetName): void {
-    const params = new HttpParams()
-    .set('targetName', targetName)
-    this.httpRequestsService.getWithParams("getInfoByTarget" , {params})
-    .subscribe(data => this.MTIs = data,
-              error => this.errorMsg = error);
+    const queryParams: any = {};
+    // Add the array of values to the query parameter as a JSON string
+    queryParams.values = JSON.stringify([targetName]);
+    queryParams.searchInput = 'targetName'
+    queryParams.path = 'getInfoByTarget'
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    // Navigate to component mti-results
+    this.router.navigate(['/mti-results'], navigationExtras);
   }
 
   getMTIByOrganism(organism): void {
-    const params = new HttpParams()
-    .set('organism', organism)
-    this.httpRequestsService.getWithParams("getInfoByOrganism" , {params})
-    .subscribe(data => this.MTIs = data,
-              error => this.errorMsg = error);
+    const queryParams: any = {};
+    // Add the array of values to the query parameter as a JSON string
+    queryParams.values = JSON.stringify([organism]);
+    queryParams.searchInput = 'organism'
+    queryParams.path = 'getInfoByOrganism'
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    // Navigate to component mti-results
+    this.router.navigate(['/mti-results'], navigationExtras);
   }
 
   getMTIByMirTar(mirnaName,targetName): void {
-    const params = new HttpParams()
-    .set('mirnaName', mirnaName)
-    .set('targetName', targetName)
-    this.httpRequestsService.getWithParams("getDuplexByMirTar" , {params})
-    .subscribe(data => this.MTIs = data,
-              error => this.errorMsg = error);
+    const queryParams: any = {};
+    // Add the array of values to the query parameter as a JSON string
+    queryParams.values = JSON.stringify([mirnaName, targetName]);
+    queryParams.searchInput = 'mirTar'
+    queryParams.path = 'getInfoByMirTar'
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    // Navigate to component mti-results
+    this.router.navigate(['/mti-results'], navigationExtras);
   }
 
 }

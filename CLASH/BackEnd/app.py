@@ -56,7 +56,19 @@ def retrieve_pos_general_info_by_target():
     return jsonResult
 
 
-@app.route('/getDuplexByMirTar')
+@app.route('/getInfoByMirTar')
+def retrieve_pos_general_info_by_mir_tar_pair():
+    mirna_name = request.args.get('mirnaName')
+    target_name = request.args.get('targetName')
+    conn = pymssql.connect(server,user,password,database)
+    cursor = conn.cursor(as_dict=True)
+    cursor.execute('SELECT * FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', (mirna_name,target_name))
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
+    conn.close()
+    return jsonResult
+
 def retrieve_duplex_by_mir_tar_pair():
     mirna_name = request.args.get('mirnaName')
     target_name = request.args.get('targetName')
