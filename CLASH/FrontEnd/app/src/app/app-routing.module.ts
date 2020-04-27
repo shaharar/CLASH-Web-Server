@@ -9,8 +9,7 @@ const routes: Routes = [
   {path:  "", pathMatch:  "full", redirectTo:  "home"},
   {path: "home", component: HomeComponent},
   {path: "search", component: SearchComponent},
-  {path: "mti-results", component: MtiResultsComponent}
-];
+  {path: "mti-results", component: MtiResultsComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
