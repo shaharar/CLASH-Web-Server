@@ -22,7 +22,7 @@ def retrieve_pos_general_info_by_mir():
     mirna_name = request.args.get('mirnaName')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
-    cursor.execute('SELECT * FROM Pos_General_Info WHERE miRNA_name = %s',mirna_name)
+    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s',mirna_name)
     result = cursor.fetchall()
     df = pd.DataFrame(result)
     jsonResult = df.to_json(orient='records')
@@ -35,7 +35,7 @@ def retrieve_pos_general_info_by_organism():
     organism = request.args.get('organism')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT * FROM Pos_General_Info WHERE organism = %s',organism)
+    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE organism = %s',organism)
     result = cursor.fetchall()
     df = pd.DataFrame(result)
     jsonResult = df.to_json(orient='records')
@@ -48,7 +48,7 @@ def retrieve_pos_general_info_by_target():
     target_name = request.args.get('targetName')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT * FROM Pos_General_Info WHERE target_name = %s',target_name)
+    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE target_name = %s',target_name)
     result = cursor.fetchall()
     df = pd.DataFrame(result)
     jsonResult = df.to_json(orient='records')
@@ -62,12 +62,48 @@ def retrieve_pos_general_info_by_mir_tar_pair():
     target_name = request.args.get('targetName')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT * FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', (mirna_name,target_name))
+    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', (mirna_name,target_name))
     result = cursor.fetchall()
     df = pd.DataFrame(result)
     jsonResult = df.to_json(orient='records')
     conn.close()
     return jsonResult
+
+
+@app.route('/getFeaturesByCategory')
+def retrieve_features_by_category(mirTar_id, feature_category):
+    conn = pymssql.connect(server, user, password, database)
+    cursor = conn.cursor(as_dict=True)
+    # mir_tar_list = []
+    result = []
+    features = {'free_energy':['Features_Free_Energy'],'mrna_composition':['Features_mRNA_Composition'],'seed_features':['Features_Seed_Features'],
+                'mirna_pairing':['Features_miRNA_Pairing'],'site_accessibility':['Features_Site_Accessibility'],
+                'hot_encoding_mirna':['Features_Hot_Encoding_miRNA'],'hot_encoding_mrna':['Features_Hot_Encoding_mRNA']}
+    feature_category_table = features[feature_category]
+    #cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', mirna_name,
+    #               target_name)
+    # for row in cursor:
+    #     mir_tar_list.append(row)
+    # for mir_tar_id in mir_tar_list:
+    cursor.execute('SELECT * FROM ' + feature_category_table + ' WHERE mirTar_id = "%s', mirTar_id)
+    for row in cursor:
+        result.append(row)
+    conn.close()
+    return result
+
+
+@app.route('/getInfoByMirTarId')
+def retrieve_pos_general_info_by_mirTar_id():
+    mirTar_id = request.args.get('mirTar_id')
+    conn = pymssql.connect(server,user,password,database)
+    cursor = conn.cursor(as_dict=True)
+    cursor.execute('SELECT * FROM Pos_General_Info WHERE mirTar_id = %s', (mirTar_id))
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
+    conn.close()
+    return jsonResult
+
 
 def retrieve_duplex_by_mir_tar_pair():
     mirna_name = request.args.get('mirnaName')
@@ -88,30 +124,6 @@ def retrieve_duplex_by_mir_tar_pair():
     jsonResult = df.to_json(orient='records')
     conn.close()
     return jsonResult
-
-
-def retrieve_features_by_category(mirna_name,target_name,feature_category):
-    conn = pymssql.connect(server, user, password, database)
-    cursor = conn.cursor(as_dict=True)
-    mir_tar_list = []
-    result = []
-    features = {'free_energy':['Features_Free_Energy'],'mrna_composition':['Features_mRNA_Composition'],'seed_features':['Features_Seed_Features'],
-                'mirna_pairing':['Features_miRNA_Pairing'],'site_accessibility':['Features_Site_Accessibility'],
-                'hot_encoding_mirna':['Features_Hot_Encoding_miRNA'],'hot_encoding_mrna':['Features_Hot_Encoding_mRNA']}
-    feature_category_table = features[feature_category]
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', mirna_name,
-                   target_name)
-    for row in cursor:
-        mir_tar_list.append(row)
-    for mir_tar_id in mir_tar_list:
-        cursor.execute('SELECT * FROM ' + feature_category_table + ' WHERE mirTar_id = "%s', mir_tar_id)
-        for row in cursor:
-            result.append(row)
-    conn.close()
-    return result
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

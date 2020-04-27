@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { HttpRequestsService } from './http-requests.service';
 import { MtiResultsComponent } from './mti-results/mti-results.component';
+import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MtiResultsComponent } from './mti-results/mti-results.component';
     FooterComponent,
     HomeComponent,
     SearchComponent,
-    MtiResultsComponent
+    MtiResultsComponent,
+    DetailedResultsComponent
   ],
   imports: [
     BrowserModule,

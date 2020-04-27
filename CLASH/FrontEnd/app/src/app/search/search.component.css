@@ -10,3 +10,8 @@
 .form-control{
     width: min-content;
 }
+
+.btn {
+    background-color: cadetblue;
+    border: black;
+}
