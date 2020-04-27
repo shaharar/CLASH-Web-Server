@@ -21,3 +21,10 @@ ul.no-bullets {
       border-radius: 5px;
 }
   
+.page-item {
+  color: blue;
+}
+
+.pagination{
+  display: flex;
+}

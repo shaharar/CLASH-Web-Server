@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MtiResultsComponent implements OnInit {
 
-  numberOfMtisPerPage = 5;
+  numberOfMtisPerPage = 6;
   numberOfPages;
   firstIndexMtiPage = 0;
   lastIndexMtiPage = 0;
@@ -55,7 +55,9 @@ export class MtiResultsComponent implements OnInit {
   addResultsPerPage () {
     this.resultsPerPage = [];
     for (var i = this.firstIndexMtiPage; i <= this.lastIndexMtiPage; i++) {
-        this.resultsPerPage.push(this.allResults[i]);
+        if (typeof this.allResults[i] != "undefined") {
+            this.resultsPerPage.push(this.allResults[i]);
+        }
     }
   }
 }
