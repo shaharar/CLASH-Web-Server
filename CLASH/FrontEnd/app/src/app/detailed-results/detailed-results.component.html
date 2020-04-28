@@ -15,7 +15,7 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-general-info" role="tabpanel" aria-labelledby="nav-general-info-tab">
             <br>
-            <table class="table table-striped">
+            <table class="table table-striped" *ngIf = "bool">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">General Information Of The MTI</th>
@@ -50,19 +50,61 @@
                     <th scope="row">mRNA End</th>
                     <td>{{generalInfo[0][0].mRNA_end}}</td>
                   </tr>
+                                    <tr>
+                    <th scope="row">Source</th>
+                    <td>{{generalInfo[0][0].source}}</td>
+                  </tr>
                   <!-- <tr>
                     <th scope="row">Full mRNA</th>
                     <td>{{generalInfo[0][0].full_mRNA}}</td>
                   </tr> -->
-                  <tr>
-                    <th scope="row">Source</th>
-                    <td>{{generalInfo[0][0].source}}</td>
-                  </tr>
+
                 </tbody>
               </table>
         </div>
         <div class="tab-pane fade" id="nav-free-energy" role="tabpanel" aria-labelledby="nav-free-energy-tab">
           <br>
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Free Energy Features</th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <th scope="row">Method</th>
+                <td>{{freeEnergyFeatures[0][0].method}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_3p</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_3p}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_Duplex</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_Duplex}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_Seed</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_Seed}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_cons_local_target</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_cons_local_target}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_cons_local_target_normalized</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_cons_local_target_normalized}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_local_target</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_local_target}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Energy_MEF_local_target_normalized</th>
+                <td>{{freeEnergyFeatures[0][0].Energy_MEF_local_target_normalized}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="tab-pane fade" id="nav-mrna-composition" role="tabpanel" aria-labelledby="nav-mrna-composition-tab">
           <br>

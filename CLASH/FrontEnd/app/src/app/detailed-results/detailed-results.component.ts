@@ -18,6 +18,7 @@ export class DetailedResultsComponent implements OnInit {
   public mirTarId;
   public generalInfo = []
   public freeEnergyFeatures = []
+  public bool = false;
 
   constructor(private httpRequestsService: HttpRequestsService,
     private route: ActivatedRoute) { }
@@ -31,6 +32,7 @@ export class DetailedResultsComponent implements OnInit {
     .forEach((value: IMTI) => this.generalInfo.push(value))
     .then(() => this.getMTIsInfo('freeEnergyInfo').
       forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.bool = true);
   
 
 
@@ -73,11 +75,11 @@ export class DetailedResultsComponent implements OnInit {
         break;
       default:
         break;
-
-
     }
-
   }
 
+  // fillGeneralInfoArr () {
+  //   this.generalInfoArr.push(this.generalInfo[0][0]['miRNA_name']); 
+  // }
 
 }
