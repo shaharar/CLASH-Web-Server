@@ -24,23 +24,30 @@ export class DetailedResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.mirTarId = this.route.snapshot.queryParamMap.get('mirTarId');
-    var params: Params
-    var path: string
-    var result;
+    //var params: Params
+    //var path: string
+
     this.getMTIsInfo('generalInfo')
-    //this.getMTIsInfo('freeEnergyInfo')
-    params = new HttpParams()
-      .set('mirTarId', this.mirTarId)
-    path = 'getInfoByMirTarId'
-    this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
-    {
-      this.getMTIsInfo('freeEnergyInfo');
-    })
+    .forEach((value: IMTI) => this.generalInfo.push(value))
+    .then(() => this.getMTIsInfo('freeEnergyInfo').
+      forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value)))
+  
+
+
+
+    //params = new HttpParams()
+      //.set('mirTarId', this.mirTarId)
+    //path = 'getInfoByMirTarId'
+ //   this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
+   // {
+     // this.getMTIsInfo('freeEnergyInfo');
+    //  console.log(this.generalInfo[0][0])
+    //})
     
 
   }
 
-   getMTIsInfo(info) {
+  getMTIsInfo(info) {
 
     var params: Params
     var path: string
@@ -52,7 +59,8 @@ export class DetailedResultsComponent implements OnInit {
           .set('mirTarId', this.mirTarId)
         path = 'getInfoByMirTarId'
         result = this.httpRequestsService.getWithParams(path, { params })
-        result.forEach((value: IMTI) => this.generalInfo.push(value))
+        //result.forEach((value: IMTI) => this.generalInfo.push(value))
+        return result
         break;
       case 'freeEnergyInfo':
         params = new HttpParams()
@@ -60,7 +68,8 @@ export class DetailedResultsComponent implements OnInit {
           .set('featureCategory', 'Features_Free_Energy')
         path = 'getFeaturesByCategory'
         result = this.httpRequestsService.getWithParams(path, { params })
-        result.forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))
+        return result
+        //result.forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))
         break;
       default:
         break;
