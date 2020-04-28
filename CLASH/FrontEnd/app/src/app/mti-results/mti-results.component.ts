@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router, NavigationExtras} from '@angular/router';
 import { HttpRequestsService } from '../http-requests.service';
 import { HttpParams } from "@angular/common/http";
 import { IMTI } from '../mti';
@@ -21,7 +21,8 @@ export class MtiResultsComponent implements OnInit {
   pagesArr = [];
 
   constructor(private httpRequestsService: HttpRequestsService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     var arrayOfParams: Array<string>;
@@ -63,7 +64,7 @@ export class MtiResultsComponent implements OnInit {
           break;
   }
     const result = this.httpRequestsService.getWithParams(path , {params})
-    result.forEach((value:IMTI[])=>this.allResults.push(value)).then(()=> 
+    result.forEach((value:IMTI)=>this.allResults.push(value)).then(()=> 
     {this.numberOfPages = this.calculateNumberOfPages(this.allResults, this.numberOfMtisPerPage);
     this.createNumberOfPagesArray();
     this.updateIndexMtisView(1);}, ()=> console.log("error"))
@@ -101,5 +102,16 @@ export class MtiResultsComponent implements OnInit {
         this.resultsPerPage.push(this.allResults[0][i]['mirTar_id']);
       }
     }
+  }
+
+  getMTIsDetailedResults(mtiId){
+    const queryParams: any = {};
+    // Add the array of values to the query parameter as a JSON string
+    queryParams.mirTarId = mtiId
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    this.router.navigate(['/detailed-results'], navigationExtras);
   }
 }

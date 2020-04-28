@@ -12,3 +12,15 @@ export interface IMTI {
     line: string,
     num_of_reads: number
 }
+
+export interface FreeEnergyFeatures {
+    mirTar_id: string,
+    method: string,
+    Energy_MEF_3p: number,
+    Energy_MEF_Duplex: number,
+    Energy_MEF_Seed: number,
+    Energy_MEF_cons_local_target: number,
+    Energy_MEF_cons_local_target_normalized: number,
+    Energy_MEF_local_target: number,
+    Energy_MEF_local_target_normalized: number
+}

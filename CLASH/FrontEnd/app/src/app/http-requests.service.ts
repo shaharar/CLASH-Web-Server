@@ -17,15 +17,15 @@ export class HttpRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  get(path: string): Observable<IMTI[]> {
-    this.fullPath = this.url + path;
-    return this.http.get<IMTI[]>(this.fullPath).pipe(
-      catchError(this.errorHandler)); 
-  }
+ // get(path: string): Observable<IMTI[]> {
+  //  this.fullPath = this.url + path;
+  //  return this.http.get<IMTI[]>(this.fullPath).pipe(
+  //    catchError(this.errorHandler)); 
+//  }
 
-  getWithParams(path: string, parameters: Params): Observable<IMTI[]> {
+  getWithParams(path: string, parameters: Params): Observable<any> {
     this.fullPath = this.url + path;
-    return this.http.get<IMTI[]>(this.fullPath, parameters).pipe(
+    return this.http.get<any[]>(this.fullPath, parameters).pipe(
       catchError(this.errorHandler)); 
   }
 
