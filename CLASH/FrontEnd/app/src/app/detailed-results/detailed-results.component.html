@@ -1,1 +1,62 @@
-<p>detailed-results works!</p>
+<div class="jumbotron" style="background-color: #fff; height: calc(95vh); text-align: center;">
+    <br><h3>Mir-Tar ID : {{mirTarId}}</h3><br>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-general-info-tab" data-toggle="tab" href="#nav-general-info" role="tab" aria-controls="nav-general-info" aria-selected="true"><strong>General Information</strong></a>
+          <a class="nav-item nav-link" id="nav-free-energy-tab" data-toggle="tab" href="#nav-free-energy" role="tab" aria-controls="nav-free-energy" aria-selected="false">Free Energy</a>
+          <a class="nav-item nav-link" id="nav-mrna-composition-tab" data-toggle="tab" href="#nav-mrna-composition" role="tab" aria-controls="nav-mrna-composition" aria-selected="false">mRNA Composition</a>
+          <a class="nav-item nav-link" id="nav-seed-features-tab" data-toggle="tab" href="#nav-seed-features" role="tab" aria-controls="nav-seed-features" aria-selected="false">Seed Features</a>
+          <a class="nav-item nav-link" id="nav-mirna-pairing-tab" data-toggle="tab" href="#nav-mirna-pairing" role="tab" aria-controls="nav-mirna-pairing" aria-selected="true">miRNA Pairing</a>
+          <a class="nav-item nav-link" id="nav-site-accessibility-tab" data-toggle="tab" href="#nav-site-accessibility" role="tab" aria-controls="nav-site-accessibility" aria-selected="false">Site Accessibility</a>
+          <a class="nav-item nav-link" id="nav-hot-encoding-mirna-tab" data-toggle="tab" href="#nav-hot-encoding-mirna" role="tab" aria-controls="nav-hot-encoding-mirna" aria-selected="false">Hot Encoding miRNA</a>
+          <a class="nav-item nav-link" id="nav-hot-encoding-mrna-tab" data-toggle="tab" href="#nav-hot-encoding-mrna" role="tab" aria-controls="nav-hot-encoding-mrna" aria-selected="false">Hot Encoding mRNA</a>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-general-info" role="tabpanel" aria-labelledby="nav-general-info-tab">
+            <br>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">General Information Of The MTI</th>
+                  </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr>
+                    <th scope="row">Method</th>
+                    <td>{{generalInfoArr[0].method}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Organism</th>
+                    <td>{{generalInfoArr[0].organism}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Full mRNA</th>
+                    <td>{{generalInfoArr[0].full_mrna}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="tab-pane fade" id="nav-free-energy" role="tabpanel" aria-labelledby="nav-free-energy-tab">
+          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-mrna-composition" role="tabpanel" aria-labelledby="nav-mrna-composition-tab">
+          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-seed-features" role="tabpanel" aria-labelledby="nav-seed-features-tab">
+          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-mirna-pairing" role="tabpanel" aria-labelledby="nav-mirna-pairing-tab">
+            <br>
+        </div>
+        <div class="tab-pane fade" id="nav-site-accessibility" role="tabpanel" aria-labelledby="nav-site-accessibility-tab">
+          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-hot-encoding-mirna" role="tabpanel" aria-labelledby="nav-hot-encoding-mirna-tab">
+          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-hot-encoding-mrna" role="tabpanel" aria-labelledby="nav-hot-encoding-mrna-tab">
+          <br>
+        </div>
+      </div>
+    </div>

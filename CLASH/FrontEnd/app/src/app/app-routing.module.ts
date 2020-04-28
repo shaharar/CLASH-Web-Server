@@ -3,13 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './search/search.component';
 import { HomeComponent } from './home/home.component';
 import { MtiResultsComponent } from './mti-results/mti-results.component';
+import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
 
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full", redirectTo:  "home"},
   {path: "home", component: HomeComponent},
   {path: "search", component: SearchComponent},
-  {path: "mti-results", component: MtiResultsComponent}];
+  {path: "mti-results", component: MtiResultsComponent},
+  {path: "detailed-results", component: DetailedResultsComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

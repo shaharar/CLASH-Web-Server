@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailedResultsComponent implements OnInit {
 
+  public mirTarId = "P1234";
+  public generalInfoArr =[{method: 'vienna', organism: 'human', full_mrna: 'full'}]
   constructor() { }
 
   ngOnInit(): void {
