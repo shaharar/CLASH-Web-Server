@@ -15,6 +15,7 @@ export class DetailedResultsComponent implements OnInit {
   public mirTarId;
   public generalInfo = []
   public freeEnergyFeatures = []
+  public resultsArr = []
 
   constructor(private httpRequestsService: HttpRequestsService,
     private route: ActivatedRoute) { }
@@ -25,22 +26,23 @@ export class DetailedResultsComponent implements OnInit {
     //var path: string
 
     this.getMTIsInfo('generalInfo')
-    .forEach((value: IMTI) => this.generalInfo.push(value))
-    .then(() => this.getMTIsInfo('freeEnergyInfo').
-      forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value)))
-  
+      .forEach((value: IMTI) => this.generalInfo.push(value))
+      .then(() => this.getMTIsInfo('freeEnergyInfo')
+      .forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))).then(()=>console.log(this.generalInfo[0][0]['mirTar_id']))
+    
+
 
 
 
     //params = new HttpParams()
-      //.set('mirTarId', this.mirTarId)
+    //.set('mirTarId', this.mirTarId)
     //path = 'getInfoByMirTarId'
- //   this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
-   // {
-     // this.getMTIsInfo('freeEnergyInfo');
+    //   this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
+    // {
+    // this.getMTIsInfo('freeEnergyInfo');
     //  console.log(this.generalInfo[0][0])
     //})
-    
+
 
   }
 
@@ -57,7 +59,6 @@ export class DetailedResultsComponent implements OnInit {
         path = 'getInfoByMirTarId'
         result = this.httpRequestsService.getWithParams(path, { params })
         //result.forEach((value: IMTI) => this.generalInfo.push(value))
-        return result
         break;
       case 'freeEnergyInfo':
         params = new HttpParams()
@@ -65,14 +66,13 @@ export class DetailedResultsComponent implements OnInit {
           .set('featureCategory', 'Features_Free_Energy')
         path = 'getFeaturesByCategory'
         result = this.httpRequestsService.getWithParams(path, { params })
-        return result
         //result.forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))
         break;
       default:
         break;
 
-
     }
+    return result
 
   }
 
