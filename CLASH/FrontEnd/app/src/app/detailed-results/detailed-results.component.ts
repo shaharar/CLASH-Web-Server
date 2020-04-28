@@ -24,14 +24,23 @@ export class DetailedResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.mirTarId = this.route.snapshot.queryParamMap.get('mirTarId');
+    var params: Params
+    var path: string
+    var result;
     this.getMTIsInfo('generalInfo')
-    this.getMTIsInfo('freeEnergyInfo')
-    console.log(this.generalInfo)
-    console.log(this.freeEnergyFeatures)
+    //this.getMTIsInfo('freeEnergyInfo')
+    params = new HttpParams()
+      .set('mirTarId', this.mirTarId)
+    path = 'getInfoByMirTarId'
+    this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
+    {
+      this.getMTIsInfo('freeEnergyInfo');
+    })
+    
 
   }
 
-  getMTIsInfo(info) {
+   getMTIsInfo(info) {
 
     var params: Params
     var path: string

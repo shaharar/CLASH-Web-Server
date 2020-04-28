@@ -25,7 +25,7 @@ export class HttpRequestsService {
 
   getWithParams(path: string, parameters: Params): Observable<any> {
     this.fullPath = this.url + path;
-    return this.http.get<any[]>(this.fullPath, parameters).pipe(
+    return this.http.get<any>(this.fullPath, parameters).pipe(
       catchError(this.errorHandler)); 
   }
 
