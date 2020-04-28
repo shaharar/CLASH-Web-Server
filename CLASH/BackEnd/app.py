@@ -71,30 +71,33 @@ def retrieve_pos_general_info_by_mir_tar_pair():
 
 
 @app.route('/getFeaturesByCategory')
-def retrieve_features_by_category(mirTar_id, feature_category):
+def retrieve_features_by_category():
+    mirTar_id = request.args.get('mirTarId')
+    feature_category = request.args.get('featureCategory')
     conn = pymssql.connect(server, user, password, database)
     cursor = conn.cursor(as_dict=True)
     # mir_tar_list = []
-    result = []
-    features = {'free_energy':['Features_Free_Energy'],'mrna_composition':['Features_mRNA_Composition'],'seed_features':['Features_Seed_Features'],
-                'mirna_pairing':['Features_miRNA_Pairing'],'site_accessibility':['Features_Site_Accessibility'],
-                'hot_encoding_mirna':['Features_Hot_Encoding_miRNA'],'hot_encoding_mrna':['Features_Hot_Encoding_mRNA']}
-    feature_category_table = features[feature_category]
+    #result = []
+    #features = {'free_energy':['Features_Free_Energy'],'mrna_composition':['Features_mRNA_Composition'],'seed_features':['Features_Seed_Features'],
+     #           'mirna_pairing':['Features_miRNA_Pairing'],'site_accessibility':['Features_Site_Accessibility'],
+      #          'hot_encoding_mirna':['Features_Hot_Encoding_miRNA'],'hot_encoding_mrna':['Features_Hot_Encoding_mRNA']}
+    #feature_category_table = features[feature_category]
     #cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', mirna_name,
     #               target_name)
     # for row in cursor:
     #     mir_tar_list.append(row)
     # for mir_tar_id in mir_tar_list:
-    cursor.execute('SELECT * FROM ' + feature_category_table + ' WHERE mirTar_id = "%s', mirTar_id)
-    for row in cursor:
-        result.append(row)
+    cursor.execute('SELECT * FROM ' + feature_category+ ' WHERE mirTar_id = %s', (mirTar_id))
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
     conn.close()
-    return result
+    return jsonResult
 
 
 @app.route('/getInfoByMirTarId')
 def retrieve_pos_general_info_by_mirTar_id():
-    mirTar_id = request.args.get('mirTar_id')
+    mirTar_id = request.args.get('mirTarId')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
     cursor.execute('SELECT * FROM Pos_General_Info WHERE mirTar_id = %s', (mirTar_id))

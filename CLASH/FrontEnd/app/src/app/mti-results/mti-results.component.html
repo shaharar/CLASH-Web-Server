@@ -5,7 +5,7 @@
     <div class="page-view">
         <div class="list-group">
             <ul class="no-bullets" *ngFor="let mtiId of resultsPerPage">
-                <li><a href="detailed-results" class="list-group-item list-group-item-action">{{mtiId}}</a></li>
+                <li><a (click)= "getMTIsDetailedResults(mtiId)" class="list-group-item list-group-item-action">{{mtiId}}</a></li>
             </ul>
         </div>
        <nav aria-label="page-navigation" class="page-btns">

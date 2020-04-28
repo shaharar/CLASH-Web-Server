@@ -7,7 +7,7 @@ import { DetailedResultsComponent } from './detailed-results/detailed-results.co
 
 
 const routes: Routes = [
-  {path:  "", pathMatch:  "full", redirectTo:  "home"},
+  {path:  "", pathMatch: "full", redirectTo:  "home"},
   {path: "home", component: HomeComponent},
   {path: "search", component: SearchComponent},
   {path: "mti-results", component: MtiResultsComponent},
