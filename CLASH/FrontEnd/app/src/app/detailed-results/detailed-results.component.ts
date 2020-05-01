@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { HttpRequestsService } from '../http-requests.service';
 import { HttpParams } from "@angular/common/http";
-import { FreeEnergyFeatures, IMTI } from '../mti';
-import { Observable } from 'rxjs';
+import { FreeEnergyFeatures, IMTI, HotEncodingMirnaFeatures, HotEncodingMrnaFeatures, SeedFeatures, SiteAccessibility, MrnaCompositionFeatures, MirnaPairingFeatures } from '../mti';
+
 
 @Component({
   selector: 'app-detailed-results',
@@ -15,34 +15,36 @@ export class DetailedResultsComponent implements OnInit {
   public mirTarId;
   public generalInfo = []
   public freeEnergyFeatures = []
-  public resultsArr = []
+  public hotEncodingMirnaFeatures = []
+  public hotEncodingMrnaFeatures = []
+  public mirnaPairingFeatures = []
+  public mrnaCompositionFeatures = []
+  public seedFeatures = []
+  public siteAccessibility = []
+  public isDataAvailable = false;
 
   constructor(private httpRequestsService: HttpRequestsService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.mirTarId = this.route.snapshot.queryParamMap.get('mirTarId');
-    //var params: Params
-    //var path: string
-
     this.getMTIsInfo('generalInfo')
       .forEach((value: IMTI) => this.generalInfo.push(value))
-      .then(() => this.getMTIsInfo('freeEnergyInfo')
-      .forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))).then(()=>console.log(this.generalInfo[0][0]['mirTar_id']))
-    
-
-
-
-
-    //params = new HttpParams()
-    //.set('mirTarId', this.mirTarId)
-    //path = 'getInfoByMirTarId'
-    //   this.httpRequestsService.getWithParams(path, { params }).forEach((value: IMTI) => this.generalInfo.push(value)).then(()=>
-    // {
-    // this.getMTIsInfo('freeEnergyInfo');
-    //  console.log(this.generalInfo[0][0])
-    //})
-
+      .then(() => this.getMTIsInfo('freeEnergyInfo').
+        forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('hotEncodingMirnaInfo').
+        forEach((value: HotEncodingMirnaFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('hotEncodingMrnaInfo').
+        forEach((value: HotEncodingMrnaFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('mirnaPairingInfo').
+        forEach((value: MirnaPairingFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('mrnaCompositionInfo').
+        forEach((value: MrnaCompositionFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('seedInfo').
+        forEach((value: SeedFeatures) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.getMTIsInfo('siteAccessibilityInfo').
+        forEach((value: SiteAccessibility) => this.freeEnergyFeatures.push(value)))
+      .then(() => this.isDataAvailable = true);
 
   }
 
@@ -58,7 +60,6 @@ export class DetailedResultsComponent implements OnInit {
           .set('mirTarId', this.mirTarId)
         path = 'getInfoByMirTarId'
         result = this.httpRequestsService.getWithParams(path, { params })
-        //result.forEach((value: IMTI) => this.generalInfo.push(value))
         break;
       case 'freeEnergyInfo':
         params = new HttpParams()
@@ -66,7 +67,48 @@ export class DetailedResultsComponent implements OnInit {
           .set('featureCategory', 'Features_Free_Energy')
         path = 'getFeaturesByCategory'
         result = this.httpRequestsService.getWithParams(path, { params })
-        //result.forEach((value: FreeEnergyFeatures) => this.freeEnergyFeatures.push(value))
+        break;
+      case 'hotEncodingMirnaInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_Hot_Encoding_miRNA')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
+        break;
+      case 'hotEncodingMrnaInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_Hot_Encoding_mRNA')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
+        break;
+      case 'mirnaPairingInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_miRNA_Pairing')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
+        break;
+      case 'mrnaCompositionInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_mRNA_Composition')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
+        break;
+      case 'seedInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_Seed_Features')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
+        break;
+      case 'siteAccessibilityInfo':
+        params = new HttpParams()
+          .set('mirTarId', this.mirTarId)
+          .set('featureCategory', 'Features_Site_Accessibility')
+        path = 'getFeaturesByCategory'
+        result = this.httpRequestsService.getWithParams(path, { params })
         break;
       default:
         break;
@@ -75,6 +117,5 @@ export class DetailedResultsComponent implements OnInit {
     return result
 
   }
-
 
 }
