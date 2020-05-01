@@ -12,17 +12,17 @@
           <a class="nav-item nav-link" id="nav-hot-encoding-mrna-tab" data-toggle="tab" href="#nav-hot-encoding-mrna" role="tab" aria-controls="nav-hot-encoding-mrna" aria-selected="false">Hot Encoding mRNA</a>
         </div>
       </nav>
-      <div class="tab-content" id="nav-tabContent" *ngIf="bool">
+      <div class="tab-content" id="nav-tabContent" *ngIf="isDataAvailable">
 <!-- ------------------------- GENERAL INFO TAB ------------------------- -->
 
         <div class="tab-pane fade show active" id="nav-general-info" role="tabpanel" aria-labelledby="nav-general-info-tab">
             <br>
             <table class="table table-striped">
-                <thead class="thead-dark">
+                <!-- <thead class="thead-dark">
                   <tr>
                     <th class="th" scope="col">General Information Of The MTI</th>
                   </tr>
-                </thead>
+                </thead> -->
                 <tbody class="table-body">
                   <tr>
                     <th scope="row">miRNA Name</th>
@@ -131,31 +131,31 @@
             <tbody class="table-body">
               <tr>
                 <th scope="row">MRNA_Dist_to_start</th>
-                <td>{{mrnaComposition[0][0].MRNA_Dist_to_start}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Dist_to_start}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Dist_to_end</th>
-                <td>{{mrnaComposition[0][0].MRNA_Dist_to_end}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Dist_to_end}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Target_AA_comp</th>
-                <td>{{mrnaComposition[0][0].MRNA_Target_AA_comp}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AA_comp}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Target_AC_comp</th>
-                <td>{{mrnaComposition[0][0].MRNA_Target_AC_comp}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AC_comp}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Target_AG_comp</th>
-                <td>{{mrnaComposition[0][0].MRNA_Target_AG_comp}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AG_comp}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Target_AU_comp</th>
-                <td>{{mrnaComposition[0][0].MRNA_Target_AU_comp}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AU_comp}}</td>
               </tr>
               <tr>
                 <th scope="row">MRNA_Target_A_comp</th>
-                <td>{{mrnaComposition[0][0].MRNA_Target_A_comp}}</td>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_A_comp}}</td>
               </tr>
             </tbody>
           </table>
@@ -217,31 +217,31 @@
                 <tbody class="table-body">
                   <tr>
                     <th scope="row">miRNAMatchPosition_1</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_1}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_1}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_10</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_10}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_10}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_11</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_11}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_11}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_12</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_12}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_12}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_13</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_13}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_13}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_14</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_14}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_14}}</td>
                   </tr>
                   <tr>
                     <th scope="row">miRNAMatchPosition_15</th>
-                    <td>{{mirnaPairing[0][0].miRNAMatchPosition_15}}</td>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_15}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -303,29 +303,29 @@
             <tbody class="table-body">
               <tr>
                 <th scope="row">HotPairingMirna_he_P1_L1</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P1_L1}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L1}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMirna_he_P1_L2</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P1_L2}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L2}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMirna_he_P1_L3</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P1_L3}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L3}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMirna_he_P1_L4</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P1_L4}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L4}}</td>
               </tr>              <tr>
                 <th scope="row">HotPairingMirna_he_P1_L5</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P1_L5}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L5}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMirna_he_P2_L1</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P2_L1}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P2_L1}}</td>
               </tr>              <tr>
                 <th scope="row">HotPairingMirna_he_P2_L2</th>
-                <td>{{hotEncodingMirna[0][0].HotPairingMirna_he_P2_L2}}</td>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P2_L2}}</td>
               </tr>
             </tbody>
           </table>
@@ -344,29 +344,29 @@
             <tbody class="table-body">
               <tr>
                 <th scope="row">HotPairingMRNA_he_P1_L1</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P1_L1}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L1}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMrna_he_P1_L2</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P1_L2}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L2}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMRNA_he_P1_L3</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P1_L3}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L3}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMRNA_he_P1_L4</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P1_L4}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L4}}</td>
               </tr>              <tr>
                 <th scope="row">HotPairingMRNA_he_P1_L5</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P1_L5}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L5}}</td>
               </tr>
               <tr>
                 <th scope="row">HotPairingMRNA_he_P2_L1</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P2_L1}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P2_L1}}</td>
               </tr>              <tr>
                 <th scope="row">HotPairingMRNA_he_P2_L2</th>
-                <td>{{hotEncodingMrna[0][0].HotPairingMRNA_he_P2_L2}}</td>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P2_L2}}</td>
               </tr>
             </tbody>
           </table>
