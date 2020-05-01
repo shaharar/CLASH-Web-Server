@@ -16,8 +16,14 @@ export class DetailedResultsComponent implements OnInit {
   // public generalInfoArr =[{method: 'vienna', organism: 'human', full_mrna: 'full'}]
 
   public mirTarId;
-  public generalInfo = []
-  public freeEnergyFeatures = []
+  public generalInfo = [];
+  public freeEnergyFeatures = [];
+  public mrnaComposition = [];
+  public seedFeatures = [];
+  public mirnaPairing = [];
+  public siteAccessibility =[];
+  public hotEncodingMirna = [];
+  public hotEncodingMrna = [];
   public bool = false;
 
   constructor(private httpRequestsService: HttpRequestsService,

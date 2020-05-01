@@ -1,7 +1,21 @@
 .nav-item{
-    color: rgb(6, 146, 146);
+    color: rgb(235, 224, 224);
+    /* color: rgb(6, 146, 146); */
 }
 
 .table-body {
     text-align: initial;
 }
+
+.nav-item {
+    /* background-color:  rgb(15, 80, 80); */
+    background-color: cadetblue;
+    font-size: medium;
+    border-color: black;
+    font-weight: 600;
+}
+
+/* .th {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+} */

@@ -26,5 +26,9 @@ ul.no-bullets {
 }
 
 .pagination{
-  display: flex;
+  display: inline-flex;
+}
+
+.nav-wrapper {
+  text-align: center;
 }
