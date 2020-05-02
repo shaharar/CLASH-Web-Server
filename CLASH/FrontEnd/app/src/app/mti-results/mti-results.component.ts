@@ -73,6 +73,7 @@ export class MtiResultsComponent implements OnInit {
   }
 
   createNumberOfPagesArray() {
+    this.pagesArr = []
     for (var i = 1; i <= this.numberOfPages; i++) {
       this.pagesArr.push(i);
     }
@@ -86,8 +87,8 @@ export class MtiResultsComponent implements OnInit {
     return ((firstIndex + numberOfMtisPerPage) - 1);
   }
 
-  calculateNumberOfPages (allResults, numberOfMtisPerPage) {
-    return Math.ceil(allResults[0].length / numberOfMtisPerPage);
+  calculateNumberOfPages (results, numberOfMtisPerPage) {
+    return Math.ceil(results[0].length / numberOfMtisPerPage);
   }
 
   updateIndexMtisView (pageNumber,results) {
