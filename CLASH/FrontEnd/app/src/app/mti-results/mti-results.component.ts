@@ -68,7 +68,7 @@ export class MtiResultsComponent implements OnInit {
     result.forEach((value:IMTI)=>this.allResults.push(value)).then(()=> 
     {this.numberOfPages = this.calculateNumberOfPages(this.allResults, this.numberOfMtisPerPage);
     this.createNumberOfPagesArray();
-    this.updateIndexMtisView(1);}, ()=> console.log("error"))
+    this.updateIndexMtisView(1,this.allResults);}, ()=> console.log("error"))
   
   }
 
@@ -90,23 +90,24 @@ export class MtiResultsComponent implements OnInit {
     return Math.ceil(allResults[0].length / numberOfMtisPerPage);
   }
 
-  updateIndexMtisView (pageNumber) {
+  updateIndexMtisView (pageNumber,results) {
     this.firstIndexMtiPage = this.getFirstIndexMtiPage(this.numberOfMtisPerPage, pageNumber);
     this.lastIndexMtiPage = this.getLastIndexMtiPage(this.firstIndexMtiPage, this.numberOfMtisPerPage);
-    this.addResultsPerPage();
+    this.addResultsPerPage(results);
   }
 
-  addResultsPerPage () {
+  addResultsPerPage (results) {
     this.resultsPerPage = [];
     for (var i = this.firstIndexMtiPage; i <= this.lastIndexMtiPage; i++) {
-      if (typeof this.allResults[0][i] != "undefined"){
-        this.resultsPerPage.push(this.allResults[0][i]['mirTar_id']);
+      if (typeof results[0][i] != "undefined"){
+        this.resultsPerPage.push(results[0][i]['mirTar_id']);
       }
     }
   }
 
   filterByMethod (method) {
     console.log(method)
+    this.filteredResultsByMethod = []
     const path = 'getInfoByMethod'
     const params = new HttpParams()
     .set('method', method)
@@ -114,7 +115,7 @@ export class MtiResultsComponent implements OnInit {
     result.forEach((value:IMTI)=>this.filteredResultsByMethod.push(value)).then(()=> 
     {this.numberOfPages = this.calculateNumberOfPages(this.filteredResultsByMethod, this.numberOfMtisPerPage);
     this.createNumberOfPagesArray();
-    this.updateIndexMtisView(1);}, ()=> console.log("error"))
+    this.updateIndexMtisView(1,this.filteredResultsByMethod);}, ()=> console.log("error")).then(()=>console.log(this.resultsPerPage))
   }
 
   filterByOrganism (organism) {
@@ -125,7 +126,7 @@ export class MtiResultsComponent implements OnInit {
     result.forEach((value:IMTI)=>this.filteredResultsByOrganism.push(value)).then(()=> 
     {this.numberOfPages = this.calculateNumberOfPages(this.filteredResultsByOrganism, this.numberOfMtisPerPage);
     this.createNumberOfPagesArray();
-    this.updateIndexMtisView(1);}, ()=> console.log("error"))
+    this.updateIndexMtisView(1,this.filteredResultsByOrganism);}, ()=> console.log("error"))
   }
 
   getMTIsDetailedResults(mtiId){
