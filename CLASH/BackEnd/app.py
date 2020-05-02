@@ -108,7 +108,7 @@ def retrieve_pos_general_info_by_mirTar_id():
     return jsonResult
 
 @app.route('/getInfoByMethod')
-def retrieve_duplex_by_mir_tar_pair():
+def retrieve_Info_By_Method():
     #mirna_name = request.args.get('mirnaName')
     #target_name = request.args.get('targetName')
     method = request.args.get('method')
