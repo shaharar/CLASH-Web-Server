@@ -107,22 +107,26 @@ def retrieve_pos_general_info_by_mirTar_id():
     conn.close()
     return jsonResult
 
-
+@app.route('/getInfoByMethod')
 def retrieve_duplex_by_mir_tar_pair():
-    mirna_name = request.args.get('mirnaName')
-    target_name = request.args.get('targetName')
+    #mirna_name = request.args.get('mirnaName')
+    #target_name = request.args.get('targetName')
+    method = request.args.get('method')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
-    mir_tar_list = []
-    result = []
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', mirna_name,
-                   target_name)
-    for row in cursor:
-        mir_tar_list.append(row)
-    for mir_tar_id in mir_tar_list:
-        cursor.execute('SELECT * FROM Duplex_Method WHERE mirTar_id = "%s',mir_tar_id)
-        for row in cursor:
-            result.append(row)
+    cursor.execute('SELECT mirTar_id FROM Duplex_Method WHERE method = %s',method)
+    result = cursor.fetchall()
+
+    #mir_tar_list = []
+    #result = []
+   # cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', mirna_name,
+    #               target_name)
+    #for row in cursor:
+    #    mir_tar_list.append(row)
+    #for mir_tar_id in mir_tar_list:
+     #   cursor.execute('SELECT * FROM Duplex_Method WHERE mirTar_id = "%s',mir_tar_id)
+      #  for row in cursor:
+       #     result.append(row)
     df = pd.DataFrame(result)
     jsonResult = df.to_json(orient='records')
     conn.close()

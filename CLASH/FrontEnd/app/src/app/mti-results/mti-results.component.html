@@ -1,24 +1,28 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
     <h1>MTIs Results:</h1>
     <br>
-    
+    <select id="selectid" class="form-control-mb-12" (change)="filterByMethod($event.target.value)">
+        <option value="Vienna">Vienna</option>
+        <option value="Miranda">Miranda</option>
+     </select>
     <div class="page-view">
         <div class="list-group">
             <ul class="no-bullets" *ngFor="let mtiId of resultsPerPage">
-                <li><a (click)= "getMTIsDetailedResults(mtiId)" class="list-group-item list-group-item-action">{{mtiId}}</a></li>
+                <li><a (click)="getMTIsDetailedResults(mtiId)"
+                        class="list-group-item list-group-item-action">{{mtiId}}</a></li>
             </ul>
         </div>
-       <!-- <nav aria-label="page-navigation" class="page-btns">
+        <!-- <nav aria-label="page-navigation" class="page-btns">
             <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
                 <li class="page-item"><button class="page-number-btn" (click)= "updateIndexMtisView(page)"> {{page}} </button></li>
             </ul>
         </nav> -->
         <div class="nav-wrapper">
-          <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
-                <button class="page-item" (click)= "updateIndexMtisView(page)">{{page}}</button>
-              </ul>
-          </nav>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
+                    <button class="page-item" (click)="updateIndexMtisView(page)">{{page}}</button>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
