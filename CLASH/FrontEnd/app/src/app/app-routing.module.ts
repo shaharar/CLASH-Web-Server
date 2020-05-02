@@ -4,6 +4,7 @@ import { SearchComponent } from './search/search.component';
 import { HomeComponent } from './home/home.component';
 import { MtiResultsComponent } from './mti-results/mti-results.component';
 import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
+import { DownloadComponent } from './download/download.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,9 @@ const routes: Routes = [
   {path: "home", component: HomeComponent},
   {path: "search", component: SearchComponent},
   {path: "mti-results", component: MtiResultsComponent},
-  {path: "detailed-results", component: DetailedResultsComponent}];
+  {path: "detailed-results", component: DetailedResultsComponent},
+  {path: "download", component: DownloadComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

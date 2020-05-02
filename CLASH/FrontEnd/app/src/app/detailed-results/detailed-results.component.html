@@ -1,8 +1,8 @@
-<div class="jumbotron" style="background-color: #fff; height: calc(95vh); text-align: center;">
+<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
     <br><h3>Mir-Tar ID : {{mirTarId}}</h3><br>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <a class="nav-item nav-link active" id="nav-general-info-tab" data-toggle="tab" href="#nav-general-info" role="tab" aria-controls="nav-general-info" aria-selected="true"><strong>General Information</strong></a>
+          <a class="nav-item nav-link active" id="nav-general-info-tab" data-toggle="tab" href="#nav-general-info" role="tab" aria-controls="nav-general-info" aria-selected="true">General Information</a>
           <a class="nav-item nav-link" id="nav-free-energy-tab" data-toggle="tab" href="#nav-free-energy" role="tab" aria-controls="nav-free-energy" aria-selected="false">Free Energy</a>
           <a class="nav-item nav-link" id="nav-mrna-composition-tab" data-toggle="tab" href="#nav-mrna-composition" role="tab" aria-controls="nav-mrna-composition" aria-selected="false">mRNA Composition</a>
           <a class="nav-item nav-link" id="nav-seed-features-tab" data-toggle="tab" href="#nav-seed-features" role="tab" aria-controls="nav-seed-features" aria-selected="false">Seed Features</a>
@@ -12,15 +12,17 @@
           <a class="nav-item nav-link" id="nav-hot-encoding-mrna-tab" data-toggle="tab" href="#nav-hot-encoding-mrna" role="tab" aria-controls="nav-hot-encoding-mrna" aria-selected="false">Hot Encoding mRNA</a>
         </div>
       </nav>
-      <div class="tab-content" id="nav-tabContent">
+      <div class="tab-content" id="nav-tabContent" *ngIf="isDataAvailable">
+<!-- ------------------------- GENERAL INFO TAB ------------------------- -->
+
         <div class="tab-pane fade show active" id="nav-general-info" role="tabpanel" aria-labelledby="nav-general-info-tab">
             <br>
-            <table class="table table-striped" *ngIf = "bool">
-                <thead class="thead-dark">
+            <table class="table table-striped">
+                <!-- <thead class="thead-dark">
                   <tr>
-                    <th scope="col">General Information Of The MTI</th>
+                    <th class="th" scope="col">General Information Of The MTI</th>
                   </tr>
-                </thead>
+                </thead> -->
                 <tbody class="table-body">
                   <tr>
                     <th scope="row">miRNA Name</th>
@@ -50,31 +52,41 @@
                     <th scope="row">mRNA End</th>
                     <td>{{generalInfo[0][0].mRNA_end}}</td>
                   </tr>
-                                    <tr>
+                  <tr>
+                    <th scope="row">Method</th>
+                    <td>{{freeEnergyFeatures[0][0].method}}</td>
+                  </tr>
+                  <tr>
                     <th scope="row">Source</th>
                     <td>{{generalInfo[0][0].source}}</td>
                   </tr>
+                  <tr>
+                    <th scope="row">Line</th>
+                    <td>{{generalInfo[0][0].line}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Number Of Reads</th>
+                    <td>{{generalInfo[0][0].num_of_reads}}</td>
+                  </tr>
                   <!-- <tr>
                     <th scope="row">Full mRNA</th>
-                    <td>{{generalInfo[0][0].full_mRNA}}</td>
+                    <td><p>{{generalInfo[0][0].full_mRNA}}</p></td>
                   </tr> -->
 
                 </tbody>
               </table>
         </div>
+<!-- ----------------------------- FREE ENERGY TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-free-energy" role="tabpanel" aria-labelledby="nav-free-energy-tab">
           <br>
           <table class="table table-striped">
             <thead class="thead-dark">
-              <tr>
-                <th scope="col">Free Energy Features</th>
-              </tr>
+                <tr>
+                  <th scope="col">Free Energy Features</th>
+                </tr>
             </thead>
             <tbody class="table-body">
-              <tr>
-                <th scope="row">Method</th>
-                <td>{{freeEnergyFeatures[0][0].method}}</td>
-              </tr>
               <tr>
                 <th scope="row">Energy_MEF_3p</th>
                 <td>{{freeEnergyFeatures[0][0].Energy_MEF_3p}}</td>
@@ -106,23 +118,258 @@
             </tbody>
           </table>
         </div>
+<!-- ----------------------------- MRNA COMPOSITION TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-mrna-composition" role="tabpanel" aria-labelledby="nav-mrna-composition-tab">
           <br>
+          <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">mRNA Composition Features</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <th scope="row">MRNA_Dist_to_start</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Dist_to_start}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Dist_to_end</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Dist_to_end}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Target_AA_comp</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AA_comp}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Target_AC_comp</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AC_comp}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Target_AG_comp</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AG_comp}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Target_AU_comp</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_AU_comp}}</td>
+              </tr>
+              <tr>
+                <th scope="row">MRNA_Target_A_comp</th>
+                <td>{{mrnaCompositionFeatures[0][0].MRNA_Target_A_comp}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+<!-- ----------------------------- SEED FEATURES TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-seed-features" role="tabpanel" aria-labelledby="nav-seed-features-tab">
           <br>
+          <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Seed Features</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <th scope="row">Seed_match_compact_A</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_A}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_GU_2_7</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_GU_2_7}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_GU_3_8</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_GU_3_8}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_GU_all</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_GU_all}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_bulge_mirna</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_bulge_mirna}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_bulge_target</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_bulge_target}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Seed_match_compact_interactions_2_7</th>
+                <td>{{seedFeatures[0][0].Seed_match_compact_interactions_2_7}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+<!-- ----------------------------- MIRNA PAIRING TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-mirna-pairing" role="tabpanel" aria-labelledby="nav-mirna-pairing-tab">
             <br>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">miRNA Pairing Features</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_1</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_1}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_10</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_10}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_11</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_11}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_12</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_12}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_13</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_13}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_14</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_14}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">miRNAMatchPosition_15</th>
+                    <td>{{mirnaPairingFeatures[0][0].miRNAMatchPosition_15}}</td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
+
+<!-- ----------------------------- SITE ACCESSIBILITY TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-site-accessibility" role="tabpanel" aria-labelledby="nav-site-accessibility-tab">
           <br>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Site Accessibility Features</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr>
+                    <th scope="row">Acc_P10_10th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_10th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_1th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_1th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_2th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_2th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_3th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_3th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_4th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_4th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_5th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_5th}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Acc_P10_6th</th>
+                    <td>{{siteAccessibility[0][0].Acc_P10_6th}}</td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
+
+<!-- ----------------------------- HOT ENCODING MIRNA TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-hot-encoding-mirna" role="tabpanel" aria-labelledby="nav-hot-encoding-mirna-tab">
           <br>
+          <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hot Encoding miRNA Features</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <th scope="row">HotPairingMirna_he_P1_L1</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L1}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMirna_he_P1_L2</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L2}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMirna_he_P1_L3</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L3}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMirna_he_P1_L4</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L4}}</td>
+              </tr>              <tr>
+                <th scope="row">HotPairingMirna_he_P1_L5</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P1_L5}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMirna_he_P2_L1</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P2_L1}}</td>
+              </tr>              <tr>
+                <th scope="row">HotPairingMirna_he_P2_L2</th>
+                <td>{{hotEncodingMirnaFeatures[0][0].HotPairingMirna_he_P2_L2}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+<!-- ----------------------------- HOT ENCODING MRNA TAB ----------------------------- -->
+
         <div class="tab-pane fade" id="nav-hot-encoding-mrna" role="tabpanel" aria-labelledby="nav-hot-encoding-mrna-tab">
           <br>
+          <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hot Encoding mRNA Features</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr>
+                <th scope="row">HotPairingMRNA_he_P1_L1</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L1}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMrna_he_P1_L2</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L2}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMRNA_he_P1_L3</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L3}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMRNA_he_P1_L4</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L4}}</td>
+              </tr>              <tr>
+                <th scope="row">HotPairingMRNA_he_P1_L5</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P1_L5}}</td>
+              </tr>
+              <tr>
+                <th scope="row">HotPairingMRNA_he_P2_L1</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P2_L1}}</td>
+              </tr>              <tr>
+                <th scope="row">HotPairingMRNA_he_P2_L2</th>
+                <td>{{hotEncodingMrnaFeatures[0][0].HotPairingMRNA_he_P2_L2}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

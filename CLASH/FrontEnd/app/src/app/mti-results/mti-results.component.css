@@ -1,5 +1,6 @@
 ul.no-bullets {
   list-style-type: none;
+  cursor: pointer;
 }
 
 .list-group {
@@ -26,5 +27,19 @@ ul.no-bullets {
 }
 
 .pagination{
-  display: flex;
+  display: inline-flex;
+}
+
+.nav-wrapper {
+  text-align: center;
+}
+
+.btn {
+  background-color: cadetblue;
+  border: black;
+  text-align: left;
+}
+
+.btn-wrapper {
+  text-align: left;
 }

@@ -13,6 +13,7 @@ import { SearchComponent } from './search/search.component';
 import { HttpRequestsService } from './http-requests.service';
 import { MtiResultsComponent } from './mti-results/mti-results.component';
 import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
+import { DownloadComponent } from './download/download.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DetailedResultsComponent } from './detailed-results/detailed-results.co
     HomeComponent,
     SearchComponent,
     MtiResultsComponent,
-    DetailedResultsComponent
+    DetailedResultsComponent,
+    DownloadComponent
   ],
   imports: [
     BrowserModule,

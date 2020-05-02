@@ -1,6 +1,17 @@
+.jumbotron {
+    width: fit-content;
+    margin-left: 33%;
+}
+
+.search-wrapper {
+    border-style: double;
+    padding: 2.5rem 3rem;
+    margin-top: 4rem;
+}
 
 .nav-item{
     color: rgb(2, 116, 116);
+    font-weight: bold;
 }
 
 .form{
