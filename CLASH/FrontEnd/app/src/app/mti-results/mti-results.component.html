@@ -1,10 +1,17 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
     <h1>MTIs Results:</h1>
     <br>
-    <select id="selectid" class="form-control-mb-12" (change)="filterByMethod($event.target.value)">
+    <select id="selectmethodid" class="form-control-mb-12" (change)="filterByMethod($event.target.value)">
+        <option value="None">None</option>
         <option value="Vienna">Vienna</option>
         <option value="Miranda">Miranda</option>
      </select>
+     <!-- <select id="selectorganismid" class="form-control-mb-12" (change)="filterByOrganism($event.target.value)"> -->
+        <!-- <option value="human">human</option> -->
+        <!-- <option value="mouse">mouse</option> -->
+        <!-- <option value="cow">cow</option> -->
+        <!-- <option value="celegans">celegans</option> -->
+     <!-- </select> -->
     <div class="page-view">
         <div class="list-group">
             <ul class="no-bullets" *ngFor="let mtiId of resultsPerPage">

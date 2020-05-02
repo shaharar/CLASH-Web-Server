@@ -119,26 +119,33 @@ export class MtiResultsComponent implements OnInit {
   filterByMethod(method) {
     console.log(method)
     // this.filteredResultsByMethod = []
-    const path = 'getInfoByMethod'
-    const params = new HttpParams()
-      .set('method', method)
+    if (method == 'None') {
+      this.results = this.allResults
+      console.log(this.results.length)
+    }
+    else {
+      const path = 'getInfoByMethod'
+      const params = new HttpParams()
+        .set('method', method)
 
-    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      this.results = []
-      for (var i = 0; i < results.length; i++) {
-        for (var j = 0; j < this.allResults.length; j++) {
-          if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-            this.results.push(results[i])
+      this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+        this.results = []
+        for (var i = 0; i < results.length; i++) {
+          for (var j = 0; j < this.allResults.length; j++) {
+            if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
+              this.results.push(results[i])
+            }
+            //this.results.push(results[i]['mirTar_id'])
           }
-          //this.results.push(results[i]['mirTar_id'])
-        }
 
-      }
-      this.filteredResultsByMethod = this.results
-      this.numberOfPages = this.calculateNumberOfPages()
-      this.createNumberOfPagesArray()
-      this.updateIndexMtisView(1)
-    })
+        }
+        console.log(this.results.length)
+        this.filteredResultsByMethod = this.results
+        this.numberOfPages = this.calculateNumberOfPages()
+        this.createNumberOfPagesArray()
+        this.updateIndexMtisView(1)
+      })
+    }
     //const result = this.httpRequestsService.getWithParams(path, { params })
     //result.forEach((value: IMTI) => this.filteredResultsByMethod.push(value)).then(() => {
     //console.log(this.filteredResultsByMethod[0].filter(x => !this.allResults.includes(x.mirTarId)))
@@ -150,18 +157,30 @@ export class MtiResultsComponent implements OnInit {
     //}, () => console.log("error"))
   }
 
-  //  filterByOrganism(organism) {
-  //  const path = 'getInfoByOrganism'
-  // const params = new HttpParams()
-  // .set('organism', organism)
-  //const result = this.httpRequestsService.getWithParams(path, { params })
-  //result.forEach((value: IMTI) => this.filteredResultsByOrganism.push(value)).then(() => {
+  filterByOrganism(organism) {
+    console.log('organism')
+    const path = 'getInfoByOrganism'
+    const params = new HttpParams()
+      .set('organism', organism)
+    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+      this.results = []
+      console.log(results.length)
+      for (var i = 0; i < results.length; i++) {
+        for (var j = 0; j < this.allResults.length; j++) {
+          if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
+            this.results.push(results[i])
+          }
+          //this.results.push(results[i]['mirTar_id'])
+        }
 
-  //this.numberOfPages = this.calculateNumberOfPages(this.filteredResultsByOrganism, this.numberOfMtisPerPage);
-  //this.createNumberOfPagesArray();
-  //this.updateIndexMtisView(1, this.filteredResultsByOrganism);
-  //}, () => console.log("error"))
-  // }
+      }
+      this.filteredResultsByOrganism = this.results
+      this.numberOfPages = this.calculateNumberOfPages()
+      this.createNumberOfPagesArray()
+      this.updateIndexMtisView(1)
+    })
+
+  }
 
   getMTIsDetailedResults(mtiId) {
     const queryParams: any = {};
