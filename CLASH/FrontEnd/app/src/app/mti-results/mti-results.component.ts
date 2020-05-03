@@ -122,6 +122,10 @@ export class MtiResultsComponent implements OnInit {
     if (method == 'None') {
       this.results = this.allResults
       console.log(this.results.length)
+      this.filteredResultsByMethod = this.results
+      this.numberOfPages = this.calculateNumberOfPages()
+      this.createNumberOfPagesArray()
+      this.updateIndexMtisView(1)
     }
     else {
       const path = 'getInfoByMethod'
