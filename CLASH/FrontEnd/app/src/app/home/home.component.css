@@ -3,3 +3,14 @@
     background-color: rgb(15, 80, 80);
     border-color: rgb(36, 35, 35);
 }
+
+h1 {
+    margin: 1em 0 0.5em 0;
+	/* color: #343434; */
+	/* font-weight: normal; */
+	/* font-family: 'Ultra', sans-serif;    */
+	/* font-size: 32px; */
+	/* line-height: 42px; */
+	/* text-transform: uppercase; */
+	text-shadow: 0 2px cadetblue, 0 3px #777;
+}
