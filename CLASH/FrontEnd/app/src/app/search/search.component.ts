@@ -211,11 +211,11 @@ export class SearchComponent implements OnInit {
 
     const queryParams: any = {};
     // Add the array of values to the query parameter as a JSON string
-    queryParams.mirnaName = JSON.stringify([this.mirnaName]);
-    queryParams.mirnaSeq = JSON.stringify([this.mirnaSeq]);
-    queryParams.targetName = JSON.stringify([this.targetName]);
-    queryParams.dataset = JSON.stringify([this.dataset]);
-    queryParams.DBVersion = JSON.stringify([this.DBVersion]);
+    queryParams.mirnaName = this.mirnaName;
+    queryParams.mirnaSeq = this.mirnaSeq;
+    queryParams.targetName = this.targetName;
+    queryParams.dataset = this.dataset;
+    queryParams.DBVersion = this.DBVersion;
     queryParams.organismInputs = JSON.stringify([this.checkEmptyInputsArr(this.organismInputs,'organism')]);
     queryParams.methodInputs = JSON.stringify([this.checkEmptyInputsArr(this.methodInputs,'method')]);
     queryParams.mrnaRegionInputs = JSON.stringify([this.checkEmptyInputsArr(this.mrnaRegionInputs,'mrnaRegion')]);

@@ -32,66 +32,32 @@ export class MtiResultsComponent implements OnInit {
   ngOnInit(): void {
     var arrayOfParams: Array<string>;
     var params: Params
-    const values = this.route.snapshot.queryParamMap.get('values');
-    const searchInput = this.route.snapshot.queryParamMap.get('searchInput');
-    const path = this.route.snapshot.queryParamMap.get('path');
-    // If the value is null, create a new array and store it
-    // Else parse the JSON string we sent into an array
-    if (values === null) {
-      arrayOfParams = new Array<string>();
-    } else {
-      arrayOfParams = JSON.parse(values);
-    }
-    switch (searchInput) {
-      case 'mirnaName':
-        const mirnaName = arrayOfParams[0]
-        params = new HttpParams()
-          .set('mirnaName', mirnaName)
-        break;
-      case 'targetName':
-        const targetName = arrayOfParams[0]
-        params = new HttpParams()
-          .set('targetName', targetName)
-        break;
-      case 'organism':
-        const organism = arrayOfParams[0]
-        params = new HttpParams()
-          .set('organism', organism)
-        break;
-      case 'mirTar':
-        const mir = arrayOfParams[0]
-        const tar = arrayOfParams[1]
-        params = new HttpParams()
-          .set('mirnaName', mir)
-          .set('targetName', tar)
-        break;
-      default:
-        break;
-    }
+    const mirnaName = this.route.snapshot.queryParamMap.get('mirnaName');
+    const mirnaSeq = this.route.snapshot.queryParamMap.get('mirnaSeq');
+    const targetName = this.route.snapshot.queryParamMap.get('targetName');
+    const dataset = this.route.snapshot.queryParamMap.get('dataset');
+    const DBVersion = this.route.snapshot.queryParamMap.get('DBVersion');
+    const organismInputs = JSON.parse(this.route.snapshot.queryParamMap.get('organismInputs'));
+    const methodInputs = JSON.parse(this.route.snapshot.queryParamMap.get('methodInputs'));
+    const mrnaRegionInputs = JSON.parse(this.route.snapshot.queryParamMap.get('mrnaRegionInputs'));
+    const protocolInputs = JSON.parse(this.route.snapshot.queryParamMap.get('protocolInputs'));
 
+    params = new HttpParams()
+    .set('mirnaName', mirnaName)
+    .set('mirnaSeq', mirnaSeq)
+    .set('targetName', targetName)
+    .set('dataset', dataset)    
+    .set('DBVersion', DBVersion)
+    .set('organismInputs', organismInputs)    
+    .set('methodInputs', methodInputs)
+    .set('mrnaRegionInputs', mrnaRegionInputs)    
+    .set('protocolInputs', protocolInputs)
 
-
-    //const result = this.httpRequestsService.getWithParams(path , {params})
-    //result.forEach((value:IMTI)=>this.allResults.push(value)).then(()=> 
-    //{this.numberOfPages = this.calculateNumberOfPages(this.allResults, this.numberOfMtisPerPage);
-    //this.createNumberOfPagesArray();
-    //this.updateIndexMtisView(1,this.allResults);}, ()=> console.log("error"))
-
-   this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+    const path = 'getMTIs';
+    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
      this.downloadService.downloadFile(results, 'data', Object.keys(results[0])
      )
    })
-    //  this.results = []
-     // this.allResults = results
-     // this.results = results
-     // const resultJson = JSON.parse(this.results)
-     // console.log(resultJson)
-  
-     // this.numberOfPages = this.calculateNumberOfPages()
-     // this.createNumberOfPagesArray()
-     // this.updateIndexMtisView(1)
-   // })
-
   }
 
   createNumberOfPagesArray() {

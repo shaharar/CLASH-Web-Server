@@ -29,6 +29,8 @@ def retrieve_info_by_search_inputs():
     organism_inputs = request.args.getlist('organismInputs')
     mrna_region_inputs = request.args.getlist('mrnaRegionInputs')
     protocol_inputs = request.args.getlist('protocolInputs')
+    print(organism_inputs)
+    print(mirna_name)
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
     query1 = '''SELECT * FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
