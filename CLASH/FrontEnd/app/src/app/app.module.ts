@@ -14,6 +14,8 @@ import { HttpRequestsService } from './http-requests.service';
 import { MtiResultsComponent } from './mti-results/mti-results.component';
 import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
 import { DownloadComponent } from './download/download.component';
+import { DownloadService } from './download.service';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import { DownloadComponent } from './download/download.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [HttpRequestsService],
+  providers: [HttpRequestsService, DownloadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

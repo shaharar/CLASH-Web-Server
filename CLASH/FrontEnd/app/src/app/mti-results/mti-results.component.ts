@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, NavigationExtras } from '@angular/router';
 import { HttpRequestsService } from '../http-requests.service';
 import { HttpParams } from "@angular/common/http";
-import { IMTI } from '../mti';
+import { DownloadService } from '../download.service'
+
+
 
 @Component({
   selector: 'app-mti-results',
@@ -23,6 +25,7 @@ export class MtiResultsComponent implements OnInit {
   pagesArr = [];
 
   constructor(private httpRequestsService: HttpRequestsService,
+    private downloadService: DownloadService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -65,20 +68,29 @@ export class MtiResultsComponent implements OnInit {
       default:
         break;
     }
+
+
+
     //const result = this.httpRequestsService.getWithParams(path , {params})
     //result.forEach((value:IMTI)=>this.allResults.push(value)).then(()=> 
     //{this.numberOfPages = this.calculateNumberOfPages(this.allResults, this.numberOfMtisPerPage);
     //this.createNumberOfPagesArray();
     //this.updateIndexMtisView(1,this.allResults);}, ()=> console.log("error"))
 
-    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      this.results = []
-      this.allResults = results
-      this.results = results
-      this.numberOfPages = this.calculateNumberOfPages()
-      this.createNumberOfPagesArray()
-      this.updateIndexMtisView(1)
-    })
+   this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+     this.downloadService.downloadFile(results, 'data', Object.keys(results[0])
+     )
+   })
+    //  this.results = []
+     // this.allResults = results
+     // this.results = results
+     // const resultJson = JSON.parse(this.results)
+     // console.log(resultJson)
+  
+     // this.numberOfPages = this.calculateNumberOfPages()
+     // this.createNumberOfPagesArray()
+     // this.updateIndexMtisView(1)
+   // })
 
   }
 
@@ -132,23 +144,23 @@ export class MtiResultsComponent implements OnInit {
       const params = new HttpParams()
         .set('method', method)
 
-      this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-        this.results = []
-        for (var i = 0; i < results.length; i++) {
-          for (var j = 0; j < this.allResults.length; j++) {
-            if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-              this.results.push(results[i])
-            }
+     // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+       // this.results = []
+       // for (var i = 0; i < results.length; i++) {
+         // for (var j = 0; j < this.allResults.length; j++) {
+           // if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
+             // this.results.push(results[i])
+           // }
             //this.results.push(results[i]['mirTar_id'])
-          }
+       //   }
 
-        }
-        console.log(this.results.length)
-        this.filteredResultsByMethod = this.results
-        this.numberOfPages = this.calculateNumberOfPages()
-        this.createNumberOfPagesArray()
-        this.updateIndexMtisView(1)
-      })
+     //   }
+        //console.log(this.results.length)
+        //this.filteredResultsByMethod = this.results
+        //this.numberOfPages = this.calculateNumberOfPages()
+        //this.createNumberOfPagesArray()
+        //this.updateIndexMtisView(1)
+     // })
     }
     //const result = this.httpRequestsService.getWithParams(path, { params })
     //result.forEach((value: IMTI) => this.filteredResultsByMethod.push(value)).then(() => {
@@ -166,23 +178,23 @@ export class MtiResultsComponent implements OnInit {
     const path = 'getInfoByOrganism'
     const params = new HttpParams()
       .set('organism', organism)
-    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      this.results = []
-      console.log(results.length)
-      for (var i = 0; i < results.length; i++) {
-        for (var j = 0; j < this.allResults.length; j++) {
-          if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-            this.results.push(results[i])
-          }
+   // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+     // this.results = []
+      //console.log(results.length)
+      //for (var i = 0; i < results.length; i++) {
+        //for (var j = 0; j < this.allResults.length; j++) {
+          //if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
+            //this.results.push(results[i])
+          //}
           //this.results.push(results[i]['mirTar_id'])
-        }
+        //}
 
-      }
-      this.filteredResultsByOrganism = this.results
-      this.numberOfPages = this.calculateNumberOfPages()
-      this.createNumberOfPagesArray()
-      this.updateIndexMtisView(1)
-    })
+      //}
+      //this.filteredResultsByOrganism = this.results
+      //this.numberOfPages = this.calculateNumberOfPages()
+      //this.createNumberOfPagesArray()
+      //this.updateIndexMtisView(1)
+    //})
 
   }
 

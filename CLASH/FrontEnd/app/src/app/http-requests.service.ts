@@ -1,5 +1,5 @@
-import {throwError as observableThrowError,  Observable } from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import { throwError as observableThrowError, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IMTI } from './mti';
@@ -17,16 +17,16 @@ export class HttpRequestsService {
 
   constructor(private http: HttpClient) { }
 
- // get(path: string): Observable<IMTI[]> {
+  // get(path: string): Observable<IMTI[]> {
   //  this.fullPath = this.url + path;
   //  return this.http.get<IMTI[]>(this.fullPath).pipe(
   //    catchError(this.errorHandler)); 
-//  }
+  //  }
 
-  getWithParams(path: string, parameters: Params): Observable<any> {
+  getWithParams(path: string, parameters: Params) {
     this.fullPath = this.url + path;
-    return this.http.get<any>(this.fullPath, parameters).pipe(
-      catchError(this.errorHandler)); 
+    return this.http.get(this.fullPath, parameters).pipe(
+      catchError(this.errorHandler));
   }
 
 
