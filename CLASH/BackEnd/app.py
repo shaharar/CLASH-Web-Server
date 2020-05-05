@@ -25,19 +25,20 @@ def retrieve_info_by_search_inputs():
     target_name = None if request.args.get('targetName') == '' else request.args.get('targetName')
     dataset = None if request.args.get('dataset') == '' else request.args.get('dataset')
     db_version = None if request.args.get('DBVersion') == '' else request.args.get('dataset')
-    method_inputs = request.args.getlist('methodInputs')
-    organism_inputs = request.args.getlist('organismInputs')
-    mrna_region_inputs = request.args.getlist('mrnaRegionInputs')
-    protocol_inputs = request.args.getlist('protocolInputs')
+    method_inputs = request.args.get('methodInputs').split(',')
+    organism_inputs = request.args.get('organismInputs').split(',')
+    mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
+    protocol_inputs = request.args.get('protocolInputs').split(',')
     print(organism_inputs)
     print(mirna_name)
+    print(method_inputs)
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
-    query1 = '''SELECT * FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
+    query1 = '''SELECT mirTar_id FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
     AND  (%s IS NULL OR miRNA_sequence = %s)
     AND  (%s IS NULL OR target_name = %s)
     AND (organism IN %s)'''
-    query2 = 'SELECT * FROM Duplex_Method WHERE (method IN %s)'
+    query2 = 'SELECT mirTar_id FROM Duplex_Method WHERE (method IN %s)'
     cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,tuple(organism_inputs),))
     result1 = cursor.fetchall()
     cursor.execute(query2,(tuple(method_inputs),))
@@ -103,9 +104,22 @@ def retrieve_pos_general_info_by_mir_tar_pair():
     return jsonResult
 
 
+@app.route('/getFeatures')
+def retrieve_features():
+    mirTar_id =  request.args.get('mirTarId')
+    feature_Category = request.args.get('featureCategory')
+    conn = pymssql.connect(server, user, password, database)
+    cursor = conn.cursor(as_dict=True)
+    cursor.execute('SELECT * FROM ' + feature_Category+ ' WHERE mirTar_id = %s', (mirTar_id))
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
+    conn.close()
+    return jsonResult
+
 @app.route('/getFeaturesByCategory')
 def retrieve_features_by_category():
-    feature_categories = request.args.getlist('featureInputs')
+    feature_categories = request.args.get('featureInputs').split(",")
     dfs = []
     conn = pymssql.connect(server, user, password, database)
     cursor = conn.cursor(as_dict=True)

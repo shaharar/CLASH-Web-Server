@@ -30,7 +30,6 @@ export class MtiResultsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    var arrayOfParams: Array<string>;
     var params: Params
     const mirnaName = this.route.snapshot.queryParamMap.get('mirnaName');
     const mirnaSeq = this.route.snapshot.queryParamMap.get('mirnaSeq');
@@ -55,8 +54,12 @@ export class MtiResultsComponent implements OnInit {
 
     const path = 'getMTIs';
     this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-     this.downloadService.downloadFile(results, 'data', Object.keys(results[0])
-     )
+      this.allResults = results
+      console.log(this.allResults)
+      
+     //this.downloadService.downloadFile(results, 'data', Object.keys(results[0]))
+     
+
    })
   }
 

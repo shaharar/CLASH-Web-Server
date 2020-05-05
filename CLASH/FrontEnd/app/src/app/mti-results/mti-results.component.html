@@ -21,22 +21,17 @@
      <br>
     <div class="page-view">
         <div class="list-group">
-            <ul class="no-bullets" *ngFor="let mtiId of resultsPerPage">
-                <li><a (click)="getMTIsDetailedResults(mtiId)"
-                        class="list-group-item list-group-item-action">{{mtiId}}</a></li>
+            <ul class="no-bullets" *ngFor="let mtiId of allResults">
+                <li><a (click)="getMTIsDetailedResults(mtiId.mirTar_id)"
+                        class="list-group-item list-group-item-action">{{mtiId.mirTar_id}}</a></li>
             </ul>
         </div>
-        <!-- <nav aria-label="page-navigation" class="page-btns">
-            <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
-                <li class="page-item"><button class="page-number-btn" (click)= "updateIndexMtisView(page)"> {{page}} </button></li>
-            </ul>
-        </nav> -->
-        <div class="nav-wrapper">
+        <!-- <div class="nav-wrapper">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
                     <button class="page-item" (click)="updateIndexMtisView(page)">{{page}}</button>
                 </ul>
             </nav>
-        </div>
+        </div> -->
     </div>
 </div>

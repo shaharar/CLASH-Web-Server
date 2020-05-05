@@ -23,7 +23,7 @@ export class HttpRequestsService {
   //    catchError(this.errorHandler)); 
   //  }
 
-  getWithParams(path: string, parameters: Params) {
+  getWithParams(path: string, parameters: Params):any{
     this.fullPath = this.url + path;
     return this.http.get(this.fullPath, parameters).pipe(
       catchError(this.errorHandler));

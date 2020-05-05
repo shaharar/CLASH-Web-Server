@@ -44,7 +44,7 @@ export class DetailedResultsComponent implements OnInit {
         forEach((value: SeedFeatures) => this.seedFeatures.push(value)))
       .then(() => this.getMTIsInfo('siteAccessibilityInfo').
         forEach((value: SiteAccessibility) => this.siteAccessibility.push(value)))
-      .then(() => this.isDataAvailable = true).then(() => console.log(this.mrnaCompositionFeatures));
+      .then(() => this.isDataAvailable = true);
 
   }
 
@@ -65,49 +65,49 @@ export class DetailedResultsComponent implements OnInit {
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_Free_Energy')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'hotEncodingMirnaInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_Hot_Encoding_miRNA')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'hotEncodingMrnaInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_Hot_Encoding_mRNA')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'mirnaPairingInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_miRNA_Pairing')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'mrnaCompositionInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_mRNA_Composition')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'seedInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_Seed_Features')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       case 'siteAccessibilityInfo':
         params = new HttpParams()
           .set('mirTarId', this.mirTarId)
           .set('featureCategory', 'Features_Site_Accessibility')
-        path = 'getFeaturesByCategory'
+        path = 'getFeatures'
         result = this.httpRequestsService.getWithParams(path, { params })
         break;
       default:
