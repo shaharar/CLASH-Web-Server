@@ -1,7 +1,9 @@
 .btn {
-    /* background-color: rgba(24, 24, 26, 0.849); */
-    background-color: rgb(15, 80, 80);
-    border-color: rgb(36, 35, 35);
+    background-color: rgba(24, 24, 26, 0.849);
+	/* background-color: rgb(15, 80, 80); */
+	/* background-color: cadetblue; */
+	border-color: rgb(36, 35, 35);
+	border-width: medium;
 }
 
 h1 {
@@ -12,5 +14,5 @@ h1 {
 	/* font-size: 32px; */
 	/* line-height: 42px; */
 	/* text-transform: uppercase; */
-	text-shadow: 0 2px cadetblue, 0 3px #777;
+	/* text-shadow: 0 2px cadetblue, 0 3px #777; */
 }

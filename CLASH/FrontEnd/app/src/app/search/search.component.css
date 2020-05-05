@@ -1,22 +1,28 @@
-.jumbotron {
+/* .jumbotron {
     width: fit-content;
     margin-left: 33%;
-}
+} */
 
 .search-wrapper {
-    border-style: double;
+    /* border-style: double; */
     padding: 2.5rem 3rem;
     margin-top: 4rem;
+    /* width: 80%; */
+    height: 100vh;
 }
 
-.nav-item{
+.col-sm-2 {
+    font-weight: 600;
+}
+
+/* .nav-item{
     color: rgb(2, 116, 116);
     font-weight: bold;
-}
+} */
 
-.form{
+/* .form{
     text-align: left;
-}
+} */
 
 .form-control{
     width: min-content;

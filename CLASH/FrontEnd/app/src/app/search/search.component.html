@@ -1,60 +1,113 @@
-<div class="jumbotron" style="background-color: #fff; height: 100vh; text-align: center;">
-  <div class="search-wrapper">
-    <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-mirna-tab" data-toggle="tab" href="#nav-mirna" role="tab" aria-controls="nav-mirna" aria-selected="true">miRNA</a>
-      <a class="nav-item nav-link" id="nav-target-tab" data-toggle="tab" href="#nav-target" role="tab" aria-controls="nav-target" aria-selected="false">Target</a>
-      <a class="nav-item nav-link" id="nav-organism-tab" data-toggle="tab" href="#nav-organism" role="tab" aria-controls="nav-organism" aria-selected="false">Organism</a>
-      <a class="nav-item nav-link" id="nav-mti-tab" data-toggle="tab" href="#nav-mti" role="tab" aria-controls="nav-mti" aria-selected="false">MTI</a>
+<div class="search-wrapper">
+
+  <form class="form">
+    <div class="form-group row">
+      <label for="mirnaNameInput" class="col-sm-2 col-form-label">miRNA Name</label>
+      <div class="col-sm-10">
+        <input [(ngModel)]="mirnaName" name="mirnaName" type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
+      </div>
     </div>
-  </nav>
-  <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-mirna" role="tabpanel" aria-labelledby="nav-mirna-tab">
-        <br>
-        <form class="form">
-            <div class="form-group">
-             <b><label for="mirnaNameInput">Search By miRNA</label></b>
-              <input #mirna type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
-            </div>
-            <button type="submit" (click)="getMTIByMirnaName(mirna.value)" class="btn btn-primary">Submit</button>
-          </form>
+    <div class="form-group row">
+      <label for="mirnaSequenceInput" class="col-sm-2 col-form-label">miRNA Sequence</label>
+      <div class="col-sm-10">
+        <input [(ngModel)]="mirnaSeq" name="mirnaSeq" type="mirnaSequence" class="form-control" id="mirnaSequence" placeholder="Enter miRNA sequence">
+      </div>
     </div>
-    <div class="tab-pane fade" id="nav-target" role="tabpanel" aria-labelledby="nav-target-tab">
-      <br>
-      <form class="form">
-        <div class="form-group">
-          <b><label for="targetNameInput">Search By Target</label></b>
-          <input #target type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+    <div class="form-group row">
+      <label for="targetNameInput" class="col-sm-2 col-form-label">Target Name</label>
+      <div class="col-sm-10">
+        <input [(ngModel)]="targetName" name="targetName" type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-2">Organism</div>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input [(ngModel)]="masterSelectedOrganism" name="organism-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('organism')">
+          <label class="form-check-label" for="all-organism"> All </label>
         </div>
-        <button type="submit"  (click)="getMTIByTargetName(target.value)" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-    <div class="tab-pane fade" id="nav-organism" role="tabpanel" aria-labelledby="nav-organism-tab">
-      <br>
-      <form class="form">
-        <div class="form-group">
-          <b><label for="organismInput">Search By Organism</label></b>
-          <input #organism type="organism" class="form-control" id="organism" placeholder="Enter organism">
+        <div class="form-check form-check-inline" *ngFor="let organism of checkListOrganism">
+          <input [(ngModel)]="organism.isSelected" name="organism-list" class="form-check-input" type="checkbox" (change)="isAllSelected('organism')">
+          <label class="form-check-label" for="organism"> {{organism.value}} </label>
         </div>
-        <button type="submit" (click)="getMTIByOrganism(organism.value)" class="btn btn-primary">Submit</button>
-      </form>
+        <!-- <div class="form-check form-check-inline" *ngFor="let organism of allOrganisms">
+          <input class="form-check-input" type="checkbox" (change)="onChange(organism, $event.target.checked)">
+          <label class="form-check-label" for="organism"> {{organism}} </label>
+        </div> -->
+        <!-- <div class="form-check form-check-inline">
+          <input [(ngModel)]="masterSelected" class="form-check-input" type="checkbox" (change)="onChangeAll()">
+          <label class="form-check-label" for="all-organism"> All </label>
+        </div> -->
+      </div>
     </div>
-    <div class="tab-pane fade" id="nav-mti" role="tabpanel" aria-labelledby="nav-mti-tab">
-      <br>
-      <form class="form">
-        <div class="form-group">
-          <b><label for="mtiInputs">Search By miRNA-Target Interaction</label></b>
-          <br><br>
-          <label for="mirnaNameInput">miRNA</label>
-          <input #mir type="mirnaName" class="form-control" id="mirnaName" placeholder="Enter miRNA name">
-          <br>
-          <label for="targetNameInput">Target</label>
-          <input #tar type="targetName" class="form-control" id="targetName" placeholder="Enter target name">
+
+    <div class="form-group row">
+      <div class="col-sm-2">mRNA Region</div>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input [(ngModel)]="masterSelectedRegion" name="mrnaRegion-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('mrnaRegion')">
+          <label class="form-check-label" for="all-mrnaRegion"> All </label>
         </div>
-        <button type="submit" (click)=" getMTIByMirTar(mir.value,tar.value)" class="btn btn-primary">Submit</button>
-      </form>
+        <div class="form-check form-check-inline" *ngFor="let region of checkListMrnaRegion">
+          <input [(ngModel)]="region.isSelected" name="mrnaRegion-list"class="form-check-input" type="checkbox" (change)="isAllSelected('mrnaRegion')">
+          <label class="form-check-label" for="region"> {{region.value}} </label>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-  
+
+    <div class="form-group row">
+      <div class="col-sm-2">Method</div>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input [(ngModel)]="masterSelectedMethod" name="method-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('method')">
+          <label class="form-check-label" for="all-method"> All </label>
+        </div>
+        <div class="form-check form-check-inline" *ngFor="let method of checkListMethod">
+          <input [(ngModel)]="method.isSelected" name="method-list"class="form-check-input" type="checkbox" (change)="isAllSelected('method')">
+          <label class="form-check-label" for="method"> {{method.value}} </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="mirnaNameInput" class="col-sm-2 col-form-label">Dataset</label>
+      <div class="col-sm-10">
+        <select [(ngModel)]="dataset" name="dataset" id="selectDataset" class="form-control-mb-12">
+          <option value="Unambiguous">Unambiguous</option>
+          <option value="All">All</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-2">Experimental Protocol</div>
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input [(ngModel)]="masterSelectedProtocol" name="protocol-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('protocol')">
+          <label class="form-check-label" for="all-protocol"> All </label>
+        </div>
+        <div class="form-check form-check-inline" *ngFor="let protocol of checkListProtocol">
+          <input [(ngModel)]="protocol.isSelected" name="protocol-list"class="form-check-input" type="checkbox" (change)="isAllSelected('protocol')">
+          <label class="form-check-label" for="protocol"> {{protocol.value}} </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="mirnaNameInput" class="col-sm-2 col-form-label">DB Version</label>
+      <div class="col-sm-10">
+        <select [(ngModel)]="DBVersion" name="DBVersion" id="selectDataset" class="form-control-mb-12">
+          <option value="V1.0">V.1.0</option>
+          <option value="V1.1">V.1.1</option>
+      </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" (click)="getMTIs()" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </form>
 </div>
