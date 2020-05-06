@@ -29,9 +29,6 @@ def retrieve_info_by_search_inputs():
     organism_inputs = request.args.get('organismInputs').split(',')
     mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
     protocol_inputs = request.args.get('protocolInputs').split(',')
-    print(organism_inputs)
-    print(mirna_name)
-    print(method_inputs)
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
     query1 = '''SELECT mirTar_id FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
@@ -45,7 +42,10 @@ def retrieve_info_by_search_inputs():
     result2 = cursor.fetchall()
     df1 = pd.DataFrame(result1)
     df2 = pd.DataFrame(result2)
-    df = df1.merge(df2,how='inner',on='mirTar_id')
+    if(df1.empty or df2.empty):
+        df = pd.DataFrame()
+    else:
+      df = df1.merge(df2,how='inner',on='mirTar_id')
     jsonResult = df.to_json(orient='records')
     conn.close()
     return jsonResult
@@ -119,18 +119,46 @@ def retrieve_features():
 
 @app.route('/getFeaturesByCategory')
 def retrieve_features_by_category():
+    mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
+    mirna_seq = None if request.args.get('mirnaSeq') == '' else request.args.get('mirnaSeq')
+    target_name = None if request.args.get('targetName') == '' else request.args.get('targetName')
+    dataset = None if request.args.get('dataset') == '' else request.args.get('dataset')
+    db_version = None if request.args.get('DBVersion') == '' else request.args.get('dataset')
+    method_inputs = request.args.get('methodInputs').split(',')
+    organism_inputs = request.args.get('organismInputs').split(',')
+    mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
+    protocol_inputs = request.args.get('protocolInputs').split(',')
     feature_categories = request.args.get('featureInputs').split(",")
-    dfs = []
-    conn = pymssql.connect(server, user, password, database)
-    cursor = conn.cursor(as_dict=True)
-    for feature_category in feature_categories:
-        query = 'SELECT * FROM ' + feature_category
-        cursor.execute(query)
-        result = cursor.fetchall()
-        df = pd.DataFrame(result)
+    conn = pymssql.connect(server,user,password,database)
+    cursor = conn.cursor(as_dict = True)
+    query1 = '''SELECT * FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
+    AND  (%s IS NULL OR miRNA_sequence = %s)
+    AND  (%s IS NULL OR target_name = %s)
+    AND (organism IN %s)'''
+    query2 = 'SELECT * FROM Duplex_Method WHERE (method IN %s)'
+    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,tuple(organism_inputs),))
+    result1 = cursor.fetchall()
+    cursor.execute(query2,(tuple(method_inputs),))
+    result2 = cursor.fetchall()
+    df1 = pd.DataFrame(result1)
+    df2 = pd.DataFrame(result2)
+    if(df1.empty or df2.empty):
+        df = pd.DataFrame()
+    else:
+        df = df1.merge(df2,how='inner',on='mirTar_id')
+    if(~df.empty):
+        dfs = []
+        for feature_category in feature_categories:
+            query = 'SELECT * FROM ' + feature_category
+            cursor.execute(query)
+            result = cursor.fetchall()
+            df = pd.DataFrame(result)
+            dfs.append(df)
         dfs.append(df)
-    features_df = functools.reduce(lambda df1,df2: pd.merge(df1,df2,on='mirTar_id'), dfs)
-    jsonResult = features_df.to_json(orient='records')
+        features_df = functools.reduce(lambda df1,df2: pd.merge(df1,df2,on='mirTar_id'), dfs)
+        jsonResult = features_df.to_json(orient='records')
+    else:
+        jsonResult = df.to_json(orient='records')
     conn.close()
     return jsonResult
 
