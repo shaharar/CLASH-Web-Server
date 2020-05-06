@@ -28,7 +28,7 @@ export class MtiResultsComponent implements OnInit {
   masterSelected = false;
   checkListDownload = [];
   downloadRes = [];
-
+  searchTime = 0.2;
 
   constructor(private httpRequestsService: HttpRequestsService,
     private downloadService: DownloadService,
@@ -92,8 +92,8 @@ export class MtiResultsComponent implements OnInit {
       case 'download':
         (this.downloadInputs.map(item => item.value)).forEach(input => {
           //console.log(input)
-          input = input.replace(' ', '_');
-          //console.log(input)
+          input = input.split(' ').join('_');
+          console.log(input)
           input = 'Features_' + input;
           //console.log(input)
           featureInputs.push(input);
@@ -169,7 +169,7 @@ export class MtiResultsComponent implements OnInit {
   }
 
   showSummary() {
-
+    this.router.navigate(['/visualization']);
   }
 
 

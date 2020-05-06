@@ -56,3 +56,7 @@ h5 {
   font-size: 1.15rem;
   margin-top: 0.5rem;
 }
+
+.col-sm-10 {
+  left: 7rem;
+}

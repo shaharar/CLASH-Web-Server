@@ -15,6 +15,7 @@ import { MtiResultsComponent } from './mti-results/mti-results.component';
 import { DetailedResultsComponent } from './detailed-results/detailed-results.component';
 import { DownloadComponent } from './download/download.component';
 import { DownloadService } from './download.service';
+import { VisualizationComponent } from './visualization/visualization.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DownloadService } from './download.service';
     SearchComponent,
     MtiResultsComponent,
     DetailedResultsComponent,
-    DownloadComponent
+    DownloadComponent,
+    VisualizationComponent
   ],
   imports: [
     BrowserModule,

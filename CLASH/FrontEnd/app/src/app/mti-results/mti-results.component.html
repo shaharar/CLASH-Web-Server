@@ -4,7 +4,7 @@
         <a class="btn btn-primary" href="search" role="button">
             <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
      </div>
-    <label>{{allResults.length}} results were found (0.3 seconds)</label>
+    <label>{{allResults.length}} results were found ({{searchTime}} seconds)</label>
     <br>
     <h5>Filter By: </h5>
     <label class="filter-label">Seed Type </label>
@@ -19,7 +19,7 @@
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
      </select>
-     <label class="filter-label">filter 3 </label>
+     <!-- <label class="filter-label">filter 3 </label>
      <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
         <option value="None">None</option>
         <option value="Canonic">Canonic</option>
@@ -30,11 +30,12 @@
         <option value="None">None</option>
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
-     </select>
+     </select> -->
      <br><br>
      <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and visualization</button>
      <br><br>
     <div class="page-view">
+        <b><label>Top 10 Results: </label></b>
         <div class="list-group">
             <ul class="no-bullets" *ngFor="let result of allResults | slice:0:10">
                 <li><a (click)="getMTIsDetailedResults(result.mirTar_id)"
@@ -48,8 +49,8 @@
                 </ul>
             </nav>
         </div> -->
-        <b><label>Download Results </label></b>
-        <label><u>Feature Families: </u></label>
+        <b><label style="font-size: larger;">Download Results </label></b>
+        <label><u>Choose Feature Families: </u></label>
         <div class="form-group row">
             <div class="col-sm-10">
               <div class="form-check form-check-inline">
@@ -92,10 +93,10 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <button type="button" (click)="downloadResults()" class="btn btn-primary">Download (csv)</button>
+                <button type="button" (click)="downloadResults()" class="btn btn-primary">Download Data (csv)</button>
             </div>
             <div class="col-4">
-                <button type="button" class="btn btn-primary">Download Complimentary Negative Data (csv)</button>            
+                <button type="button" class="btn btn-primary" style="text-align: center;">Download Complimentary Negative Data (csv)</button>            
             </div>
         </div>
     </div>
