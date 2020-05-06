@@ -23,8 +23,8 @@ def retrieve_info_by_search_inputs():
     mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
     mirna_seq = None if request.args.get('mirnaSeq') == '' else request.args.get('mirnaSeq')
     target_name = None if request.args.get('targetName') == '' else request.args.get('targetName')
-    dataset = None if request.args.get('dataset') == '' else request.args.get('dataset')
-    db_version = None if request.args.get('DBVersion') == '' else request.args.get('dataset')
+    dataset = None if request.args.get('dataset') == 'All' else request.args.get('dataset')
+    db_version = None if request.args.get('DBVersion') == 'All' else request.args.get('db_version')
     method_inputs = request.args.get('methodInputs').split(',')
     organism_inputs = request.args.get('organismInputs').split(',')
     mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
@@ -36,9 +36,10 @@ def retrieve_info_by_search_inputs():
     AND  (%s IS NULL OR miRNA_sequence = %s)
     AND  (%s IS NULL OR target_name = %s)
     AND  (%s IS NULL OR db_version = %s)
+    AND  (%s IS NULL OR dataset = %s)
     AND (organism IN %s)'''
     query2 = 'SELECT mirTar_id FROM Duplex_Method WHERE (method IN %s)'
-    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,db_version,db_version,tuple(organism_inputs),))
+    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,db_version,db_version,dataset,dataset,tuple(organism_inputs),))
     result1 = cursor.fetchall()
     cursor.execute(query2,(tuple(method_inputs),))
     result2 = cursor.fetchall()
