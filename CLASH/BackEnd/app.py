@@ -31,12 +31,14 @@ def retrieve_info_by_search_inputs():
     protocol_inputs = request.args.get('protocolInputs').split(',')
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
+    print(db_version)
     query1 = '''SELECT mirTar_id FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
     AND  (%s IS NULL OR miRNA_sequence = %s)
     AND  (%s IS NULL OR target_name = %s)
+    AND  (%s IS NULL OR db_version = %s)
     AND (organism IN %s)'''
     query2 = 'SELECT mirTar_id FROM Duplex_Method WHERE (method IN %s)'
-    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,tuple(organism_inputs),))
+    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,db_version,db_version,tuple(organism_inputs),))
     result1 = cursor.fetchall()
     cursor.execute(query2,(tuple(method_inputs),))
     result2 = cursor.fetchall()
