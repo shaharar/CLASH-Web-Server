@@ -183,6 +183,7 @@ export class SearchComponent implements OnInit {
   }
 
   getMTIs() {
+    console.log(this.dataset);
     const queryParams: any = {};
     // Add the array of values to the query parameter as a JSON string
     queryParams.mirnaName = this.mirnaName;
