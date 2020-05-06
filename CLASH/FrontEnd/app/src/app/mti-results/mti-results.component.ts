@@ -55,7 +55,6 @@ export class MtiResultsComponent implements OnInit {
     const path = 'getMTIs';
     this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
       this.allResults = results
-      console.log(this.allResults)
       
      //this.downloadService.downloadFile(results, 'data', Object.keys(results[0]))
      
