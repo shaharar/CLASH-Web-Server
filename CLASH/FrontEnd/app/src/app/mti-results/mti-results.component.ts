@@ -28,7 +28,8 @@ export class MtiResultsComponent implements OnInit {
   masterSelected = false;
   checkListDownload = [];
   downloadRes = [];
-  searchTime = 0.2;
+  searchTime: number;
+
 
   constructor(private httpRequestsService: HttpRequestsService,
     private downloadService: DownloadService,
@@ -77,8 +78,11 @@ export class MtiResultsComponent implements OnInit {
     switch (type) {
       case 'search':
         path = 'getMTIs';
+        var currentTime = Date.now()
         this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
           this.allResults = results
+          this.searchTime = (Date.now()-currentTime)/1000
+          console.log(this.searchTime)
           //console.log(this.allResults)
         });
         break;
