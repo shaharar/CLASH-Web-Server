@@ -41,7 +41,7 @@ export class SearchComponent implements OnInit {
       this.allOrganisms = ['Human','Mouse','Cattle','Celegans'];
       this.allMethods = ['Vienna','Miranda','Hybrid'];
       this.allMrnaRegions = ['3’UTR','CDS'];
-      this.allProtocols = ['CLASH','ClearCLIP','PAR-CLIP'];
+      this.allProtocols = ['CLASH','ClearCLIP','PAR-CLIP','Endogenous Ligation'];
       this.initialCheckLists();
     }
 
