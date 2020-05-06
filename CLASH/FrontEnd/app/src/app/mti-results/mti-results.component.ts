@@ -60,6 +60,7 @@ export class MtiResultsComponent implements OnInit {
     const methodInputs = JSON.parse(this.route.snapshot.queryParamMap.get('methodInputs'));
     const mrnaRegionInputs = JSON.parse(this.route.snapshot.queryParamMap.get('mrnaRegionInputs'));
     const protocolInputs = JSON.parse(this.route.snapshot.queryParamMap.get('protocolInputs'));
+    const featureInputs: any = [];
 
     params = new HttpParams()
       .set('mirnaName', mirnaName)
@@ -78,24 +79,47 @@ export class MtiResultsComponent implements OnInit {
         path = 'getMTIs';
         this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
           this.allResults = results
-          console.log(this.allResults)
+          //console.log(this.allResults)
         });
         break;
       case 'filter':
         path = 'getMTIs';
         this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
           this.allResults = results
-          console.log(this.allResults)
+          //console.log(this.allResults)
         });
         break;
       case 'download':
-        params.set('featureInputs', this.downloadInputs.map(item => item.value))
-      //  JSON.stringify([this.checkEmptyInputsArr
-        path = 'getFeaturesByCategory';
-        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-          this.downloadRes = results
-          console.log(this.downloadRes)
+        (this.downloadInputs.map(item => item.value)).forEach(input => {
+          //console.log(input)
+          input = input.replace(' ', '_');
+          //console.log(input)
+          input = 'Features_' + input;
+          //console.log(input)
+          featureInputs.push(input);
         });
+        console.log(featureInputs)
+        params = new HttpParams()
+          .set('mirnaName', mirnaName)
+          .set('mirnaSeq', mirnaSeq)
+          .set('targetName', targetName)
+          .set('dataset', dataset)
+          .set('DBVersion', DBVersion)
+          .set('organismInputs', organismInputs)
+          .set('methodInputs', methodInputs)
+          .set('mrnaRegionInputs', mrnaRegionInputs)
+          .set('protocolInputs', protocolInputs)
+          .set('featureInputs', featureInputs)
+        console.log(params.get('featureInputs'))
+        //console.log(this.downloadInputs.map(item => item.value))
+        //console.log(JSON.stringify([this.downloadInputs.map(item => item.value)]))
+        //  JSON.stringify([this.checkEmptyInputsArr
+        path = 'getFeaturesByCategory';
+        //this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+        // this.downloadRes = results
+        // console.log(this.downloadRes)
+        // });
+        return this.httpRequestsService.getWithParams(path, { params })
         break;
     }
   }
@@ -136,8 +160,12 @@ export class MtiResultsComponent implements OnInit {
 
 
   downloadResults() {
-      this.getResults('download');
-      this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
+   
+    this.getResults('download').subscribe((results) => {
+       this.downloadRes = results
+       this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
+       console.log(this.downloadRes)
+       }); 
   }
 
   showSummary() {
@@ -172,7 +200,7 @@ export class MtiResultsComponent implements OnInit {
     // this.filteredResultsByMethod = []
     if (seedType == 'None') {
       this.results = this.allResults
-      console.log(this.results.length)
+      //console.log(this.results.length)
       this.filteredResultsBySeedType = this.results
       this.numberOfPages = this.calculateNumberOfPages()
       this.createNumberOfPagesArray()

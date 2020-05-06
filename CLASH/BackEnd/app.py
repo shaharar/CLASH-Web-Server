@@ -128,7 +128,8 @@ def retrieve_features_by_category():
     organism_inputs = request.args.get('organismInputs').split(',')
     mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
     protocol_inputs = request.args.get('protocolInputs').split(',')
-    feature_categories = request.args.get('featureInputs').split(",")
+    feature_categories = None if request.args.get('featureInputs') == '' else request.args.get('featureInputs').split(',')
+    print(feature_categories)
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict = True)
     query1 = '''SELECT * FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
@@ -146,19 +147,19 @@ def retrieve_features_by_category():
         df = pd.DataFrame()
     else:
         df = df1.merge(df2,how='inner',on='mirTar_id')
-    if(~df.empty):
+    if(feature_categories is None or df.empty):
+        jsonResult = df.to_json(orient='records')
+    elif(~df.empty):
         dfs = []
         for feature_category in feature_categories:
             query = 'SELECT * FROM ' + feature_category
             cursor.execute(query)
             result = cursor.fetchall()
-            df = pd.DataFrame(result)
-            dfs.append(df)
-        dfs.append(df)
-        features_df = functools.reduce(lambda df1,df2: pd.merge(df1,df2,on='mirTar_id'), dfs)
-        jsonResult = features_df.to_json(orient='records')
-    else:
-        jsonResult = df.to_json(orient='records')
+            category_df = pd.DataFrame(result)
+            dfs.append(category_df)
+        features_df = functools.reduce(lambda df1,df2: pd.merge(df1,df2,how='inner',on='mirTar_id'), dfs)
+        result_df = pd.merge(df,features_df,how='inner',on='mirTar_id')
+        jsonResult = result_df.to_json(orient='records')
     conn.close()
     return jsonResult
 
