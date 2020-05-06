@@ -18,11 +18,17 @@ export class MtiResultsComponent implements OnInit {
   firstIndexMtiPage = 0;
   lastIndexMtiPage = 0;
   public allResults = []
-  public filteredResultsByMethod = [];
-  public filteredResultsByOrganism = [];
+  public filteredResultsBySeedType = [];
   public results = [];
   resultsPerPage = [];
   pagesArr = [];
+
+  params: Params;
+  downloadInputs: any;
+  masterSelected = false;
+  checkListDownload = [];
+  downloadRes = [];
+
 
   constructor(private httpRequestsService: HttpRequestsService,
     private downloadService: DownloadService,
@@ -30,6 +36,20 @@ export class MtiResultsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    this.getResults('search');
+    this.checkListDownload = [
+      { value: 'Free Energy', isSelected: false },
+      { value: 'Seed Features', isSelected: false },
+      { value: 'miRNA Pairing', isSelected: false },
+      { value: 'mRNA Composition', isSelected: false },
+      { value: 'Site Accessibility', isSelected: false },
+      { value: 'Hot Encoding miRNA', isSelected: false },
+      { value: 'Hot Encoding mRNA', isSelected: false }
+    ];
+    this.getCheckedItemList();
+  }
+
+  getResults(type) {
     var params: Params
     const mirnaName = this.route.snapshot.queryParamMap.get('mirnaName');
     const mirnaSeq = this.route.snapshot.queryParamMap.get('mirnaSeq');
@@ -42,25 +62,42 @@ export class MtiResultsComponent implements OnInit {
     const protocolInputs = JSON.parse(this.route.snapshot.queryParamMap.get('protocolInputs'));
 
     params = new HttpParams()
-    .set('mirnaName', mirnaName)
-    .set('mirnaSeq', mirnaSeq)
-    .set('targetName', targetName)
-    .set('dataset', dataset)    
-    .set('DBVersion', DBVersion)
-    .set('organismInputs', organismInputs)    
-    .set('methodInputs', methodInputs)
-    .set('mrnaRegionInputs', mrnaRegionInputs)    
-    .set('protocolInputs', protocolInputs)
+      .set('mirnaName', mirnaName)
+      .set('mirnaSeq', mirnaSeq)
+      .set('targetName', targetName)
+      .set('dataset', dataset)
+      .set('DBVersion', DBVersion)
+      .set('organismInputs', organismInputs)
+      .set('methodInputs', methodInputs)
+      .set('mrnaRegionInputs', mrnaRegionInputs)
+      .set('protocolInputs', protocolInputs)
 
-    const path = 'getMTIs';
-    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      this.allResults = results
-      console.log(this.allResults)
-      
-     //this.downloadService.downloadFile(results, 'data', Object.keys(results[0]))
-     
-
-   })
+    var path;
+    switch (type) {
+      case 'search':
+        path = 'getMTIs';
+        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+          this.allResults = results
+          console.log(this.allResults)
+        });
+        break;
+      case 'filter':
+        path = 'getMTIs';
+        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+          this.allResults = results
+          console.log(this.allResults)
+        });
+        break;
+      case 'download':
+        params.set('featureInputs', this.downloadInputs.map(item => item.value))
+      //  JSON.stringify([this.checkEmptyInputsArr
+        path = 'getFeaturesByCategory';
+        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+          this.downloadRes = results
+          console.log(this.downloadRes)
+        });
+        break;
+    }
   }
 
   createNumberOfPagesArray() {
@@ -97,39 +134,72 @@ export class MtiResultsComponent implements OnInit {
     }
   }
 
-  filterByMethod(method) {
-    console.log(method)
+
+  downloadResults() {
+      this.getResults('download');
+      this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
+  }
+
+  showSummary() {
+
+  }
+
+
+  checkUncheckAll() {
+    for (var i = 0; i < this.checkListDownload.length; i++) {
+      this.checkListDownload[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  isAllSelected() {
+    this.masterSelected = this.checkListDownload.every(function (item: any) {
+      return item.isSelected == true;
+    })
+    this.getCheckedItemList();
+  }
+
+  getCheckedItemList() {
+    this.downloadInputs = [];
+    for (var i = 0; i < this.checkListDownload.length; i++) {
+      if (this.checkListDownload[i].isSelected) {
+        this.downloadInputs.push(this.checkListDownload[i]);
+      }
+    }
+  }
+
+  filterBySeedType(seedType) {
     // this.filteredResultsByMethod = []
-    if (method == 'None') {
+    if (seedType == 'None') {
       this.results = this.allResults
       console.log(this.results.length)
-      this.filteredResultsByMethod = this.results
+      this.filteredResultsBySeedType = this.results
       this.numberOfPages = this.calculateNumberOfPages()
       this.createNumberOfPagesArray()
       this.updateIndexMtisView(1)
     }
     else {
-      const path = 'getInfoByMethod'
+      //  const path = 'getInfoByMethod'
       const params = new HttpParams()
-        .set('method', method)
+        .set('seedType', seedType)
 
-     // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-       // this.results = []
-       // for (var i = 0; i < results.length; i++) {
-         // for (var j = 0; j < this.allResults.length; j++) {
-           // if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-             // this.results.push(results[i])
-           // }
-            //this.results.push(results[i]['mirTar_id'])
-       //   }
+      // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+      // this.results = []
+      // for (var i = 0; i < results.length; i++) {
+      // for (var j = 0; j < this.allResults.length; j++) {
+      // if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
+      // this.results.push(results[i])
+      // }
+      //this.results.push(results[i]['mirTar_id'])
+      //   }
 
-     //   }
-        //console.log(this.results.length)
-        //this.filteredResultsByMethod = this.results
-        //this.numberOfPages = this.calculateNumberOfPages()
-        //this.createNumberOfPagesArray()
-        //this.updateIndexMtisView(1)
-     // })
+      //   }
+      //console.log(this.results.length)
+      //this.filteredResultsByMethod = this.results
+      //this.numberOfPages = this.calculateNumberOfPages()
+      //this.createNumberOfPagesArray()
+      //this.updateIndexMtisView(1)
+      // })
     }
     //const result = this.httpRequestsService.getWithParams(path, { params })
     //result.forEach((value: IMTI) => this.filteredResultsByMethod.push(value)).then(() => {
@@ -140,31 +210,6 @@ export class MtiResultsComponent implements OnInit {
     //    this.createNumberOfPagesArray();
     //  this.updateIndexMtisView(1, this.filteredResultsByMethod);
     //}, () => console.log("error"))
-  }
-
-  filterByOrganism(organism) {
-    console.log('organism')
-    const path = 'getInfoByOrganism'
-    const params = new HttpParams()
-      .set('organism', organism)
-   // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-     // this.results = []
-      //console.log(results.length)
-      //for (var i = 0; i < results.length; i++) {
-        //for (var j = 0; j < this.allResults.length; j++) {
-          //if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-            //this.results.push(results[i])
-          //}
-          //this.results.push(results[i]['mirTar_id'])
-        //}
-
-      //}
-      //this.filteredResultsByOrganism = this.results
-      //this.numberOfPages = this.calculateNumberOfPages()
-      //this.createNumberOfPagesArray()
-      //this.updateIndexMtisView(1)
-    //})
-
   }
 
   getMTIsDetailedResults(mtiId) {

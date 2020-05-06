@@ -148,7 +148,6 @@ export class SearchComponent implements OnInit {
             this.organismInputs.push(this.checkListOrganism[i]);    
           }
         }            
-        // this.checkedOrganisms = JSON.stringify(this.checkedOrganisms);
         console.log(this.organismInputs);
         break;
       case 'method':
@@ -183,32 +182,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  checkEmptyInputsArr(inputs, type) {
-    //if inputs array is empty (the user didn't choose any checkbox) - search should be by all items
-    if (inputs.length == 0) {
-      switch (type) {
-        case 'organism':
-          return this.allOrganisms;
-        case 'method':
-          return this.allMethods;
-        case 'protocol':
-          return this.allProtocols;
-        case 'mrnaRegion':
-          return this.allMrnaRegions;
-      }
-    }
-    else {
-      return inputs.map(item => item.value);
-    }
-  }
-
   getMTIs() {
-    console.log("enter getMTIs");
-    // console.log(this.methodInputs);
-    // console.log(this.organismInputs);
-    // console.log(this.protocolInputs);
-    // console.log(this.mrnaRegionInputs);
-
     const queryParams: any = {};
     // Add the array of values to the query parameter as a JSON string
     queryParams.mirnaName = this.mirnaName;
@@ -227,6 +201,25 @@ export class SearchComponent implements OnInit {
     };
     // Navigate to component mti-results
     this.router.navigate(['/mti-results'], navigationExtras);
+  }
+
+  checkEmptyInputsArr(inputs, type) {
+    //if inputs array is empty (the user didn't choose any checkbox) - search should be by all items
+    if (inputs.length == 0) {
+      switch (type) {
+        case 'organism':
+          return this.allOrganisms;
+        case 'method':
+          return this.allMethods;
+        case 'protocol':
+          return this.allProtocols;
+        case 'mrnaRegion':
+          return this.allMrnaRegions;
+      }
+    }
+    else {
+      return inputs.map(item => item.value);
+    }
   }
 
 
