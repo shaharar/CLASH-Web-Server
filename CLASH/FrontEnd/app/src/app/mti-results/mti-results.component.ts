@@ -141,7 +141,14 @@ export class MtiResultsComponent implements OnInit {
   downloadResults() {
    
     this.getResults('download').subscribe((results) => {
-       this.downloadRes = results
+       results.forEach(res => {
+        this.allResults.forEach(allRes => {
+          if (allRes.mirTar_id == res.mirTar_id) {
+            // console.log(res)
+            this.downloadRes.push(res);
+          }
+        });
+       });
        this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
        console.log(this.downloadRes)
        }); 
