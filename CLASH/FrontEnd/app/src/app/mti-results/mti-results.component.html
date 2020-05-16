@@ -11,7 +11,8 @@
      <label class="filter-label">Base Pairs </label>
      <!-- <label class="betweenBasePairs">Between</label> -->
      <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
-     <!-- <label class="toBasePairs">To</label> --> - 
+     <!-- <label class="toBasePairs">To</label> --> 
+     <b>-</b> 
      <input [(ngModel)]="toBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="To">
 
      <label class="filter-label">Seed Type </label>
@@ -32,7 +33,7 @@
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
      </select> -->
-     <button type="button" (click)="filterResults()" class="btn btn-primary">Apply</button>
+     <button type="button" (click)="filterResults()" id="btn-apply" class="btn btn-primary">Apply</button>
      <br><br>
      <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and visualization</button>
      <br><br>

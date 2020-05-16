@@ -66,4 +66,15 @@ h5 {
   display: inline-block;
   margin: 0.5rem;
   height: auto;
+  text-align: center;
+}
+
+#btn-apply {
+  /* background-color: rgb(15, 80, 80); */
+  /* background-color: cadetblue; */
+  border-color: rgb(36, 35, 35);
+  border-width: medium;
+  padding: 0.4rem;
+  margin: 0.5rem;
+
 }
