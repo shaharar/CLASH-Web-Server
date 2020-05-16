@@ -12,7 +12,7 @@ CORS(app)
 #app.config['MSSQL_PASSWORD'] = 'Yhsa2020'
 #app.config['MSSQL_DB'] = 'MirTarFeaturesDB'
 
-server = '132.72.64.102'
+server = '132.72.23.88'
 user = 'MirTar'
 password = 'Yhsa2020'
 database = 'MirTarFeaturesDB'
@@ -20,91 +20,62 @@ database = 'MirTarFeaturesDB'
 
 @app.route('/getMTIs')
 def retrieve_info_by_search_inputs():
-    mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
-    mirna_seq = None if request.args.get('mirnaSeq') == '' else request.args.get('mirnaSeq')
-    target_name = None if request.args.get('targetName') == '' else request.args.get('targetName')
-    dataset = None if (request.args.get('dataset') == 'All' or request.args.get('dataset') == '')  else request.args.get('dataset')
-    db_version = None if request.args.get('DBVersion') == '' else request.args.get('db_version')
-    method_inputs = request.args.get('methodInputs').split(',')
-    organism_inputs = request.args.get('organismInputs').split(',')
-    mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
-    protocol_inputs = request.args.get('protocolInputs').split(',')
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict = True)
-    print(db_version)
-    query1 = '''SELECT mirTar_id FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
-    AND  (%s IS NULL OR miRNA_sequence = %s)
-    AND  (%s IS NULL OR target_name = %s)
-    AND  (%s IS NULL OR db_version = %s)
-    AND  (%s IS NULL OR source = %s)
-    AND (organism IN %s)'''
-    query2 = 'SELECT mirTar_id FROM Duplex_Method WHERE (method IN %s)'
-    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,db_version,db_version,dataset,dataset,tuple(organism_inputs),))
-    result1 = cursor.fetchall()
-    cursor.execute(query2,(tuple(method_inputs),))
-    result2 = cursor.fetchall()
-    df1 = pd.DataFrame(result1)
-    df2 = pd.DataFrame(result2)
-    if(df1.empty or df2.empty):
-        df = pd.DataFrame()
-    else:
-      df = df1.merge(df2,how='inner',on='mirTar_id')
-    jsonResult = df.to_json(orient='records')
-    conn.close()
+    search_results = retrieve_search_results()
+    jsonResult = search_results.to_json(orient='records')
     return jsonResult
 
 
-@app.route('/getInfoByMir')
-def retrieve_pos_general_info_by_mir():
-    mirna_name = request.args.get('mirnaName')
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s',mirna_name)
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
-    conn.close()
-    return jsonResult
+# @app.route('/getInfoByMir')
+# def retrieve_pos_general_info_by_mir():
+#     mirna_name = request.args.get('mirnaName')
+#     conn = pymssql.connect(server,user,password,database)
+#     cursor = conn.cursor(as_dict=True)
+#     cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s',mirna_name)
+#     result = cursor.fetchall()
+#     df = pd.DataFrame(result)
+#     jsonResult = df.to_json(orient='records')
+#     conn.close()
+#     return jsonResult
     
 
-@app.route('/getInfoByOrganism')
-def retrieve_pos_general_info_by_organism():
-    organism = request.args.get('organism')
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE organism = %s',organism)
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
-    conn.close()
-    return jsonResult
+# @app.route('/getInfoByOrganism')
+# def retrieve_pos_general_info_by_organism():
+#     organism = request.args.get('organism')
+#     conn = pymssql.connect(server,user,password,database)
+#     cursor = conn.cursor(as_dict=True)
+#     cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE organism = %s',organism)
+#     result = cursor.fetchall()
+#     df = pd.DataFrame(result)
+#     jsonResult = df.to_json(orient='records')
+#     conn.close()
+#     return jsonResult
 
 
-@app.route('/getInfoByTarget')
-def retrieve_pos_general_info_by_target():
-    target_name = request.args.get('targetName')
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE target_name = %s',target_name)
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
-    conn.close()
-    return jsonResult
+# @app.route('/getInfoByTarget')
+# def retrieve_pos_general_info_by_target():
+#     target_name = request.args.get('targetName')
+#     conn = pymssql.connect(server,user,password,database)
+#     cursor = conn.cursor(as_dict=True)
+#     cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE target_name = %s',target_name)
+#     result = cursor.fetchall()
+#     df = pd.DataFrame(result)
+#     jsonResult = df.to_json(orient='records')
+#     conn.close()
+#     return jsonResult
 
 
-@app.route('/getInfoByMirTar')
-def retrieve_pos_general_info_by_mir_tar_pair():
-    mirna_name = request.args.get('mirnaName')
-    target_name = request.args.get('targetName')
-    conn = pymssql.connect(server,user,password,database)
-    cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', (mirna_name,target_name))
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
-    conn.close()
-    return jsonResult
+# @app.route('/getInfoByMirTar')
+# def retrieve_pos_general_info_by_mir_tar_pair():
+#     mirna_name = request.args.get('mirnaName')
+#     target_name = request.args.get('targetName')
+#     conn = pymssql.connect(server,user,password,database)
+#     cursor = conn.cursor(as_dict=True)
+#     cursor.execute('SELECT mirTar_id FROM Pos_General_Info WHERE miRNA_name = %s AND target_name = %s', (mirna_name,target_name))
+#     result = cursor.fetchall()
+#     df = pd.DataFrame(result)
+#     jsonResult = df.to_json(orient='records')
+#     conn.close()
+#     return jsonResult
 
 
 @app.route('/getFeatures')
@@ -183,19 +154,66 @@ def retrieve_pos_general_info_by_mirTar_id():
     conn.close()
     return jsonResult
 
-
-@app.route('/getInfoByMethod')
-def retrieve_Info_By_Method():
-    method = request.args.get('method')
+@app.route('/getMTIsByFilterInputs')
+def retrieve_info_by_filter_inputs():
+    search_results = retrieve_search_results()
+    # print(search_results)
+    seed_type = 'True' if request.args.get('seedType') == 'Canonic' else 'False' if request.args.get('seedType') == 'Non Canonic' else None
+    print(seed_type)
+    from_base_pairs = None if request.args.get('fromBasePairs') == '' else int(request.args.get('fromBasePairs'))
+    to_base_pairs = None if request.args.get('toBasePairs') == '' else int(request.args.get('toBasePairs'))
+    print(from_base_pairs)
+    print(to_base_pairs)
     conn = pymssql.connect(server,user,password,database)
     cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT mirTar_id FROM Duplex_Method WHERE method = %s',method)
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
+    query = '''SELECT mirTar_id FROM Duplex_Method WHERE (%s IS NULL OR canonic_seed = %s)
+            AND  ((%d IS NULL) OR (%d IS NULL) OR (num_of_pairs BETWEEN %d AND %d))'''
+    cursor.execute(query,(seed_type,seed_type,from_base_pairs,to_base_pairs,from_base_pairs,to_base_pairs))
+    results = cursor.fetchall()
+    filter_results = pd.DataFrame(results)
     conn.close()
+    print(filter_results)
+
+    if(filter_results.empty):
+        intersect_results = search_results
+    else:
+        intersect_results = pd.merge(search_results, filter_results, how='inner', on=['mirTar_id'])
+    print(intersect_results)
+    jsonResult = intersect_results.to_json(orient='records')   
     return jsonResult
 
+
+def retrieve_search_results():
+    mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
+    mirna_seq = None if request.args.get('mirnaSeq') == '' else request.args.get('mirnaSeq')
+    target_name = None if request.args.get('targetName') == '' else request.args.get('targetName')
+    dataset = None if (request.args.get('dataset') == 'All' or request.args.get('dataset') == '')  else request.args.get('dataset')
+    db_version = None if request.args.get('DBVersion') == '' else request.args.get('db_version')
+    method_inputs = request.args.get('methodInputs').split(',')
+    organism_inputs = request.args.get('organismInputs').split(',')
+    mrna_region_inputs = request.args.get('mrnaRegionInputs').split(',')
+    protocol_inputs = request.args.get('protocolInputs').split(',')
+    conn = pymssql.connect(server,user,password,database)
+    cursor = conn.cursor(as_dict = True)
+    query1 = '''SELECT mirTar_id FROM Pos_General_Info WHERE (%s IS NULL OR miRNA_name = %s)
+    AND  (%s IS NULL OR miRNA_sequence = %s)
+    AND  (%s IS NULL OR target_name = %s)
+    AND  (%s IS NULL OR db_version = %s)
+    AND  (%s IS NULL OR source = %s)
+    AND (organism IN %s)'''
+    query2 = 'SELECT mirTar_id FROM Duplex_Method WHERE (method IN %s)'
+    cursor.execute(query1,(mirna_name,mirna_name,mirna_seq,mirna_seq,target_name,target_name,db_version,db_version,dataset,dataset,tuple(organism_inputs),))
+    result1 = cursor.fetchall()
+    cursor.execute(query2,(tuple(method_inputs),))
+    result2 = cursor.fetchall()
+    df1 = pd.DataFrame(result1)
+    df2 = pd.DataFrame(result2)
+    if(df1.empty or df2.empty):
+        df = pd.DataFrame()
+    else:
+      df = df1.merge(df2,how='inner',on='mirTar_id')
+    conn.close()
+    return df
 
 if __name__ == "__main__":
     app.run(debug=True)

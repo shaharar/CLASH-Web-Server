@@ -148,7 +148,7 @@ export class SearchComponent implements OnInit {
             this.organismInputs.push(this.checkListOrganism[i]);    
           }
         }            
-        console.log(this.organismInputs);
+       // console.log(this.organismInputs);
         break;
       case 'method':
         this.methodInputs = [];
@@ -157,7 +157,7 @@ export class SearchComponent implements OnInit {
             this.methodInputs.push(this.checkListMethod[i]);    
           }
         }            
-        console.log(this.methodInputs);
+      //  console.log(this.methodInputs);
         break;
       case 'protocol':
         this.protocolInputs = [];
@@ -166,7 +166,7 @@ export class SearchComponent implements OnInit {
             this.protocolInputs.push(this.checkListProtocol[i]);    
           }
         }            
-        console.log(this.protocolInputs);
+      //  console.log(this.protocolInputs);
         break;
       case 'mrnaRegion':
         this.mrnaRegionInputs = [];
@@ -175,7 +175,7 @@ export class SearchComponent implements OnInit {
             this.mrnaRegionInputs.push(this.checkListMrnaRegion[i]);    
           }
         }            
-        console.log(this.mrnaRegionInputs);
+      //  console.log(this.mrnaRegionInputs);
         break;
       default:
       break;

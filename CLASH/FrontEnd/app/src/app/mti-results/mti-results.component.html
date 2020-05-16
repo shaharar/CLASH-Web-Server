@@ -7,18 +7,25 @@
     <label>{{allResults.length}} results were found ({{searchTime}} seconds)</label>
     <br>
     <h5>Filter By: </h5>
-    <label class="filter-label">Seed Type </label>
-    <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
-        <option value="None">None</option>
-        <option value="Canonic">Canonic</option>
-        <option value="Non Canonic">Non Canonic</option>
-     </select>
+
      <label class="filter-label">Base Pairs </label>
-     <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
+     <!-- <select [(ngModel)]="basePairs" name="basePairs" id="selectSeedType" class="form-control-mb-12">
         <option value="None">None</option>
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
-     </select>
+     </select> -->
+
+     <!-- <label class="betweenBasePairs">Between</label> -->
+     <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
+     <!-- <label class="toBasePairs">To</label> --> - 
+     <input [(ngModel)]="toBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="To">
+
+     <label class="filter-label">Seed Type </label>
+     <select [(ngModel)]="seedType" name="seedType" id="selectSeedType" class="form-control-mb-12">
+         <option value="None">None</option>
+         <option value="Canonic">Canonic</option>
+         <option value="Non Canonic">Non Canonic</option>
+      </select>
      <!-- <label class="filter-label">filter 3 </label>
      <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
         <option value="None">None</option>
@@ -31,6 +38,7 @@
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
      </select> -->
+     <button type="button" (click)="filterResults()" class="btn btn-primary">Apply</button>
      <br><br>
      <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and visualization</button>
      <br><br>

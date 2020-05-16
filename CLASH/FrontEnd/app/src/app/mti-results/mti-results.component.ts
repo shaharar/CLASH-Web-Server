@@ -13,15 +13,15 @@ import { DownloadService } from '../download.service'
 })
 export class MtiResultsComponent implements OnInit {
 
-  numberOfMtisPerPage = 20;
-  numberOfPages;
-  firstIndexMtiPage = 0;
-  lastIndexMtiPage = 0;
+  // numberOfMtisPerPage = 20;
+  // numberOfPages;
+  // firstIndexMtiPage = 0;
+  // lastIndexMtiPage = 0;
   public allResults = []
   public filteredResultsBySeedType = [];
-  public results = [];
-  resultsPerPage = [];
-  pagesArr = [];
+  // public results = [];
+  // resultsPerPage = [];
+  // pagesArr = [];
 
   params: Params;
   downloadInputs: any;
@@ -29,6 +29,11 @@ export class MtiResultsComponent implements OnInit {
   checkListDownload = [];
   downloadRes = [];
   searchTime: number;
+  seedType: string = "";
+  searchResults: any[];
+  basePairs: string = "";
+  fromBasePairs = "";
+  toBasePairs = "";  
 
 
   constructor(private httpRequestsService: HttpRequestsService,
@@ -81,25 +86,31 @@ export class MtiResultsComponent implements OnInit {
         var currentTime = Date.now()
         this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
           this.allResults = results
+          this.searchResults = results;
           this.searchTime = (Date.now()-currentTime)/1000
-          console.log(this.searchTime)
-          //console.log(this.allResults)
         });
         break;
       case 'filter':
-        path = 'getMTIs';
-        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-          this.allResults = results
-          //console.log(this.allResults)
-        });
-        break;
+        params = new HttpParams()
+          .set('mirnaName', mirnaName)
+          .set('mirnaSeq', mirnaSeq)
+          .set('targetName', targetName)
+          .set('dataset', dataset)
+          .set('DBVersion', DBVersion)
+          .set('organismInputs', organismInputs)
+          .set('methodInputs', methodInputs)
+          .set('mrnaRegionInputs', mrnaRegionInputs)
+          .set('protocolInputs', protocolInputs)
+          .set('seedType', this.seedType)
+          .set('fromBasePairs', this.fromBasePairs)
+          .set('toBasePairs', this.toBasePairs)
+        path = 'getMTIsByFilterInputs';
+        return this.httpRequestsService.getWithParams(path, { params });
       case 'download':
         (this.downloadInputs.map(item => item.value)).forEach(input => {
-          //console.log(input)
           input = input.split(' ').join('_');
           console.log(input)
           input = 'Features_' + input;
-          //console.log(input)
           featureInputs.push(input);
         });
         console.log(featureInputs)
@@ -124,44 +135,8 @@ export class MtiResultsComponent implements OnInit {
         // console.log(this.downloadRes)
         // });
         return this.httpRequestsService.getWithParams(path, { params })
-        break;
     }
   }
-
-  createNumberOfPagesArray() {
-    this.pagesArr = []
-    for (var i = 1; i <= this.numberOfPages; i++) {
-      this.pagesArr.push(i);
-    }
-  }
-
-  getFirstIndexMtiPage(numberOfMtisPerPage, pageNumber) {
-    return ((pageNumber * numberOfMtisPerPage) - numberOfMtisPerPage);
-  }
-
-  getLastIndexMtiPage(firstIndex, numberOfMtisPerPage) {
-    return ((firstIndex + numberOfMtisPerPage) - 1);
-  }
-
-  calculateNumberOfPages() {
-    return Math.ceil(this.results.length / this.numberOfMtisPerPage);
-  }
-
-  updateIndexMtisView(pageNumber) {
-    this.firstIndexMtiPage = this.getFirstIndexMtiPage(this.numberOfMtisPerPage, pageNumber);
-    this.lastIndexMtiPage = this.getLastIndexMtiPage(this.firstIndexMtiPage, this.numberOfMtisPerPage);
-    this.addResultsPerPage();
-  }
-
-  addResultsPerPage() {
-    this.resultsPerPage = [];
-    for (var i = this.firstIndexMtiPage; i <= this.lastIndexMtiPage; i++) {
-      if (typeof this.results[i] != "undefined") {
-        this.resultsPerPage.push(this.results[i]['mirTar_id']);
-      }
-    }
-  }
-
 
   downloadResults() {
    
@@ -200,50 +175,6 @@ export class MtiResultsComponent implements OnInit {
     }
   }
 
-  filterBySeedType(seedType) {
-    // this.filteredResultsByMethod = []
-    if (seedType == 'None') {
-      this.results = this.allResults
-      //console.log(this.results.length)
-      this.filteredResultsBySeedType = this.results
-      this.numberOfPages = this.calculateNumberOfPages()
-      this.createNumberOfPagesArray()
-      this.updateIndexMtisView(1)
-    }
-    else {
-      //  const path = 'getInfoByMethod'
-      const params = new HttpParams()
-        .set('seedType', seedType)
-
-      // this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      // this.results = []
-      // for (var i = 0; i < results.length; i++) {
-      // for (var j = 0; j < this.allResults.length; j++) {
-      // if (results[i]['mirTar_id'] == this.allResults[j]['mirTar_id']) {
-      // this.results.push(results[i])
-      // }
-      //this.results.push(results[i]['mirTar_id'])
-      //   }
-
-      //   }
-      //console.log(this.results.length)
-      //this.filteredResultsByMethod = this.results
-      //this.numberOfPages = this.calculateNumberOfPages()
-      //this.createNumberOfPagesArray()
-      //this.updateIndexMtisView(1)
-      // })
-    }
-    //const result = this.httpRequestsService.getWithParams(path, { params })
-    //result.forEach((value: IMTI) => this.filteredResultsByMethod.push(value)).then(() => {
-    //console.log(this.filteredResultsByMethod[0].filter(x => !this.allResults.includes(x.mirTarId)))
-
-
-    //      this.numberOfPages = this.calculateNumberOfPages(this.filteredResultsByMethod, this.numberOfMtisPerPage);
-    //    this.createNumberOfPagesArray();
-    //  this.updateIndexMtisView(1, this.filteredResultsByMethod);
-    //}, () => console.log("error"))
-  }
-
   getMTIsDetailedResults(mtiId) {
     const queryParams: any = {};
     // Add the array of values to the query parameter as a JSON string
@@ -254,4 +185,71 @@ export class MtiResultsComponent implements OnInit {
     };
     this.router.navigate(['/detailed-results'], navigationExtras);
   }
+
+  filterResults() {
+    console.log("start filter")
+    if (this.searchResults.length == 0) {
+      return
+    }
+    if (this.seedType == "") {
+        this.seedType = 'None';
+    }
+    console.log(this.seedType)
+    console.log(this.fromBasePairs);
+    console.log(this.toBasePairs);
+
+    if (this.seedType == 'None' && this.fromBasePairs == '' && this.toBasePairs == '') {
+      console.log("enter if")
+      this.allResults = this.searchResults;
+      console.log(this.allResults);
+      console.log(this.searchResults);
+    }
+    else {
+      console.log("enter else")     
+      this.getResults('filter').subscribe((results) => {
+        this.allResults = results;
+        });
+        console.log(this.allResults);
+        console.log(this.searchResults);
+    }
+  }
+
+
+
+  // ************************* Pagination ************************* //
+    // createNumberOfPagesArray() {
+  //   this.pagesArr = []
+  //   for (var i = 1; i <= this.numberOfPages; i++) {
+  //     this.pagesArr.push(i);
+  //   }
+  // }
+
+  // getFirstIndexMtiPage(numberOfMtisPerPage, pageNumber) {
+  //   return ((pageNumber * numberOfMtisPerPage) - numberOfMtisPerPage);
+  // }
+
+  // getLastIndexMtiPage(firstIndex, numberOfMtisPerPage) {
+  //   return ((firstIndex + numberOfMtisPerPage) - 1);
+  // }
+
+  // calculateNumberOfPages() {
+  //   return Math.ceil(this.results.length / this.numberOfMtisPerPage);
+  // }
+
+  // updateIndexMtisView(pageNumber) {
+  //   this.firstIndexMtiPage = this.getFirstIndexMtiPage(this.numberOfMtisPerPage, pageNumber);
+  //   this.lastIndexMtiPage = this.getLastIndexMtiPage(this.firstIndexMtiPage, this.numberOfMtisPerPage);
+  //   this.addResultsPerPage();
+  // }
+
+  // addResultsPerPage() {
+  //   this.resultsPerPage = [];
+  //   for (var i = this.firstIndexMtiPage; i <= this.lastIndexMtiPage; i++) {
+  //     if (typeof this.results[i] != "undefined") {
+  //       this.resultsPerPage.push(this.results[i]['mirTar_id']);
+  //     }
+  //   }
+  // }
+
+
 }

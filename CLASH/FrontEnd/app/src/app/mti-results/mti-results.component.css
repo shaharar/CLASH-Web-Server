@@ -60,3 +60,10 @@ h5 {
 .col-sm-10 {
   left: 7rem;
 }
+
+.form-control {
+  width: 5%;
+  display: inline-block;
+  margin: 0.5rem;
+  height: auto;
+}
