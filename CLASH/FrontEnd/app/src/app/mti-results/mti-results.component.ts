@@ -34,6 +34,7 @@ export class MtiResultsComponent implements OnInit {
   basePairs: string = "";
   fromBasePairs = "";
   toBasePairs = "";  
+  isFiltered = false;
 
 
   constructor(private httpRequestsService: HttpRequestsService,
@@ -92,15 +93,15 @@ export class MtiResultsComponent implements OnInit {
         break;
       case 'filter':
         params = new HttpParams()
-          .set('mirnaName', mirnaName)
-          .set('mirnaSeq', mirnaSeq)
-          .set('targetName', targetName)
-          .set('dataset', dataset)
-          .set('DBVersion', DBVersion)
-          .set('organismInputs', organismInputs)
-          .set('methodInputs', methodInputs)
-          .set('mrnaRegionInputs', mrnaRegionInputs)
-          .set('protocolInputs', protocolInputs)
+          // .set('mirnaName', mirnaName)
+          // .set('mirnaSeq', mirnaSeq)
+          // .set('targetName', targetName)
+          // .set('dataset', dataset)
+          // .set('DBVersion', DBVersion)
+          // .set('organismInputs', organismInputs)
+          // .set('methodInputs', methodInputs)
+          // .set('mrnaRegionInputs', mrnaRegionInputs)
+          // .set('protocolInputs', protocolInputs)
           .set('seedType', this.seedType)
           .set('fromBasePairs', this.fromBasePairs)
           .set('toBasePairs', this.toBasePairs)
@@ -115,15 +116,15 @@ export class MtiResultsComponent implements OnInit {
         });
         console.log(featureInputs)
         params = new HttpParams()
-          .set('mirnaName', mirnaName)
-          .set('mirnaSeq', mirnaSeq)
-          .set('targetName', targetName)
-          .set('dataset', dataset)
-          .set('DBVersion', DBVersion)
-          .set('organismInputs', organismInputs)
-          .set('methodInputs', methodInputs)
-          .set('mrnaRegionInputs', mrnaRegionInputs)
-          .set('protocolInputs', protocolInputs)
+          // .set('mirnaName', mirnaName)
+          // .set('mirnaSeq', mirnaSeq)
+          // .set('targetName', targetName)
+          // .set('dataset', dataset)
+          // .set('DBVersion', DBVersion)
+          // .set('organismInputs', organismInputs)
+          // .set('methodInputs', methodInputs)
+          // .set('mrnaRegionInputs', mrnaRegionInputs)
+          // .set('protocolInputs', protocolInputs)
           .set('featureInputs', featureInputs)
         console.log(params.get('featureInputs'))
         //console.log(this.downloadInputs.map(item => item.value))
@@ -141,7 +142,9 @@ export class MtiResultsComponent implements OnInit {
   downloadResults() {
    
     this.getResults('download').subscribe((results) => {
-       results.forEach(res => {
+      console.log(results) 
+      console.log(this.allResults)
+      results.forEach(res => {
         this.allResults.forEach(allRes => {
           if (allRes.mirTar_id == res.mirTar_id) {
             // console.log(res)
@@ -155,7 +158,13 @@ export class MtiResultsComponent implements OnInit {
   }
 
   showSummary() {
-    this.router.navigate(['/visualization']);
+    const queryParams: any = {};
+    queryParams.isFiltered = this.isFiltered;
+    // Create our 'NaviationExtras' object which is expected by the Angular Router
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    this.router.navigate(['/visualization'],navigationExtras);
   }
 
 
@@ -215,10 +224,11 @@ export class MtiResultsComponent implements OnInit {
       console.log("enter else")     
       this.getResults('filter').subscribe((results) => {
         this.allResults = results;
-        });
         console.log(this.allResults);
         console.log(this.searchResults);
+        });
     }
+    this.isFiltered = true;
   }
 
 
