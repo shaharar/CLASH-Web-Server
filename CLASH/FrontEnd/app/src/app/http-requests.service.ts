@@ -29,6 +29,12 @@ export class HttpRequestsService {
       catchError(this.errorHandler));
   }
 
+  get(path: string):any{
+    this.fullPath = this.url + path;
+    return this.http.get(this.fullPath).pipe(
+      catchError(this.errorHandler));
+  }
+
 
   errorHandler(error: HttpErrorResponse) {
     return observableThrowError(error.message || "Server Error");

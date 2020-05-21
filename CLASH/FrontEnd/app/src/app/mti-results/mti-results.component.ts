@@ -43,7 +43,7 @@ export class MtiResultsComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.getResults('search');
+    this.getSearchResults();
     this.checkListDownload = [
       { value: 'Free Energy', isSelected: false },
       { value: 'Seed Features', isSelected: false },
@@ -56,7 +56,7 @@ export class MtiResultsComponent implements OnInit {
     this.getCheckedItemList();
   }
 
-  getResults(type) {
+  getSearchResults() {
     var params: Params
     const mirnaName = this.route.snapshot.queryParamMap.get('mirnaName');
     const mirnaSeq = this.route.snapshot.queryParamMap.get('mirnaSeq');
@@ -67,7 +67,6 @@ export class MtiResultsComponent implements OnInit {
     const methodInputs = JSON.parse(this.route.snapshot.queryParamMap.get('methodInputs'));
     const mrnaRegionInputs = JSON.parse(this.route.snapshot.queryParamMap.get('mrnaRegionInputs'));
     const protocolInputs = JSON.parse(this.route.snapshot.queryParamMap.get('protocolInputs'));
-    const featureInputs: any = [];
 
     params = new HttpParams()
       .set('mirnaName', mirnaName)
@@ -80,91 +79,85 @@ export class MtiResultsComponent implements OnInit {
       .set('mrnaRegionInputs', mrnaRegionInputs)
       .set('protocolInputs', protocolInputs)
 
-    var path;
-    switch (type) {
-      case 'search':
-        path = 'getMTIs';
-        var currentTime = Date.now()
-        this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-          this.allResults = results
-          this.searchResults = results;
-          this.searchTime = (Date.now()-currentTime)/1000
-        });
-        break;
-      case 'filter':
-        params = new HttpParams()
-          // .set('mirnaName', mirnaName)
-          // .set('mirnaSeq', mirnaSeq)
-          // .set('targetName', targetName)
-          // .set('dataset', dataset)
-          // .set('DBVersion', DBVersion)
-          // .set('organismInputs', organismInputs)
-          // .set('methodInputs', methodInputs)
-          // .set('mrnaRegionInputs', mrnaRegionInputs)
-          // .set('protocolInputs', protocolInputs)
-          .set('seedType', this.seedType)
-          .set('fromBasePairs', this.fromBasePairs)
-          .set('toBasePairs', this.toBasePairs)
-        path = 'getMTIsByFilterInputs';
-        return this.httpRequestsService.getWithParams(path, { params });
-      case 'download':
-        (this.downloadInputs.map(item => item.value)).forEach(input => {
-          input = input.split(' ').join('_');
-          console.log(input)
-          input = 'Features_' + input;
-          featureInputs.push(input);
-        });
-        console.log(featureInputs)
-        params = new HttpParams()
-          // .set('mirnaName', mirnaName)
-          // .set('mirnaSeq', mirnaSeq)
-          // .set('targetName', targetName)
-          // .set('dataset', dataset)
-          // .set('DBVersion', DBVersion)
-          // .set('organismInputs', organismInputs)
-          // .set('methodInputs', methodInputs)
-          // .set('mrnaRegionInputs', mrnaRegionInputs)
-          // .set('protocolInputs', protocolInputs)
-          .set('featureInputs', featureInputs)
-        console.log(params.get('featureInputs'))
-        //console.log(this.downloadInputs.map(item => item.value))
-        //console.log(JSON.stringify([this.downloadInputs.map(item => item.value)]))
-        //  JSON.stringify([this.checkEmptyInputsArr
-        path = 'getFeaturesByCategory';
-        //this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-        // this.downloadRes = results
-        // console.log(this.downloadRes)
-        // });
-        return this.httpRequestsService.getWithParams(path, { params })
+    var path = 'getMTIs';
+    var currentTime = Date.now()
+    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+      this.allResults = results
+      this.searchResults = results;
+      this.searchTime = (Date.now()-currentTime)/1000
+    });
+  }
+
+  filterResults() {
+    if (this.searchResults.length == 0) {
+      return
     }
+    if (this.seedType == "") {
+        this.seedType = 'None';
+    }
+    var params: Params
+    params = new HttpParams()
+      .set('seedType', this.seedType)
+      .set('fromBasePairs', this.fromBasePairs)
+      .set('toBasePairs', this.toBasePairs)
+    var path = 'getMTIsByFilterInputs';
+    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+      this.allResults = results;
+      // console.log(this.allResults);
+      // console.log(this.searchResults);
+    });
+
+    // if (this.seedType == 'None' && this.fromBasePairs == '' && this.toBasePairs == '') {
+    //   console.log("enter if")
+    //   this.allResults = this.searchResults;
+    //   console.log(this.allResults);
+    //   console.log(this.searchResults);
+    // }
+    // else {
+    //   console.log("enter else")     
+    //   this.getResults('filter').subscribe((results) => {
+    //     this.allResults = results;
+    //     console.log(this.allResults);
+    //     console.log(this.searchResults);
+    //     });
+    // }
+    // this.isFiltered = true;
   }
 
   downloadResults() {
-   
-    this.getResults('download').subscribe((results) => {
-      console.log(results) 
-      console.log(this.allResults)
-      results.forEach(res => {
-        this.allResults.forEach(allRes => {
-          if (allRes.mirTar_id == res.mirTar_id) {
-            // console.log(res)
-            this.downloadRes.push(res);
-          }
-        });
-       });
-       this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
-       console.log(this.downloadRes)
-       }); 
+    var params: Params
+    const featureInputs: any = [];
+    (this.downloadInputs.map(item => item.value)).forEach(input => {
+      input = input.split(' ').join('_');
+      input = 'Features_' + input;
+      featureInputs.push(input);
+    });
+    // console.log(featureInputs)
+    params = new HttpParams()
+      .set('featureInputs', featureInputs)
+    var path = 'getFeaturesByCategory';
+    this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
+      // console.log(results) 
+      // console.log(this.allResults)
+      this.downloadRes = results;
+      if (this.downloadRes.length > 0) {
+        this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
+            // console.log(this.downloadRes)
+      }
+      else {
+        alert("There are no results to download. Please choose other filter inputs.")
+      }
+    });
   }
 
   showSummary() {
-    const queryParams: any = {};
-    queryParams.isFiltered = this.isFiltered;
-    // Create our 'NaviationExtras' object which is expected by the Angular Router
-    const navigationExtras: NavigationExtras = {
-      queryParams
-    };
-    this.router.navigate(['/visualization'],navigationExtras);
+    // const queryParams: any = {};
+    // queryParams.isFiltered = this.isFiltered;
+    // const navigationExtras: NavigationExtras = {
+    //   queryParams
+    // };
+    // this.router.navigate(['/visualization'],navigationExtras);
+    this.router.navigate(['/visualization']);
   }
 
 
@@ -200,35 +193,6 @@ export class MtiResultsComponent implements OnInit {
       queryParams
     };
     this.router.navigate(['/detailed-results'], navigationExtras);
-  }
-
-  filterResults() {
-    console.log("start filter")
-    if (this.searchResults.length == 0) {
-      return
-    }
-    if (this.seedType == "") {
-        this.seedType = 'None';
-    }
-    console.log(this.seedType)
-    console.log(this.fromBasePairs);
-    console.log(this.toBasePairs);
-
-    if (this.seedType == 'None' && this.fromBasePairs == '' && this.toBasePairs == '') {
-      console.log("enter if")
-      this.allResults = this.searchResults;
-      console.log(this.allResults);
-      console.log(this.searchResults);
-    }
-    else {
-      console.log("enter else")     
-      this.getResults('filter').subscribe((results) => {
-        this.allResults = results;
-        console.log(this.allResults);
-        console.log(this.searchResults);
-        });
-    }
-    this.isFiltered = true;
   }
 
 
