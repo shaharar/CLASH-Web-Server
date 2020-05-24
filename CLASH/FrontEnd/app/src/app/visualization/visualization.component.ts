@@ -13,6 +13,7 @@ export class VisualizationComponent implements OnInit {
   constructor(private httpRequestsService: HttpRequestsService,
     private route: ActivatedRoute,
     private router: Router) { }
+    statistics = []
 
   ngOnInit(): void {
     // var isFiltered = this.route.snapshot.queryParamMap.get('isFiltered');
@@ -25,7 +26,19 @@ export class VisualizationComponent implements OnInit {
     //   console.log('HTTP request')
     // });
     this.httpRequestsService.get(path).subscribe((results) => {
-      console.log('HTTP request')
+      console.log("HTTP REquest")
+      this.getStatistics();
+    });   
+    
+ 
+  }
+
+  getStatistics() {
+    var path = 'getStatistics'
+    this.httpRequestsService.get(path).subscribe((results) => {
+      console.log(results)
+      this.statistics = results;
+      // console.log(this.statistics)
     });
   }
 }

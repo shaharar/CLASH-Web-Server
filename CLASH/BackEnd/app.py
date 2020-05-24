@@ -4,6 +4,15 @@ import pymssql
 import pandas as pd
 import functools
 
+from sklearn.decomposition import PCA
+import pickle as pk
+from pandas import DataFrame
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+# import seaborn as sns
+import json
+
 app = Flask(__name__)
 CORS(app)
 
@@ -29,7 +38,7 @@ def retrieve_info_by_search_inputs():
     retrieve_search_results()
     global original_search_results
     original_search_results = search_results
-    print(original_search_results)
+    # print(original_search_results)
     jsonResult = search_results.to_json(orient='records')
     return jsonResult
 
@@ -74,7 +83,7 @@ def retrieve_features_by_categories(feature_categories):
             category_df = category_df.drop(columns=['method'])
             dfs.append(category_df)
         features_df = functools.reduce(lambda df1,df2: pd.merge(df1,df2,how='inner',on='mirTar_id'), dfs)
-        print(features_df)
+        # print(features_df)
         result_df = pd.merge(general_info_df,features_df,how='inner',on='mirTar_id')
         conn.close()
     return result_df
@@ -102,7 +111,7 @@ def retrieve_info_by_filter_inputs():
     print(from_base_pairs)
     print(to_base_pairs)
     if (seed_type is None and from_base_pairs is None and to_base_pairs is None):
-        print("None Filter Inputs")
+        # print("None Filter Inputs")
         intersect_results = original_search_results
     else:
         conn = pymssql.connect(server,user,password,database)
@@ -125,23 +134,86 @@ def retrieve_info_by_filter_inputs():
 
 
 @app.route('/getDataVisualization')
-def get_statistics_and_visualization():
-    print("enter get_statistics_and_visualization")
+def get_data_visualization():
+    print("enter get_data_visualization")
     feature_categories = ["Features_Free_Energy", "Features_Seed_Features", "Features_miRNA_Pairing",
                             "Features_mRNA_Composition", "Features_Site_Accessibility", 
                             "Features_Hot_Encoding_miRNA", "Features_Hot_Encoding_mRNA"]
-    # is_filtered = request.args.get('isFiltered')
-    # print(is_filtered)
-    # if (is_filtered == 'false'):
-    #     full_df = retrieve_features_by_categories(feature_categories, full_search_results)
-    # else:
-    #     full_df = retrieve_features_by_categories(feature_categories, filtered_search_results)
+    global full_df
     full_df = retrieve_features_by_categories(feature_categories)
-    # print(full_df)
-    jsonResult = full_df.to_json(orient='records')   
+    pca_file = Path("pca_v01.pkl")
+    output_file = Path("Features/CSV_DB/db_pca.pdf")
+    # df = pd.read_csv(input_file)
+    # pca_plot(full_df, pca_file, output_file)
+
+    # output_file = Path("Features/CSV_DB/seed.pdf")
+    # seed_type_plot(input_df, output_file)
+
+    # jsonResult = full_df.to_json(orient='records')   
     return jsonResult
 
+def extract_pca_features(df: DataFrame) -> DataFrame:
+    col_list = list(df.columns)
+    all_features = col_list[col_list.index("Seed_match_compact_A"):]
+    desired_features = [f for f in all_features if not str(f).startswith("HotPairing")]
+    assert len(desired_features) == 490, "Wrong number of feature for PCA"
+    return df[desired_features]
 
+
+def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
+    pca: PCA = pk.load(pca_file_name.open('rb'))
+    df = extract_pca_features(df)
+    x2d: DataFrame = DataFrame(pca.transform(df))
+    fig = plt.figure(figsize=(16, 10))
+    x_min_val = -30
+    x_max_val = 70
+    y_min_val = -30
+    y_max_val = 30
+    x_axis_range = [np.floor(x_min_val), np.ceil(x_max_val)]
+    y_axis_range = [np.floor(y_min_val), np.ceil(y_max_val)]
+
+    x2d.columns = ["2d-one", "2d-two"]
+    plt.xlim(x_axis_range)
+    plt.ylim(y_axis_range)
+    sns.scatterplot(
+        x="2d-one", y="2d-two",
+        palette=sns.color_palette("hls", 10),
+        data=x2d,
+        legend=False,
+        alpha=0.3
+    )
+    # Set x-axis label
+    plt.xlabel('')
+    # Set y-axis label
+    plt.ylabel('')
+
+    plt.savefig(output_file, format="pdf", bbox_inches='tight')
+
+@app.route('/getStatistics')
+def get_statistics():
+    # full_df = retrieve_features_by_categories(feature_categories)
+    statistics_results = df_statistics(full_df)
+    print(statistics_results)
+    return statistics_results
+    # jsonResult = statistics_results.to_json(orient='records')   
+    # return jsonResult
+
+
+def df_statistics(d: DataFrame):
+    result = {}
+    result["NUM_OF_INTERACTIONS"] = len(d)
+    result["NUM_OF_UNIQUE_MIRNA_SEQUENCES"] = len(d["miRNA_sequence"].unique())
+    p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
+    result["NUM_OF_CANONIC_INTERACTIONS"] = len(p_canonic)
+    p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
+    result["NUM_OF_NON-CANONIC_INTERACTIONS"] = len(p_non_canonic)
+    # result["NUM_OF_NON-CANONIC_INTERACTIONS"] = result["NUM OF INTERACTIONS"] - result["NUM OF CANONIC INTERACTIONS"]
+    basepair_describe = d["num_of_pairs"].describe()
+    for i in basepair_describe.index:
+        if i=='count':
+            continue
+        result[f"BASEPAIR_{i.upper()}"] = basepair_describe[i]
+    return json.dumps(result)
 
 def retrieve_search_results():
     mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
@@ -177,24 +249,23 @@ def retrieve_search_results():
     search_results = df
     # return search_results
 
-@app.route('/getFeatures')
-def retrieve_features():
-    mirTar_id =  request.args.get('mirTarId')
-    feature_Category = request.args.get('featureCategory')
-    conn = pymssql.connect(server, user, password, database)
-    cursor = conn.cursor(as_dict=True)
-    cursor.execute('SELECT * FROM ' + feature_Category+ ' WHERE mirTar_id = %s', (mirTar_id))
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    jsonResult = df.to_json(orient='records')
-    conn.close()
-    return jsonResult
-
 
 if __name__ == "__main__":
     app.run(debug=True)
 
 
+# @app.route('/getFeatures')
+# def retrieve_features():
+#     mirTar_id =  request.args.get('mirTarId')
+#     feature_Category = request.args.get('featureCategory')
+#     conn = pymssql.connect(server, user, password, database)
+#     cursor = conn.cursor(as_dict=True)
+#     cursor.execute('SELECT * FROM ' + feature_Category+ ' WHERE mirTar_id = %s', (mirTar_id))
+#     result = cursor.fetchall()
+#     df = pd.DataFrame(result)
+#     jsonResult = df.to_json(orient='records')
+#     conn.close()
+#     return jsonResult
 
 # @app.route('/getInfoByMir')
 # def retrieve_pos_general_info_by_mir():
