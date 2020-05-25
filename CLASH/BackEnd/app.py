@@ -149,7 +149,7 @@ def get_data_visualization():
     # output_file = Path("Features/CSV_DB/seed.pdf")
     # seed_type_plot(input_df, output_file)
 
-    # jsonResult = full_df.to_json(orient='records')   
+    jsonResult = full_df.to_json(orient='records')   
     return jsonResult
 
 def extract_pca_features(df: DataFrame) -> DataFrame:
@@ -193,6 +193,10 @@ def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
 def get_statistics():
     # full_df = retrieve_features_by_categories(feature_categories)
     statistics_results = df_statistics(full_df)
+    # print(statistics_results['BASEPAIR_25%'])
+    statistics_results = statistics_results.replace("\"BASEPAIR_25%\":", "\"BASEPAIR_25\":")
+    statistics_results = statistics_results.replace("\"BASEPAIR_50%\":", "\"BASEPAIR_50\":")
+    statistics_results = statistics_results.replace("\"BASEPAIR_75%\":", "\"BASEPAIR_75\":")
     print(statistics_results)
     return statistics_results
     # jsonResult = statistics_results.to_json(orient='records')   
@@ -206,13 +210,15 @@ def df_statistics(d: DataFrame):
     p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
     result["NUM_OF_CANONIC_INTERACTIONS"] = len(p_canonic)
     p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
-    result["NUM_OF_NON-CANONIC_INTERACTIONS"] = len(p_non_canonic)
+    result["NUM_OF_NON_CANONIC_INTERACTIONS"] = len(p_non_canonic)
     # result["NUM_OF_NON-CANONIC_INTERACTIONS"] = result["NUM OF INTERACTIONS"] - result["NUM OF CANONIC INTERACTIONS"]
     basepair_describe = d["num_of_pairs"].describe()
     for i in basepair_describe.index:
         if i=='count':
             continue
         result[f"BASEPAIR_{i.upper()}"] = basepair_describe[i]
+    # result.rename(columns={'BASEPAIR_25%': 'BASEPAIR_25'})
+    # print(result['BASEPAIR_25%'])
     return json.dumps(result)
 
 def retrieve_search_results():

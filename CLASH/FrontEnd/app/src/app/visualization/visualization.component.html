@@ -1,6 +1,132 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
     <h2>Summary Information And Visualization</h2>
     <br>
-    <img src="assets/images/pca_visualization.jpeg" style="width: 60%;">
+    <h4>Statistics:</h4>
+    <div class="statistics">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label class="statistics-label"> Num Of Interactions: </label>  {{statistics.NUM_OF_INTERACTIONS}}
+                  </div>
+                  <div class="col">
+                    <label class="statistics-label"> Base Pair Mean: </label> {{statistics.BASEPAIR_MEAN}}
+                  </div>
+                  <div class="col">
+                    <label class="statistics-label"> Base Pair 50%: </label> {{statistics.BASEPAIR_50}}
+                  </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label class="statistics-label"> Num Of Unique miRNA Sequences: </label> {{statistics.NUM_OF_UNIQUE_MIRNA_SEQUENCES}}
+              </div>
+              <div class="col">
+                <label class="statistics-label"> Base Pair STD: </label> {{statistics.BASEPAIR_STD}}
+              </div>
+              <div class="col">
+                <label class="statistics-label"> Base Pair 75%: </label> {{statistics.BASEPAIR_75}}
+              </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="statistics-label"> Num Of Canonic Interactions: </label> {{statistics.NUM_OF_CANONIC_INTERACTIONS}}
+                </div>
+                <div class="col">
+                    <label class="statistics-label"> Base Pair Min: </label> {{statistics.BASEPAIR_MIN}}
+                </div>
+                <div class="col">
+                    <label class="statistics-label"> Base Pair Max: </label> {{statistics.BASEPAIR_MAX}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                    <label class="statistics-label"> Num Of Non-Canonic Interactions: </label> {{statistics.NUM_OF_NON_CANONIC_INTERACTIONS}}
+                </div>
+                <div class="col">
+                    <label class="statistics-label"> Base Pair 25%: </label> {{statistics.BASEPAIR_25}}
+                </div>
+                <div class="col">
+                </div>
+              </div>
+          </div>
+        <!-- <form class="form"> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Num Of Interactions: </label>
+              <div class="col-sm-2">
+                {{statistics.NUM_OF_INTERACTIONS}}
+              </div>
+            </div>
+            <div class="form-group row">
+                <label class="statistics-label"> Num Of Unique miRNA Sequences: </label>
+              <div class="col-sm-2">
+                {{statistics.NUM_OF_UNIQUE_MIRNA_SEQUENCES}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Num Of Canonic Interactions: </label>
+              <div class="col-sm-2">
+                {{statistics.NUM_OF_CANONIC_INTERACTIONS}}
+              </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Num Of Non-Canonic Interactions: </label>
+              <div class="col-sm-2">
+                {{statistics.NUM_OF_NON_CANONIC_INTERACTIONS}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair Mean: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_MEAN}}
+              </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair STD: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_STD}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair Min: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_MIN}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair 25%: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_25}}
+              </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair 50%: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_50}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair 75%: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_75}}
+            </div>
+            </div> -->
+            <!-- <div class="form-group row">
+                <label class="statistics-label"> Base Pair Max: </label>
+              <div class="col-sm-2">
+                {{statistics.BASEPAIR_MAX}}
+            </div>
+            </div> -->
+        <!-- </form> -->
+        <!-- <br> -->
+    </div>
     <br>
+    <h4>PCA:</h4>
+    <div class="pca">
+    <img src="assets/images/pca_visualization.jpeg" style="width: 60%;">
+    </div>
+    <br>
+    <h4>Seed Type:</h4>
+    <div class="seed">
+    <img src="assets/images/pca_visualization.jpeg" style="width: 60%;">
+    </div>
+    <!-- <br> -->
 </div>

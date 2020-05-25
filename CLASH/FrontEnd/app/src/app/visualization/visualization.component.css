@@ -1,0 +1,23 @@
+.statistics-label {
+    font-weight: 600;
+    /* text-align: left; */
+}
+
+.statistics {
+    border-style: double;
+    text-align: left;
+}
+
+.container {
+    margin: 1rem;
+}
+
+/* .form-group {
+    margin-right: 0.5rem;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+} */
+
+/* .form {
+    margin: 1rem;
+} */
