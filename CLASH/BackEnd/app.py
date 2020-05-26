@@ -10,8 +10,10 @@ from pandas import DataFrame
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-# import seaborn as sns
+import seaborn as sns
 import json
+import base64
+
 
 app = Flask(__name__)
 CORS(app)
@@ -135,21 +137,22 @@ def retrieve_info_by_filter_inputs():
 
 @app.route('/getDataVisualization')
 def get_data_visualization():
+    encoded_img_list = []
     print("enter get_data_visualization")
-    feature_categories = ["Features_Free_Energy", "Features_Seed_Features", "Features_miRNA_Pairing",
+    feature_categories = ["Features_Seed_Features","Features_Free_Energy", "Features_miRNA_Pairing",
                             "Features_mRNA_Composition", "Features_Site_Accessibility", 
                             "Features_Hot_Encoding_miRNA", "Features_Hot_Encoding_mRNA"]
     global full_df
     full_df = retrieve_features_by_categories(feature_categories)
     pca_file = Path("pca_v01.pkl")
-    output_file = Path("Features/CSV_DB/db_pca.pdf")
+    output_file = Path("db_pca.png")
     # df = pd.read_csv(input_file)
-    # pca_plot(full_df, pca_file, output_file)
+    encoded_img_list.append(pca_plot(full_df, pca_file, output_file))
 
-    # output_file = Path("Features/CSV_DB/seed.pdf")
-    # seed_type_plot(input_df, output_file)
+    output_file = Path("seed.png")
+    encoded_img_list.append(seed_type_plot(full_df, output_file))
 
-    jsonResult = full_df.to_json(orient='records')   
+    jsonResult = json.dumps(encoded_img_list)   
     return jsonResult
 
 def extract_pca_features(df: DataFrame) -> DataFrame:
@@ -187,7 +190,58 @@ def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
     # Set y-axis label
     plt.ylabel('')
 
-    plt.savefig(output_file, format="pdf", bbox_inches='tight')
+    plt.savefig(output_file, format="png", bbox_inches='tight')
+
+ 
+    with open("db_pca.png", "rb") as imageFile:
+        str = base64.b64encode(imageFile.read())
+        base64_str = "data:image/png;base64, " + str.decode('utf-8')
+        return base64_str
+
+def seed_type_plot(d: DataFrame, output_file: Path):
+    res_df = pd.DataFrame()
+
+
+    p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
+    p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
+
+
+
+    #p_canonic = d["canonic_seed"]
+    #p_non_canonic = d["non_canonic_seed"]
+
+    #d = d[p_canonic | p_non_canonic]
+
+    #p_canonic = d[p_canonic]
+    #p_non_canonic = d[p_non_canonic]
+
+    p_10 = d[d["num_of_pairs"] <= 10]
+    p_11_16 = d[(d["num_of_pairs"] >= 11) & (d["num_of_pairs"] <= 16)]
+    p_17 = d[d["num_of_pairs"] >= 17]
+
+
+    res_df.loc["Canonic seed", "p_10"] = len(set(p_canonic.index).intersection(set(p_10.index)))
+    res_df.loc["Canonic seed", "p_11_16"] = len(set(p_canonic.index).intersection(set(p_11_16.index)))
+    res_df.loc["Canonic seed", "p_17"] = len(set(p_canonic.index).intersection(set(p_17.index)))
+
+    res_df.loc["Non-canonic seed", "p_10"] = len(set(p_non_canonic.index).intersection(set(p_10.index)))
+    res_df.loc["Non-canonic seed", "p_11_16"] = len(set(p_non_canonic.index).intersection(set(p_11_16.index)))
+    res_df.loc["Non-canonic seed", "p_17"] = len(set(p_non_canonic.index).intersection(set(p_17.index)))
+
+
+    res_df = res_df.astype("int")
+    fig, ax = plt.subplots()
+
+    res_df.plot(kind='bar')
+    plt.legend(["Low density", "Medium density", "High density"],
+               loc='upper left', bbox_to_anchor=(1, 1), ncol=1)
+    plt.xticks(rotation=0)
+    plt.savefig(output_file, format="png", bbox_inches='tight')
+    with open("seed.png", "rb") as imageFile:
+        str = base64.b64encode(imageFile.read())
+        base64_str = "data:image/png;base64, " + str.decode('utf-8')
+        return base64_str
+
 
 @app.route('/getStatistics')
 def get_statistics():
