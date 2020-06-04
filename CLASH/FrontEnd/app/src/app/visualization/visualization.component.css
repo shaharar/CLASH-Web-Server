@@ -1,0 +1,24 @@
+.statistics-label {
+    font-weight: 600;
+    /* text-align: left; */
+}
+
+.statistics {
+    border-style: double;
+    text-align: center;
+
+    background-color: #fff;
+    background-clip: border-box;
+    /* border: 1.3px solid rgba(0,0,0,.125); */
+    border-radius: .25rem;
+}
+
+.container {
+    margin: 1rem;
+}
+
+.resFilters-wrapper {
+    font-weight: 500;
+    color: cadetblue;
+    font-size: large;
+}

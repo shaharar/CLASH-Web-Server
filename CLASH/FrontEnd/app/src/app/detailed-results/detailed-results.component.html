@@ -1,7 +1,8 @@
-<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
+<!-- <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;"> -->
+<div class="dResults-wrapper">
   <br>
   <h3>Mir-Tar ID : {{mirTarId}}</h3><br>
-  <nav>
+  <nav *ngIf="isDataAvailable">
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-general-info-tab" data-toggle="tab" href="#nav-general-info"
         role="tab" aria-controls="nav-general-info" aria-selected="true">General Information</a>

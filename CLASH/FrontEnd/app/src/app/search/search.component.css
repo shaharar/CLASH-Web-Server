@@ -32,3 +32,15 @@
     background-color: cadetblue;
     border: black;
 }
+
+.fcf-body {
+    margin: 0;
+    line-height: 1.5;
+    color: #212529;
+    background-color: rgb(247, 248, 248);
+    padding: 30px;
+    padding-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    max-width: 100%;
+}

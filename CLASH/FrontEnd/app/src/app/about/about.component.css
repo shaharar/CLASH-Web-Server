@@ -1,0 +1,10 @@
+.about-wrapper {
+    padding: 2.5rem 3rem;
+    margin-top: 2rem;
+    height: 100vh;
+}
+
+.about-content {
+    text-align: center;
+    border: 1px solid #ced4da;
+}
