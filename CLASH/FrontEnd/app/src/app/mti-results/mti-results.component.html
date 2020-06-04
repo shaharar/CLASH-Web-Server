@@ -1,7 +1,7 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
     <h1>Results</h1>
     <div class="btn-wrapper">
-        <a class="btn btn-primary" href="search" role="button">
+        <a class="btn btn-primary" routerLink="/search" role="button">
             <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
      </div>
     <label *ngIf="isLoaded" style="color: cadetblue; font-weight: 500;">{{allResults.length}} results were found ({{searchTime}} seconds)</label>
