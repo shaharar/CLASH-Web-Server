@@ -1,6 +1,6 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
 
-  <div *ngIf="allResults.length > 0" class="results">
+  <div *ngIf="(allResults.length > 0) || (allResults.length == 0 && isFiltered)" class="results">
     <h1>Results</h1>
     <div class="btn-wrapper">
       <a class="btn btn-primary" routerLink="/search" role="button">
@@ -115,7 +115,7 @@
       </div>
     </div>
   </div>
-  <div class="noResults" *ngIf="allResults.length == 0" style="height: 100vh;">
+  <div class="noResults" *ngIf="allResults.length == 0 && !isFiltered" style="height: 100vh;">
     <h1>Results</h1>
     <div class="btn-wrapper">
       <a class="btn btn-primary" href="search" role="button">

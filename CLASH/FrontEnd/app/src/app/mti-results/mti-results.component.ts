@@ -91,6 +91,7 @@ export class MtiResultsComponent implements OnInit {
   }
 
   filterResults() {
+    this.isFiltered = true;
     if (this.searchResults.length == 0) {
       return
     }
@@ -105,25 +106,7 @@ export class MtiResultsComponent implements OnInit {
     var path = 'getMTIsByFilterInputs';
     this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
       this.allResults = results;
-      // console.log(this.allResults);
-      // console.log(this.searchResults);
     });
-
-    // if (this.seedType == 'None' && this.fromBasePairs == '' && this.toBasePairs == '') {
-    //   console.log("enter if")
-    //   this.allResults = this.searchResults;
-    //   console.log(this.allResults);
-    //   console.log(this.searchResults);
-    // }
-    // else {
-    //   console.log("enter else")     
-    //   this.getResults('filter').subscribe((results) => {
-    //     this.allResults = results;
-    //     console.log(this.allResults);
-    //     console.log(this.searchResults);
-    //     });
-    // }
-    // this.isFiltered = true;
   }
 
   downloadResults() {
