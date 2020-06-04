@@ -156,136 +156,136 @@ def get_data_visualization():
                             "Features_Hot_Encoding_miRNA", "Features_Hot_Encoding_mRNA"]
     global full_df
     full_df = retrieve_features_by_categories(feature_categories)
-    pca_file = Path("pca_v01.pkl")
-    output_file = Path("outputs/db_pca.png")
-    # df = pd.read_csv(input_file)
-    encoded_img_list.append(pca_plot(full_df, pca_file, output_file))
+    # pca_file = Path("pca_v01.pkl")
+    # output_file = Path("outputs/db_pca.png")
+    # # df = pd.read_csv(input_file)
+    # encoded_img_list.append(pca_plot(full_df, pca_file, output_file))
 
-    output_file = Path("outputs/seed.png")
-    encoded_img_list.append(seed_type_plot(full_df, output_file))
+    # output_file = Path("outputs/seed.png")
+    # encoded_img_list.append(seed_type_plot(full_df, output_file))
 
     jsonResult = json.dumps(encoded_img_list)   
     return jsonResult
 
-def extract_pca_features(df: DataFrame) -> DataFrame:
-    col_list = list(df.columns)
-    all_features = col_list[col_list.index("Seed_match_compact_A"):]
-    desired_features = [f for f in all_features if not str(f).startswith("HotPairing")]
-    assert len(desired_features) == 490, "Wrong number of feature for PCA"
-    return df[desired_features]
+# def extract_pca_features(df: DataFrame) -> DataFrame:
+#     col_list = list(df.columns)
+#     all_features = col_list[col_list.index("Seed_match_compact_A"):]
+#     desired_features = [f for f in all_features if not str(f).startswith("HotPairing")]
+#     assert len(desired_features) == 490, "Wrong number of feature for PCA"
+#     return df[desired_features]
 
 
-def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
-    pca: PCA = pk.load(pca_file_name.open('rb'))
-    df = extract_pca_features(df)
-    x2d: DataFrame = DataFrame(pca.transform(df))
-    fig = plt.figure(figsize=(16, 10))
-    x_min_val = -30
-    x_max_val = 70
-    y_min_val = -30
-    y_max_val = 30
-    x_axis_range = [np.floor(x_min_val), np.ceil(x_max_val)]
-    y_axis_range = [np.floor(y_min_val), np.ceil(y_max_val)]
+# def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
+#     pca: PCA = pk.load(pca_file_name.open('rb'))
+#     df = extract_pca_features(df)
+#     x2d: DataFrame = DataFrame(pca.transform(df))
+#     fig = plt.figure(figsize=(16, 10))
+#     x_min_val = -30
+#     x_max_val = 70
+#     y_min_val = -30
+#     y_max_val = 30
+#     x_axis_range = [np.floor(x_min_val), np.ceil(x_max_val)]
+#     y_axis_range = [np.floor(y_min_val), np.ceil(y_max_val)]
 
-    x2d.columns = ["2d-one", "2d-two"]
-    plt.xlim(x_axis_range)
-    plt.ylim(y_axis_range)
-    sns.scatterplot(
-        x="2d-one", y="2d-two",
-        palette=sns.color_palette("hls", 10),
-        data=x2d,
-        legend=False,
-        alpha=0.3
-    )
-    # Set x-axis label
-    plt.xlabel('')
-    # Set y-axis label
-    plt.ylabel('')
+#     x2d.columns = ["2d-one", "2d-two"]
+#     plt.xlim(x_axis_range)
+#     plt.ylim(y_axis_range)
+#     sns.scatterplot(
+#         x="2d-one", y="2d-two",
+#         palette=sns.color_palette("hls", 10),
+#         data=x2d,
+#         legend=False,
+#         alpha=0.3
+#     )
+#     # Set x-axis label
+#     plt.xlabel('')
+#     # Set y-axis label
+#     plt.ylabel('')
 
-    plt.savefig(output_file, format="png", bbox_inches='tight')
+#     plt.savefig(output_file, format="png", bbox_inches='tight')
 
  
-    with open("db_pca.png", "rb") as imageFile:
-        str = base64.b64encode(imageFile.read())
-        base64_str = "data:image/png;base64, " + str.decode('utf-8')
-        return base64_str
+#     with open("db_pca.png", "rb") as imageFile:
+#         str = base64.b64encode(imageFile.read())
+#         base64_str = "data:image/png;base64, " + str.decode('utf-8')
+#         return base64_str
 
-def seed_type_plot(d: DataFrame, output_file: Path):
-    res_df = pd.DataFrame()
-
-
-    p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
-    p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
+# def seed_type_plot(d: DataFrame, output_file: Path):
+#     res_df = pd.DataFrame()
 
 
-
-    #p_canonic = d["canonic_seed"]
-    #p_non_canonic = d["non_canonic_seed"]
-
-    #d = d[p_canonic | p_non_canonic]
-
-    #p_canonic = d[p_canonic]
-    #p_non_canonic = d[p_non_canonic]
-
-    p_10 = d[d["num_of_pairs"] <= 10]
-    p_11_16 = d[(d["num_of_pairs"] >= 11) & (d["num_of_pairs"] <= 16)]
-    p_17 = d[d["num_of_pairs"] >= 17]
+#     p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
+#     p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
 
 
-    res_df.loc["Canonic seed", "p_10"] = len(set(p_canonic.index).intersection(set(p_10.index)))
-    res_df.loc["Canonic seed", "p_11_16"] = len(set(p_canonic.index).intersection(set(p_11_16.index)))
-    res_df.loc["Canonic seed", "p_17"] = len(set(p_canonic.index).intersection(set(p_17.index)))
 
-    res_df.loc["Non-canonic seed", "p_10"] = len(set(p_non_canonic.index).intersection(set(p_10.index)))
-    res_df.loc["Non-canonic seed", "p_11_16"] = len(set(p_non_canonic.index).intersection(set(p_11_16.index)))
-    res_df.loc["Non-canonic seed", "p_17"] = len(set(p_non_canonic.index).intersection(set(p_17.index)))
+#     #p_canonic = d["canonic_seed"]
+#     #p_non_canonic = d["non_canonic_seed"]
 
+#     #d = d[p_canonic | p_non_canonic]
 
-    res_df = res_df.astype("int")
-    fig, ax = plt.subplots()
+#     #p_canonic = d[p_canonic]
+#     #p_non_canonic = d[p_non_canonic]
 
-    res_df.plot(kind='bar')
-    plt.legend(["Low density", "Medium density", "High density"],
-               loc='upper left', bbox_to_anchor=(1, 1), ncol=1)
-    plt.xticks(rotation=0)
-    plt.savefig(output_file, format="png", bbox_inches='tight')
-    with open("seed.png", "rb") as imageFile:
-        str = base64.b64encode(imageFile.read())
-        base64_str = "data:image/png;base64, " + str.decode('utf-8')
-        return base64_str
+#     p_10 = d[d["num_of_pairs"] <= 10]
+#     p_11_16 = d[(d["num_of_pairs"] >= 11) & (d["num_of_pairs"] <= 16)]
+#     p_17 = d[d["num_of_pairs"] >= 17]
 
 
-@app.route('/getStatistics')
-def get_statistics():
-    # full_df = retrieve_features_by_categories(feature_categories)
-    statistics_results = df_statistics(full_df)
-    # print(statistics_results['BASEPAIR_25%'])
-    statistics_results = statistics_results.replace("\"BASEPAIR_25%\":", "\"BASEPAIR_25\":")
-    statistics_results = statistics_results.replace("\"BASEPAIR_50%\":", "\"BASEPAIR_50\":")
-    statistics_results = statistics_results.replace("\"BASEPAIR_75%\":", "\"BASEPAIR_75\":")
-    print(statistics_results)
-    return statistics_results
-    # jsonResult = statistics_results.to_json(orient='records')   
-    # return jsonResult
+#     res_df.loc["Canonic seed", "p_10"] = len(set(p_canonic.index).intersection(set(p_10.index)))
+#     res_df.loc["Canonic seed", "p_11_16"] = len(set(p_canonic.index).intersection(set(p_11_16.index)))
+#     res_df.loc["Canonic seed", "p_17"] = len(set(p_canonic.index).intersection(set(p_17.index)))
+
+#     res_df.loc["Non-canonic seed", "p_10"] = len(set(p_non_canonic.index).intersection(set(p_10.index)))
+#     res_df.loc["Non-canonic seed", "p_11_16"] = len(set(p_non_canonic.index).intersection(set(p_11_16.index)))
+#     res_df.loc["Non-canonic seed", "p_17"] = len(set(p_non_canonic.index).intersection(set(p_17.index)))
 
 
-def df_statistics(d: DataFrame):
-    result = {}
-    result["NUM_OF_INTERACTIONS"] = len(d)
-    result["NUM_OF_UNIQUE_MIRNA_SEQUENCES"] = len(d["miRNA_sequence"].unique())
-    p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
-    result["NUM_OF_CANONIC_INTERACTIONS"] = len(p_canonic)
-    p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
-    result["NUM_OF_NON_CANONIC_INTERACTIONS"] = len(p_non_canonic)
-    # result["NUM_OF_NON-CANONIC_INTERACTIONS"] = result["NUM OF INTERACTIONS"] - result["NUM OF CANONIC INTERACTIONS"]
-    basepair_describe = d["num_of_pairs"].describe()
-    for i in basepair_describe.index:
-        if i=='count':
-            continue
-        result[f"BASEPAIR_{i.upper()}"] = basepair_describe[i]
-    # result.rename(columns={'BASEPAIR_25%': 'BASEPAIR_25'})
-    # print(result['BASEPAIR_25%'])
-    return json.dumps(result)
+#     res_df = res_df.astype("int")
+#     fig, ax = plt.subplots()
+
+#     res_df.plot(kind='bar')
+#     plt.legend(["Low density", "Medium density", "High density"],
+#                loc='upper left', bbox_to_anchor=(1, 1), ncol=1)
+#     plt.xticks(rotation=0)
+#     plt.savefig(output_file, format="png", bbox_inches='tight')
+#     with open("seed.png", "rb") as imageFile:
+#         str = base64.b64encode(imageFile.read())
+#         base64_str = "data:image/png;base64, " + str.decode('utf-8')
+#         return base64_str
+
+
+# @app.route('/getStatistics')
+# def get_statistics():
+#     # full_df = retrieve_features_by_categories(feature_categories)
+#     statistics_results = df_statistics(full_df)
+#     # print(statistics_results['BASEPAIR_25%'])
+#     statistics_results = statistics_results.replace("\"BASEPAIR_25%\":", "\"BASEPAIR_25\":")
+#     statistics_results = statistics_results.replace("\"BASEPAIR_50%\":", "\"BASEPAIR_50\":")
+#     statistics_results = statistics_results.replace("\"BASEPAIR_75%\":", "\"BASEPAIR_75\":")
+#     print(statistics_results)
+#     return statistics_results
+#     # jsonResult = statistics_results.to_json(orient='records')   
+#     # return jsonResult
+
+
+# def df_statistics(d: DataFrame):
+#     result = {}
+#     result["NUM_OF_INTERACTIONS"] = len(d)
+#     result["NUM_OF_UNIQUE_MIRNA_SEQUENCES"] = len(d["miRNA_sequence"].unique())
+#     p_canonic = d[d['canonic_seed'] == 'True']['canonic_seed']
+#     result["NUM_OF_CANONIC_INTERACTIONS"] = len(p_canonic)
+#     p_non_canonic = d[d['canonic_seed'] == 'False']['canonic_seed']
+#     result["NUM_OF_NON_CANONIC_INTERACTIONS"] = len(p_non_canonic)
+#     # result["NUM_OF_NON-CANONIC_INTERACTIONS"] = result["NUM OF INTERACTIONS"] - result["NUM OF CANONIC INTERACTIONS"]
+#     basepair_describe = d["num_of_pairs"].describe()
+#     for i in basepair_describe.index:
+#         if i=='count':
+#             continue
+#         result[f"BASEPAIR_{i.upper()}"] = basepair_describe[i]
+#     # result.rename(columns={'BASEPAIR_25%': 'BASEPAIR_25'})
+#     # print(result['BASEPAIR_25%'])
+#     return json.dumps(result)
 
 def retrieve_search_results():
     mirna_name = None if request.args.get('mirnaName') == '' else request.args.get('mirnaName')
@@ -323,8 +323,8 @@ def retrieve_search_results():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # app.run(host='0.0.0.0', port=8155)
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', port=8155)
 
 
 

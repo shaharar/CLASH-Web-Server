@@ -32,7 +32,7 @@ export class VisualizationComponent implements OnInit {
     this.seedType = this.route.snapshot.queryParamMap.get('seedType');
     this.fromBasePairs = this.route.snapshot.queryParamMap.get('fromBasePairs');
     this.toBasePairs = this.route.snapshot.queryParamMap.get('toBasePairs');
-    if (this.seedType != 'None') {
+    if (this.seedType != 'None' && this.seedType != '') {
       this.isSeedType = true;
     }
     if (this.fromBasePairs != '' && this.toBasePairs != '') {
