@@ -35,6 +35,7 @@ export class MtiResultsComponent implements OnInit {
   fromBasePairs = "";
   toBasePairs = "";  
   isFiltered = false;
+  isLoaded = false;
 
 
   constructor(private httpRequestsService: HttpRequestsService,
@@ -85,6 +86,7 @@ export class MtiResultsComponent implements OnInit {
       this.allResults = results
       this.searchResults = results;
       this.searchTime = (Date.now()-currentTime)/1000
+      this.isLoaded = true;
     });
   }
 
@@ -151,13 +153,16 @@ export class MtiResultsComponent implements OnInit {
   }
 
   showSummary() {
-    // const queryParams: any = {};
-    // queryParams.isFiltered = this.isFiltered;
-    // const navigationExtras: NavigationExtras = {
-    //   queryParams
-    // };
-    // this.router.navigate(['/visualization'],navigationExtras);
-    this.router.navigate(['/visualization']);
+    const queryParams: any = {};
+    queryParams.numOfResults = this.allResults.length;
+    queryParams.seedType = this.seedType;
+    queryParams.fromBasePairs = this.fromBasePairs;
+    queryParams.toBasePairs = this.toBasePairs;
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    this.router.navigate(['/visualization'],navigationExtras);
+   // this.router.navigate(['/visualization']);
   }
 
 

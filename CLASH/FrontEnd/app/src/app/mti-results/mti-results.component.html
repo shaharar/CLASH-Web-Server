@@ -4,8 +4,8 @@
         <a class="btn btn-primary" href="search" role="button">
             <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
      </div>
-    <label>{{allResults.length}} results were found ({{searchTime}} seconds)</label>
-    <br>
+    <label *ngIf="isLoaded" style="color: cadetblue; font-weight: 500;">{{allResults.length}} results were found ({{searchTime}} seconds)</label>
+    <br><br>
     <h5>Filter By: </h5>
 
      <label class="filter-label">Base Pairs </label>

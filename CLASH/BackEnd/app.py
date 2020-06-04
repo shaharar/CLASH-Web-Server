@@ -134,6 +134,18 @@ def retrieve_info_by_filter_inputs():
     jsonResult = search_results.to_json(orient='records')   
     return jsonResult
 
+@app.route('/getFeatures')
+def retrieve_features():
+    mirTar_id =  request.args.get('mirTarId')
+    feature_Category = request.args.get('featureCategory')
+    conn = pymssql.connect(server, user, password, database)
+    cursor = conn.cursor(as_dict=True)
+    cursor.execute('SELECT * FROM ' + feature_Category+ ' WHERE mirTar_id = %s', (mirTar_id))
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    jsonResult = df.to_json(orient='records')
+    conn.close()
+    return jsonResult
 
 @app.route('/getDataVisualization')
 def get_data_visualization():
@@ -314,18 +326,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# @app.route('/getFeatures')
-# def retrieve_features():
-#     mirTar_id =  request.args.get('mirTarId')
-#     feature_Category = request.args.get('featureCategory')
-#     conn = pymssql.connect(server, user, password, database)
-#     cursor = conn.cursor(as_dict=True)
-#     cursor.execute('SELECT * FROM ' + feature_Category+ ' WHERE mirTar_id = %s', (mirTar_id))
-#     result = cursor.fetchall()
-#     df = pd.DataFrame(result)
-#     jsonResult = df.to_json(orient='records')
-#     conn.close()
-#     return jsonResult
+
 
 # @app.route('/getInfoByMir')
 # def retrieve_pos_general_info_by_mir():

@@ -5,19 +5,20 @@
 
 .statistics {
     border-style: double;
-    text-align: left;
+    text-align: center;
+
+    background-color: #fff;
+    background-clip: border-box;
+    /* border: 1.3px solid rgba(0,0,0,.125); */
+    border-radius: .25rem;
 }
 
 .container {
     margin: 1rem;
 }
 
-/* .form-group {
-    margin-right: 0.5rem;
-    margin-left: 1.5rem;
-    margin-top: 1rem;
-} */
-
-/* .form {
-    margin: 1rem;
-} */
+.resFilters-wrapper {
+    font-weight: 500;
+    color: cadetblue;
+    font-size: large;
+}
