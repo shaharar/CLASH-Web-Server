@@ -1,72 +1,84 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
-    <h2>Summary Information And Visualization</h2>
+  <h2>Summary Information And Visualization</h2>
+  <br>
+  <div class="resFilters-wrapper">
+    <label>Information of {{numOfResults}} results</label>
     <br>
-    <div class="resFilters-wrapper">
-      <label>Information of {{numOfResults}} results</label>
-      <br><label *ngIf="isSeedType || isBasePairs">Filtered by:&nbsp;</label>
+    <div *ngIf="isSeedType || isBasePairs" class="filter-wrapper">
+      <label>Filtered by:&nbsp;</label>
       <label *ngIf="isSeedType">seed type '{{seedType}}';&nbsp;</label>
       <label *ngIf="isBasePairs">base pairs between {{fromBasePairs}} and {{toBasePairs}}</label>
     </div>
-    <br>
+
+  </div>
+  <br>
+  <div *ngIf="isLoaded" class="statistics-wrapper">
     <h4>Statistics:</h4>
     <div class="statistics">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <label class="statistics-label"> Num Of Interactions: </label>  {{statistics.NUM_OF_INTERACTIONS}}
-                  </div>
-                  <div class="col">
-                    <label class="statistics-label"> Base Pair Mean: </label> {{statistics.BASEPAIR_MEAN}}
-                  </div>
-                  <div class="col">
-                    <label class="statistics-label"> Base Pair 50%: </label> {{statistics.BASEPAIR_50}}
-                  </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <label class="statistics-label"> Num Of Unique miRNA Sequences: </label> {{statistics.NUM_OF_UNIQUE_MIRNA_SEQUENCES}}
-              </div>
-              <div class="col">
-                <label class="statistics-label"> Base Pair STD: </label> {{statistics.BASEPAIR_STD}}
-              </div>
-              <div class="col">
-                <label class="statistics-label"> Base Pair 75%: </label> {{statistics.BASEPAIR_75}}
-              </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label class="statistics-label"> Num Of Canonic Interactions: </label> {{statistics.NUM_OF_CANONIC_INTERACTIONS}}
-                </div>
-                <div class="col">
-                    <label class="statistics-label"> Base Pair Min: </label> {{statistics.BASEPAIR_MIN}}
-                </div>
-                <div class="col">
-                    <label class="statistics-label"> Base Pair Max: </label> {{statistics.BASEPAIR_MAX}}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                    <label class="statistics-label"> Num Of Non-Canonic Interactions: </label> {{statistics.NUM_OF_NON_CANONIC_INTERACTIONS}}
-                </div>
-                <div class="col">
-                    <label class="statistics-label"> Base Pair 25%: </label> {{statistics.BASEPAIR_25}}
-                </div>
-                <div class="col">
-                </div>
-              </div>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <label class="statistics-label"> Num Of Interactions: </label> {{statistics.NUM_OF_INTERACTIONS}}
           </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair Mean: </label> {{statistics.BASEPAIR_MEAN}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair 50%: </label> {{statistics.BASEPAIR_50}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="statistics-label"> Num Of Unique miRNA Sequences: </label>
+            {{statistics.NUM_OF_UNIQUE_MIRNA_SEQUENCES}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair STD: </label> {{statistics.BASEPAIR_STD}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair 75%: </label> {{statistics.BASEPAIR_75}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="statistics-label"> Num Of Canonic Interactions: </label>
+            {{statistics.NUM_OF_CANONIC_INTERACTIONS}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair Min: </label> {{statistics.BASEPAIR_MIN}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair Max: </label> {{statistics.BASEPAIR_MAX}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label class="statistics-label"> Num Of Non-Canonic Interactions: </label>
+            {{statistics.NUM_OF_NON_CANONIC_INTERACTIONS}}
+          </div>
+          <div class="col">
+            <label class="statistics-label"> Base Pair 25%: </label> {{statistics.BASEPAIR_25}}
+          </div>
+          <div class="col">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div *ngIf="isLoaded" class="img-wrapper">
+    <h4>Seed Type:</h4>
+    <div class="seed">
+      <img [src]="getSeedImgContent()" style="width: 60%;">
     </div>
     <br>
-    <div class="img-wrapper">
-      <h4>Seed Type:</h4>
-      <div class="seed">
-      <img [src]="getSeedImgContent()" style="width: 60%;">
-      </div>
-      <br>
-      <h4>PCA:</h4>
-      <div class="pca">
+    <h4>PCA:</h4>
+    <div class="pca">
       <img [src]="getPcaImgContent()" style="width: 60%;">
-      </div>
     </div>
-</div>
+  </div>
 
+  <div *ngIf="!isLoaded" style="height: 100vh;">
+  </div>
+  
+</div>

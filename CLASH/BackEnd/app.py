@@ -157,11 +157,11 @@ def get_data_visualization():
     global full_df
     full_df = retrieve_features_by_categories(feature_categories)
     pca_file = Path("pca_v01.pkl")
-    output_file = Path("db_pca.png")
+    output_file = Path("outputs/db_pca.png")
     # df = pd.read_csv(input_file)
     encoded_img_list.append(pca_plot(full_df, pca_file, output_file))
 
-    output_file = Path("seed.png")
+    output_file = Path("outputs/seed.png")
     encoded_img_list.append(seed_type_plot(full_df, output_file))
 
     jsonResult = json.dumps(encoded_img_list)   
@@ -324,6 +324,8 @@ def retrieve_search_results():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    # app.run(host='0.0.0.0', port=8155)
+
 
 
 

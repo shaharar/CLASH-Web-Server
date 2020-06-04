@@ -2,123 +2,134 @@
   <!-- <h2 style="text-align: center;">Search MTIs</h2>
   <br> -->
   <div class="fcf-body">
-  <form class="form">
-    <div class="form-group row">
-      <label for="mirnaNameInput" class="col-sm-2 col-form-label">miRNA Name</label>
-      <div class="col-sm-10">
-        <input [(ngModel)]="mirnaName" name="mirnaName" type="mirnaName" class="form-control" id="mirnaName" placeholder="Example: mmu-let-7a">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="mirnaSequenceInput" class="col-sm-2 col-form-label">miRNA Sequence</label>
-      <div class="col-sm-10">
-        <input [(ngModel)]="mirnaSeq" name="mirnaSeq" type="mirnaSequence" class="form-control" id="mirnaSequence" placeholder="Example: TGAGGTAGTAGGTTGTATAGTT">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="targetNameInput" class="col-sm-2 col-form-label">Target Name</label>
-      <div class="col-sm-10">
-        <input [(ngModel)]="targetName" name="targetName" type="targetName" class="form-control" id="targetName" placeholder="Example: ENSMUSG00000024042|ENSMUST00000024839|Sik1">
-      </div>
-    </div>
-    
-    <div class="form-group row">
-      <div class="col-sm-2">Organism</div>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input [(ngModel)]="masterSelectedOrganism" name="organism-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('organism')">
-          <label class="form-check-label" for="all-organism"> All </label>
+    <form class="form">
+      <div class="form-group row">
+        <label for="mirnaNameInput" class="col-sm-2 col-form-label">miRNA Name</label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="mirnaName" name="mirnaName" type="mirnaName" class="form-control" id="mirnaName"
+            placeholder="Example: mmu-let-7a">
         </div>
-        <div class="form-check form-check-inline" *ngFor="let organism of checkListOrganism">
-          <input [(ngModel)]="organism.isSelected" name="organism-list" class="form-check-input" type="checkbox" (change)="isAllSelected('organism')">
-          <label class="form-check-label" for="organism"> {{organism.value}} </label>
+      </div>
+      <div class="form-group row">
+        <label for="mirnaSequenceInput" class="col-sm-2 col-form-label">miRNA Sequence</label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="mirnaSeq" name="mirnaSeq" type="mirnaSequence" class="form-control" id="mirnaSequence"
+            placeholder="Example: TGAGGTAGTAGGTTGTATAGTT">
         </div>
-        <!-- <div class="form-check form-check-inline" *ngFor="let organism of allOrganisms">
+      </div>
+      <div class="form-group row">
+        <label for="targetNameInput" class="col-sm-2 col-form-label">Target Name</label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="targetName" name="targetName" type="targetName" class="form-control" id="targetName"
+            placeholder="Example: ENSMUSG00000024042|ENSMUST00000024839|Sik1">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-2">Organism</div>
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="masterSelectedOrganism" name="organism-list" class="form-check-input" type="checkbox"
+              (change)="checkUncheckAll('organism')">
+            <label class="form-check-label" for="all-organism"> All </label>
+          </div>
+          <div class="form-check form-check-inline" *ngFor="let organism of checkListOrganism">
+            <input [(ngModel)]="organism.isSelected" name="organism-list" class="form-check-input" type="checkbox"
+              (change)="isAllSelected('organism')">
+            <label class="form-check-label" for="organism"> {{organism.value}} </label>
+          </div>
+          <!-- <div class="form-check form-check-inline" *ngFor="let organism of allOrganisms">
           <input class="form-check-input" type="checkbox" (change)="onChange(organism, $event.target.checked)">
           <label class="form-check-label" for="organism"> {{organism}} </label>
         </div> -->
-        <!-- <div class="form-check form-check-inline">
+          <!-- <div class="form-check form-check-inline">
           <input [(ngModel)]="masterSelected" class="form-check-input" type="checkbox" (change)="onChangeAll()">
           <label class="form-check-label" for="all-organism"> All </label>
         </div> -->
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-sm-2">mRNA Region</div>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input [(ngModel)]="masterSelectedRegion" name="mrnaRegion-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('mrnaRegion')">
-          <label class="form-check-label" for="all-mrnaRegion"> All </label>
-        </div>
-        <div class="form-check form-check-inline" *ngFor="let region of checkListMrnaRegion">
-          <input [(ngModel)]="region.isSelected" name="mrnaRegion-list"class="form-check-input" type="checkbox" (change)="isAllSelected('mrnaRegion')">
-          <label class="form-check-label" for="region"> {{region.value}} </label>
         </div>
       </div>
-    </div>
 
-    <div class="form-group row">
-      <div class="col-sm-2">Method</div>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input [(ngModel)]="masterSelectedMethod" name="method-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('method')">
-          <label class="form-check-label" for="all-method"> All </label>
-        </div>
-        <div class="form-check form-check-inline" *ngFor="let method of checkListMethod">
-          <input [(ngModel)]="method.isSelected" name="method-list"class="form-check-input" type="checkbox" (change)="isAllSelected('method')">
-          <label class="form-check-label" for="method"> {{method.value}} </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label for="mirnaNameInput" class="col-sm-2 col-form-label">Dataset</label>
-      <div class="col-sm-10">
-        <select [(ngModel)]="dataset" name="dataset" id="selectDataset" class="form-control-mb-12">
-          <option value="none" selected disabled hidden> 
-            Select an Option 
-        </option> 
-          <!-- <option value="None">None</option> -->
-          <option value="All">All</option>
-          <option value="Unambiguous_Identification">Unambiguous</option>
-          <option value="Pairing_Beyond_Seed">Pairing Beyond Seed</option>
-          <option value="Mapping_the_Human_miRNA">Mapping The Human miRNA</option>
-          <option value="Global_Mapping_Cattle">Global Mapping Cattle</option>
-          <option value="Darnell_miRNA_target_chimeras">Darnell miRNA-Target Chimeras</option>          
-      </select>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-sm-2">Experimental Protocol</div>
-      <div class="col-sm-10">
-        <div class="form-check form-check-inline">
-          <input [(ngModel)]="masterSelectedProtocol" name="protocol-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll('protocol')">
-          <label class="form-check-label" for="all-protocol"> All </label>
-        </div>
-        <div class="form-check form-check-inline" *ngFor="let protocol of checkListProtocol">
-          <input [(ngModel)]="protocol.isSelected" name="protocol-list"class="form-check-input" type="checkbox" (change)="isAllSelected('protocol')">
-          <label class="form-check-label" for="protocol"> {{protocol.value}} </label>
+      <div class="form-group row">
+        <div class="col-sm-2">mRNA Region</div>
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="masterSelectedRegion" name="mrnaRegion-list" class="form-check-input" type="checkbox"
+              (change)="checkUncheckAll('mrnaRegion')">
+            <label class="form-check-label" for="all-mrnaRegion"> All </label>
+          </div>
+          <div class="form-check form-check-inline" *ngFor="let region of checkListMrnaRegion">
+            <input [(ngModel)]="region.isSelected" name="mrnaRegion-list" class="form-check-input" type="checkbox"
+              (change)="isAllSelected('mrnaRegion')">
+            <label class="form-check-label" for="region"> {{region.value}} </label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-group row">
-      <label for="mirnaNameInput" class="col-sm-2 col-form-label">DB Version</label>
-      <div class="col-sm-10">
-        <select [(ngModel)]="DBVersion" name="DBVersion" id="selectDataset" class="form-control-mb-12">
-          <option value="v1.0">v1.0</option>
-          <option value="v1.1">v1.1</option>
-      </select>
+      <div class="form-group row">
+        <div class="col-sm-2">Method</div>
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="masterSelectedMethod" name="method-list" class="form-check-input" type="checkbox"
+              (change)="checkUncheckAll('method')">
+            <label class="form-check-label" for="all-method"> All </label>
+          </div>
+          <div class="form-check form-check-inline" *ngFor="let method of checkListMethod">
+            <input [(ngModel)]="method.isSelected" name="method-list" class="form-check-input" type="checkbox"
+              (change)="isAllSelected('method')">
+            <label class="form-check-label" for="method"> {{method.value}} </label>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group row">
-      <div class="col-sm-10">
-        <button type="submit" (click)="getMTIs()" class="btn btn-primary">Submit</button>
+      <div class="form-group row">
+        <label for="mirnaNameInput" class="col-sm-2 col-form-label">Dataset</label>
+        <div class="col-sm-10">
+          <select [(ngModel)]="dataset" name="dataset" id="selectDataset" class="form-control-mb-12">
+            <option value="none" selected disabled hidden>
+              Select an Option
+            </option>
+            <!-- <option value="None">None</option> -->
+            <option value="All">All</option>
+            <option value="Unambiguous_Identification">Unambiguous</option>
+            <option value="Pairing_Beyond_Seed">Pairing Beyond Seed</option>
+            <option value="Mapping_the_Human_miRNA">Mapping The Human miRNA</option>
+            <option value="Global_Mapping_Cattle">Global Mapping Cattle</option>
+            <option value="Darnell_miRNA_target_chimeras">Darnell miRNA-Target Chimeras</option>
+          </select>
+        </div>
       </div>
-    </div>
-  </form>
+
+      <div class="form-group row">
+        <div class="col-sm-2">Experimental Protocol</div>
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="masterSelectedProtocol" name="protocol-list" class="form-check-input" type="checkbox"
+              (change)="checkUncheckAll('protocol')">
+            <label class="form-check-label" for="all-protocol"> All </label>
+          </div>
+          <div class="form-check form-check-inline" *ngFor="let protocol of checkListProtocol">
+            <input [(ngModel)]="protocol.isSelected" name="protocol-list" class="form-check-input" type="checkbox"
+              (change)="isAllSelected('protocol')">
+            <label class="form-check-label" for="protocol"> {{protocol.value}} </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="mirnaNameInput" class="col-sm-2 col-form-label">DB Version</label>
+        <div class="col-sm-10">
+          <select [(ngModel)]="DBVersion" name="DBVersion" id="selectDataset" class="form-control-mb-12">
+            <option value="v1.0">v1.0</option>
+            <option value="v1.1">v1.1</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button type="submit" (click)="getMTIs()" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

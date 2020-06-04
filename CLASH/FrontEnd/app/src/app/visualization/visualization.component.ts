@@ -23,25 +23,27 @@ export class VisualizationComponent implements OnInit {
   seedType;
   fromBasePairs;
   toBasePairs;
-  isSeedType = true;
-  isBasePairs = true;
+  isSeedType = false;
+  isBasePairs = false;
+  isLoaded = false;
 
   ngOnInit(): void {
     this.numOfResults = this.route.snapshot.queryParamMap.get('numOfResults');
     this.seedType = this.route.snapshot.queryParamMap.get('seedType');
     this.fromBasePairs = this.route.snapshot.queryParamMap.get('fromBasePairs');
     this.toBasePairs = this.route.snapshot.queryParamMap.get('toBasePairs');
-    if (this.seedType == 'None') {
-      this.isSeedType = false;
+    if (this.seedType != 'None') {
+      this.isSeedType = true;
     }
-    if (this.fromBasePairs == '' || this.toBasePairs == '') {
-      this.isBasePairs = false;
+    if (this.fromBasePairs != '' && this.toBasePairs != '') {
+      this.isBasePairs = true;
     }
     var path = 'getDataVisualization'
     this.httpRequestsService.get(path).subscribe((results) => {
       this.encoded_pca = results[0]
       this.encoded_seed = results[1]
       this.getStatistics();
+      this.isLoaded = true;
     });
   }
 
