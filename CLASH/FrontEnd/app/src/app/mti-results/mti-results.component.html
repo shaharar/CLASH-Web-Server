@@ -3,7 +3,7 @@
   <div *ngIf="(allResults.length > 0) || (allResults.length == 0 && isFiltered)" class="results">
     <h1>Results</h1>
     <div class="btn-wrapper">
-      <a class="btn btn-primary" href="search" role="button">
+      <a class="btn btn-primary" routerLink="/search" role="button">
         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
     </div>
     <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were

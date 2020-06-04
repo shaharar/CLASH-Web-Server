@@ -12,7 +12,10 @@ import { Params } from '@angular/router';
 })
 export class HttpRequestsService {
 
-  private url: string = "http://localhost:5000/";
+// private url: string = "http://localhost:8155/";
+ private url: string = "http://icc.ise.bgu.ac.il/MirTarFeaturesDB/backend";
+  // private url: string = "";
+
   private fullPath: string;
 
   constructor(private http: HttpClient) { }
@@ -24,6 +27,7 @@ export class HttpRequestsService {
   //  }
 
   getWithParams(path: string, parameters: Params):any{
+    console.log(path)
     this.fullPath = this.url + path;
     return this.http.get(this.fullPath, parameters).pipe(
       catchError(this.errorHandler));
