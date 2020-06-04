@@ -1,27 +1,28 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
+
+  <div *ngIf="allResults.length > 0" class="results">
     <h1>Results</h1>
     <div class="btn-wrapper">
-        <a class="btn btn-primary" href="search" role="button">
-            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
-     </div>
-    <label *ngIf="isLoaded" style="color: cadetblue; font-weight: 500;">{{allResults.length}} results were found ({{searchTime}} seconds)</label>
+      <a class="btn btn-primary" href="search" role="button">
+        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
+    </div>
+    <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
+      found
+      ({{searchTime}} seconds)</label>
     <br><br>
     <h5>Filter By: </h5>
+    <label class="filter-label">Base Pairs </label>
+    <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
+    <b>-</b>
+    <input [(ngModel)]="toBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="To">
 
-     <label class="filter-label">Base Pairs </label>
-     <!-- <label class="betweenBasePairs">Between</label> -->
-     <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
-     <!-- <label class="toBasePairs">To</label> --> 
-     <b>-</b> 
-     <input [(ngModel)]="toBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="To">
-
-     <label class="filter-label">Seed Type </label>
-     <select [(ngModel)]="seedType" name="seedType" id="selectSeedType" class="form-control-mb-12">
-         <option value="None">None</option>
-         <option value="Canonic">Canonic</option>
-         <option value="Non Canonic">Non Canonic</option>
-      </select>
-     <!-- <label class="filter-label">filter 3 </label>
+    <label class="filter-label">Seed Type </label>
+    <select [(ngModel)]="seedType" name="seedType" id="selectSeedType" class="form-control-mb-12">
+      <option value="None">None</option>
+      <option value="Canonic">Canonic</option>
+      <option value="Non Canonic">Non Canonic</option>
+    </select>
+    <!-- <label class="filter-label">filter 3 </label>
      <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
         <option value="None">None</option>
         <option value="Canonic">Canonic</option>
@@ -33,74 +34,94 @@
         <option value="Canonic">Canonic</option>
         <option value="Non Canonic">Non Canonic</option>
      </select> -->
-     <button type="button" (click)="filterResults()" id="btn-apply" class="btn btn-primary">Apply</button>
-     <br><br>
-     <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and visualization</button>
-     <br><br>
+    <button type="button" (click)="filterResults()" id="btn-apply" class="btn btn-primary">Apply</button>
+    <br><br>
+    <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and
+      visualization</button>
+    <br><br>
     <div class="page-view">
-        <b><label>Top 10 Results: </label></b>
-        <div class="list-group">
-            <ul class="no-bullets" *ngFor="let result of allResults | slice:0:10">
-                <li><a (click)="getMTIsDetailedResults(result.mirTar_id)"
-                        class="list-group-item list-group-item-action">{{result.mirTar_id}}</a></li>
-            </ul>
-        </div>
-        <!-- <div class="nav-wrapper">
+      <b><label>Top 10 Results: </label></b>
+      <div class="list-group">
+        <ul class="no-bullets" *ngFor="let result of allResults | slice:0:10">
+          <li><a (click)="getMTIsDetailedResults(result.mirTar_id)"
+              class="list-group-item list-group-item-action">{{result.mirTar_id}}</a></li>
+        </ul>
+      </div>
+      <!-- <div class="nav-wrapper">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
                     <button class="page-item" (click)="updateIndexMtisView(page)">{{page}}</button>
                 </ul>
             </nav>
         </div> -->
-        <b><label style="font-size: larger;">Download Results </label></b>
-        <label><u>Choose Feature Families: </u></label>
-        <div class="form-group row">
-            <div class="col-sm-10">
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="masterSelected" name="download-list" class="form-check-input" type="checkbox" (change)="checkUncheckAll()">
-                <label class="form-check-label" for="all-download"> All </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[1].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="seedFeatures"> {{checkListDownload[1].value}} </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[3].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="mrnaComp"> {{checkListDownload[3].value}} </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[6].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="hotEncMirna"> {{checkListDownload[6].value}} </label>
-              </div>
-            </div>
+      <b><label style="font-size: larger;">Download Results </label></b>
+      <label><u>Choose Feature Families: </u></label>
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="masterSelected" name="download-list" class="form-check-input" type="checkbox"
+              (change)="checkUncheckAll()">
+            <label class="form-check-label" for="all-download"> All </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[1].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="seedFeatures"> {{checkListDownload[1].value}} </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[3].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="mrnaComp"> {{checkListDownload[3].value}} </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[6].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="hotEncMirna"> {{checkListDownload[6].value}} </label>
+          </div>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-10">
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[0].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="freeEnergy"> {{checkListDownload[0].value}} </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[2].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="mirnaPairing"> {{checkListDownload[2].value}} </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[4].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="siteAcc"> {{checkListDownload[4].value}} </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input [(ngModel)]="checkListDownload[5].isSelected" name="download-list"class="form-check-input" type="checkbox" (change)="isAllSelected()">
-                <label class="form-check-label" for="hotEncMrna"> {{checkListDownload[5].value}} </label>
-              </div>
-            </div>            
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[0].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="freeEnergy"> {{checkListDownload[0].value}} </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[2].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="mirnaPairing"> {{checkListDownload[2].value}} </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[4].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="siteAcc"> {{checkListDownload[4].value}} </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="checkListDownload[5].isSelected" name="download-list" class="form-check-input"
+              type="checkbox" (change)="isAllSelected()">
+            <label class="form-check-label" for="hotEncMrna"> {{checkListDownload[5].value}} </label>
+          </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-4">
-                <button type="button" (click)="downloadResults()" class="btn btn-primary">Download Data (csv)</button>
-            </div>
-            <div class="col-4">
-                <button type="button" class="btn btn-primary" style="text-align: center;">Download Complimentary Negative Data (csv)</button>            
-            </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <button type="button" (click)="downloadResults()" class="btn btn-primary">Download Data (csv)</button>
         </div>
+        <div class="col-4">
+          <button type="button" class="btn btn-primary" style="text-align: center;">Download Complimentary Negative
+            Data (csv)</button>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="noResults" *ngIf="allResults.length == 0" style="height: 100vh;">
+    <h1>Results</h1>
+    <div class="btn-wrapper">
+      <a class="btn btn-primary" href="search" role="button">
+        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
+    </div>
+    <label *ngIf="isLoaded && allResults.length == 0" style="color: darkred; font-weight: 500; font-size: large;">No
+      results were found</label>
+  </div>
 </div>

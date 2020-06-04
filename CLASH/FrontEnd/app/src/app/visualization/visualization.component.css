@@ -19,6 +19,7 @@
 
 .resFilters-wrapper {
     font-weight: 500;
-    color: cadetblue;
+    /* color: cadetblue; */
+    color: rgb(69, 126, 128);
     font-size: large;
 }
