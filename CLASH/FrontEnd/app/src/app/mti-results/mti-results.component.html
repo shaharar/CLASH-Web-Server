@@ -1,16 +1,33 @@
-<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
+<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center; margin-top: 1.5rem;">
 
   <div *ngIf="(allResults.length > 0) || (allResults.length == 0 && isFiltered)" class="results">
     <h1>Results</h1>
+
+    <!-- <div class="row justify-content-center">
+      <div class="col">
+        <div class="btn-wrapper">
+          <a class="btn btn-primary" routerLink="/search" role="button">
+            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search
+          </a>
+        </div>     
+       </div>
+      <div class="col-sm-4">
+        <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
+          found
+          ({{searchTime}} seconds)</label>
+      </div>
+    </div> -->
+
     <div class="btn-wrapper">
       <a class="btn btn-primary" routerLink="/search" role="button">
-        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search</a>
+        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search
+      </a>
     </div>
     <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
       found
       ({{searchTime}} seconds)</label>
     <br><br>
-    <h5>Filter By: </h5>
+    <u><h5>Filter By: </h5></u>
     <label class="filter-label">Base Pairs </label>
     <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
     <b>-</b>
