@@ -5,8 +5,8 @@
 
 .search-wrapper {
     /* border-style: double; */
-    padding: 2.5rem 3rem;
-    margin-top: 2rem;
+    padding: 2rem 3rem;
+    margin-top: 2.5rem;
     /* width: 80%; */
     height: 100vh;
 }
@@ -15,14 +15,9 @@
     font-weight: 600;
 }
 
-/* .nav-item{
-    color: rgb(2, 116, 116);
-    font-weight: bold;
-} */
-
-/* .form{
-    text-align: left;
-} */
+.col-sm-4 {
+    max-width: 20%;
+}
 
 .form-control{
     width: max-content;
@@ -31,6 +26,14 @@
 .btn {
     background-color: cadetblue;
     border: black;
+}
+
+.btn:hover {background-color: rgb(45, 118, 121)}
+
+.btn:active {
+  background-color:  rgb(45, 118, 121);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .fcf-body {
@@ -44,3 +47,18 @@
     border-radius: 0.25rem;
     max-width: 100%;
 }
+
+h2 {
+    font-weight: bold;
+    text-shadow: 1px 1px 1px grey;
+    padding: 0.5rem;
+}
+
+/* .nav-item{
+    color: rgb(2, 116, 116);
+    font-weight: bold;
+} */
+
+/* .form{
+    text-align: left;
+} */

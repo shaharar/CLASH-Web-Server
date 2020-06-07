@@ -1,28 +1,37 @@
 <div class="search-wrapper">
-  <!-- <h2 style="text-align: center;">Search MTIs</h2>
-  <br> -->
+  <h2 style="text-align: center;">Search MTIs</h2>
+  <!-- <br> -->
   <div class="fcf-body">
     <form class="form">
       <div class="form-group row">
         <label for="mirnaNameInput" class="col-sm-2 col-form-label">miRNA Name</label>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
           <input [(ngModel)]="mirnaName" name="mirnaName" type="mirnaName" class="form-control" id="mirnaName"
-            placeholder="Example: mmu-let-7a">
+            placeholder="example: mmu-let-7a">
+        </div>
+        <div class="col-sm-1">
+            <i class="fa fa-info-circle" title="Example of miRNA name: mmu-let-7a"></i>
         </div>
       </div>
       <div class="form-group row">
         <label for="mirnaSequenceInput" class="col-sm-2 col-form-label">miRNA Sequence</label>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
           <input [(ngModel)]="mirnaSeq" name="mirnaSeq" type="mirnaSequence" class="form-control" id="mirnaSequence"
-            placeholder="Example: TGAGGTAGTAGGTTGTATAGTT">
+            placeholder="example: TGAGGTAGTAGGTTGTATAGTT">
         </div>
+        <div class="col-sm-1">
+          <i class="fa fa-info-circle" title="Example of miRNA sequence: TGAGGTAGTAGGTTGTATAGTT"></i>
+      </div>
       </div>
       <div class="form-group row">
         <label for="targetNameInput" class="col-sm-2 col-form-label">Target Name</label>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
           <input [(ngModel)]="targetName" name="targetName" type="targetName" class="form-control" id="targetName"
-            placeholder="Example: ENSMUSG00000024042|ENSMUST00000024839|Sik1">
+            placeholder="example: ENSMUSG00000024042|ENSMUST00000024839|Sik1">
         </div>
+        <div class="col-sm-1">
+          <i class="fa fa-info-circle" title="Example of target sequence: ENSMUSG00000024042|ENSMUST00000024839|Sik1"></i>
+      </div>
       </div>
 
       <div class="form-group row">
