@@ -205,7 +205,7 @@ def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
     plt.savefig(output_file, format="png", bbox_inches='tight')
 
  
-    with open("db_pca.png", "rb") as imageFile:
+    with open("outputs/db_pca.png", "rb") as imageFile:
         str = base64.b64encode(imageFile.read())
         base64_str = "data:image/png;base64, " + str.decode('utf-8')
         return base64_str
@@ -249,7 +249,7 @@ def seed_type_plot(d: DataFrame, output_file: Path):
                loc='upper left', bbox_to_anchor=(1, 1), ncol=1)
     plt.xticks(rotation=0)
     plt.savefig(output_file, format="png", bbox_inches='tight')
-    with open("seed.png", "rb") as imageFile:
+    with open("outputs/seed.png", "rb") as imageFile:
         str = base64.b64encode(imageFile.read())
         base64_str = "data:image/png;base64, " + str.decode('utf-8')
         return base64_str
@@ -323,8 +323,8 @@ def retrieve_search_results():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # app.run(host='0.0.0.0', port=8155)
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', port=8155)
 
 
 
