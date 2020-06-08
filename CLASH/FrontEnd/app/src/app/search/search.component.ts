@@ -223,6 +223,17 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  // getExample() {
+  //   this.mirnaName = 'mmu-miR-92a'
+  //  // this.dataset = 'Unambiguous'
+  //   this.DBVersion = 'v1.0'
+  //   console.log(this.checkListOrganism)
+  //   console.log(this.checkListOrganism[1])
+  //   console.log(this.checkListOrganism[1].isSelected)
+
+  //   this.checkListOrganism[1].isSelected = true;
+  //   this.checkListMethod[1].isSelected = true;
+  // }
 
   // onChange(organism, isChecked){
   //   // console.log(this.organismInputs);

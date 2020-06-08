@@ -1,4 +1,4 @@
-<div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center;">
+<div class="jumbotron" id="animate-bottom" style="background-color: #fff; height: 85%; text-align: center;">
   <h2>Summary Information And Visualization</h2>
   <br>
   <div class="resFilters-wrapper">
@@ -9,7 +9,6 @@
       <label *ngIf="isSeedType">seed type '{{seedType}}';&nbsp;</label>
       <label *ngIf="isBasePairs">base pairs between {{fromBasePairs}} and {{toBasePairs}}</label>
     </div>
-
   </div>
   <br>
   <div *ngIf="isLoaded" class="statistics-wrapper">
@@ -74,11 +73,13 @@
     <br>
     <h4>PCA:</h4>
     <div class="pca">
-      <img [src]="getPcaImgContent()" style="width: 60%;">
+      <img src="assets/images/pca_visualization.jpeg"  style="width: 40%;">
+      <!-- <img [src]="getPcaImgContent()" style="width: 60%;"> -->
     </div>
   </div>
 
   <div *ngIf="!isLoaded" style="height: 100vh;">
+    <div class="loader"></div>
   </div>
   
 </div>

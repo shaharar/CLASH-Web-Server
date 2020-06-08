@@ -1,7 +1,12 @@
 <div class="jumbotron" style="background-color: #fff; height: 85%; text-align: center; margin-top: 1.5rem;">
 
-  <div *ngIf="(allResults.length > 0) || (allResults.length == 0 && isFiltered)" class="results">
+  <div *ngIf="!isLoaded" style="height: 100vh;">
+    <div class="loader"></div>
+  </div>
+
+  <div *ngIf="isLoaded && ((allResults.length > 0) || (allResults.length == 0 && isFiltered))" class="results">
     <h1>Results</h1>
+
 
     <!-- <div class="row justify-content-center">
       <div class="col">
@@ -23,10 +28,10 @@
         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search
       </a>
     </div>
-    <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
+    <label *ngIf="isLoaded" id="animate-bottom" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
       found
       ({{searchTime}} seconds)</label>
-    <br><br>
+    <br>
     <u><h5>Filter By: </h5></u>
     <label class="filter-label">Base Pairs </label>
     <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
@@ -132,7 +137,7 @@
       </div>
     </div>
   </div>
-  <div class="noResults" *ngIf="allResults.length == 0 && !isFiltered" style="height: 100vh;">
+  <div class="noResults" *ngIf="isLoaded && allResults.length == 0 && !isFiltered" style="height: 100vh;">
     <h1>Results</h1>
     <div class="btn-wrapper">
       <a class="btn btn-primary" href="search" role="button">
