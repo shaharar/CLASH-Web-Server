@@ -1,6 +1,5 @@
 .statistics-label {
     font-weight: 600;
-    /* text-align: left; */
 }
 
 .statistics {
@@ -22,4 +21,13 @@
     /* color: cadetblue; */
     color: rgb(69, 126, 128);
     font-size: large;
+}
+
+h2 {
+    text-shadow: 1px 1px 1px grey;
+    font-weight: bold;
+}
+
+h4 {
+    font-weight: bold;
 }

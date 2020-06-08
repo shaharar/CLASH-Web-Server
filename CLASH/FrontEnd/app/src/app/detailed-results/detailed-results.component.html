@@ -2,6 +2,7 @@
 <div class="dResults-wrapper">
   <br>
   <h3>Mir-Tar ID : {{mirTarId}}</h3><br>
+
   <nav *ngIf="isDataAvailable">
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-general-info-tab" data-toggle="tab" href="#nav-general-info"
@@ -429,5 +430,8 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <div *ngIf="!isDataAvailable" style="height: 100vh;">
   </div>
 </div>
