@@ -181,9 +181,9 @@ def pca_plot(df: DataFrame, pca_file_name: Path, output_file: Path):
     x2d: DataFrame = DataFrame(pca.transform(df))
     fig = plt.figure(figsize=(16, 10))
     x_min_val = -30
-    x_max_val = 70
-    y_min_val = -30
-    y_max_val = 30
+    x_max_val = -15
+    y_min_val = -15
+    y_max_val = 2.5
     x_axis_range = [np.floor(x_min_val), np.ceil(x_max_val)]
     y_axis_range = [np.floor(y_min_val), np.ceil(y_max_val)]
 
@@ -244,7 +244,8 @@ def seed_type_plot(d: DataFrame, output_file: Path):
     res_df = res_df.astype("int")
     fig, ax = plt.subplots()
 
-    res_df.plot(kind='bar')
+    my_colors = list(["#34495e", "#e74c3c", "#92CA91"])
+    res_df.plot(kind='bar', color=my_colors)
     plt.legend(["Low density", "Medium density", "High density"],
                loc='upper left', bbox_to_anchor=(1, 1), ncol=1)
     plt.xticks(rotation=0)
