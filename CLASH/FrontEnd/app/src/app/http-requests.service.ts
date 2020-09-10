@@ -10,22 +10,18 @@ import { Params } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
+// The following service handles http requests 
 export class HttpRequestsService {
 
-// private url: string = "http://localhost:8155/";
- private url: string = "http://icc.ise.bgu.ac.il/MirTarFeaturesDB/backend";
-  // private url: string = "";
+  // API general URI 
+  private url: string = "http://icc.ise.bgu.ac.il/MirTarFeaturesDB/backend";
 
   private fullPath: string;
 
   constructor(private http: HttpClient) { }
 
-  // get(path: string): Observable<IMTI[]> {
-  //  this.fullPath = this.url + path;
-  //  return this.http.get<IMTI[]>(this.fullPath).pipe(
-  //    catchError(this.errorHandler)); 
-  //  }
-
+  // handles http get request with parameters
   getWithParams(path: string, parameters: Params):any{
     console.log(path)
     this.fullPath = this.url + path;
@@ -33,13 +29,14 @@ export class HttpRequestsService {
       catchError(this.errorHandler));
   }
 
+  // handles http get request without parmeters
   get(path: string):any{
     this.fullPath = this.url + path;
     return this.http.get(this.fullPath).pipe(
       catchError(this.errorHandler));
   }
 
-
+  // handles http request errors
   errorHandler(error: HttpErrorResponse) {
     return observableThrowError(error.message || "Server Error");
   }

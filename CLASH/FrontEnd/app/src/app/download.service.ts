@@ -3,11 +3,15 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+
+// The following service provides the ability to convert JSON object to CSV formatted file. It also enables downloading the file through the browser
 export class DownloadService {
 
   constructor() { }
 
+  // converts a given JSON to CSV format using a helper function and enables downloading it through the browser
   downloadFile(data, filename='data', columns) {
+    // converts JSON to CSV 
     let csvData = this.ConvertToCSV(data, columns);
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
@@ -24,6 +28,7 @@ export class DownloadService {
     document.body.removeChild(dwldLink);
 }
 
+// converts JSON object to CSV format using given objarray and headers list
 ConvertToCSV(objArray, headerList) {
   let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
