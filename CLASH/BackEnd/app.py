@@ -18,11 +18,7 @@ import base64
 app = Flask(__name__)
 CORS(app)
 
-#app.config['MSSQL_HOST'] = '132.72.64.102'
-#app.config['MSSQL_USER'] = 'MirTar'
-#app.config['MSSQL_PASSWORD'] = 'Yhsa2020'
-#app.config['MSSQL_DB'] = 'MirTarFeaturesDB'
-
+# DB connection parameters
 server = '132.72.23.88'
 user = 'MirTar'
 password = 'Yhsa2020'
@@ -33,20 +29,15 @@ original_search_results = pd.DataFrame()
 
 @app.route('/getMTIs')
 def retrieve_info_by_search_inputs():
-    # global search_results   
-    # search_results = retrieve_search_results()
-    # print("search results in getMTIs:")
-    # print(search_results)
     retrieve_search_results()
     global original_search_results
     original_search_results = search_results
-    # print(original_search_results)
     jsonResult = search_results.to_json(orient='records')
     return jsonResult
 
 @app.route('/getFeaturesByCategory')
 def retrieve_features_by_category_for_download():
-    print("retrieve_features_by_category_for_download")
+    # print("retrieve_features_by_category_for_download")
     # print(search_results)
     feature_categories = None if request.args.get('featureInputs') == '' else request.args.get('featureInputs').split(',')
     if (search_results.empty):
@@ -105,13 +96,13 @@ def retrieve_pos_general_info_by_mirTar_id():
 @app.route('/getMTIsByFilterInputs')
 def retrieve_info_by_filter_inputs():
     global search_results
-    print("getMTIsByFilterInputs")
+    # print("getMTIsByFilterInputs")
     seed_type = 'True' if request.args.get('seedType') == 'Canonic' else 'False' if request.args.get('seedType') == 'Non Canonic' else None
-    print(seed_type)
+    # print(seed_type)
     from_base_pairs = None if request.args.get('fromBasePairs') == '' else int(request.args.get('fromBasePairs'))
     to_base_pairs = None if request.args.get('toBasePairs') == '' else int(request.args.get('toBasePairs'))
-    print(from_base_pairs)
-    print(to_base_pairs)
+    # print(from_base_pairs)
+    # print(to_base_pairs)
     if (seed_type is None and from_base_pairs is None and to_base_pairs is None):
         # print("None Filter Inputs")
         intersect_results = original_search_results
@@ -150,7 +141,7 @@ def retrieve_features():
 @app.route('/getDataVisualization')
 def get_data_visualization():
     encoded_img_list = []
-    print("enter get_data_visualization")
+    # print("enter get_data_visualization")
     feature_categories = ["Features_Seed_Features","Features_Free_Energy", "Features_miRNA_Pairing",
                             "Features_mRNA_Composition", "Features_Site_Accessibility", 
                             "Features_Hot_Encoding_miRNA", "Features_Hot_Encoding_mRNA"]
@@ -264,7 +255,7 @@ def get_statistics():
     statistics_results = statistics_results.replace("\"BASEPAIR_25%\":", "\"BASEPAIR_25\":")
     statistics_results = statistics_results.replace("\"BASEPAIR_50%\":", "\"BASEPAIR_50\":")
     statistics_results = statistics_results.replace("\"BASEPAIR_75%\":", "\"BASEPAIR_75\":")
-    print(statistics_results)
+    # print(statistics_results)
     return statistics_results
     # jsonResult = statistics_results.to_json(orient='records')   
     # return jsonResult
