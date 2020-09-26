@@ -11,17 +11,14 @@ import { DownloadService } from '../download.service'
   templateUrl: './mti-results.component.html',
   styleUrls: ['./mti-results.component.css']
 })
+
+//the following component represents results page
 export class MtiResultsComponent implements OnInit {
 
-  // numberOfMtisPerPage = 20;
-  // numberOfPages;
-  // firstIndexMtiPage = 0;
-  // lastIndexMtiPage = 0;
+ 
   public allResults = []
   public filteredResultsBySeedType = [];
-  // public results = [];
-  // resultsPerPage = [];
-  // pagesArr = [];
+
 
   params: Params;
   downloadInputs: any;
@@ -57,6 +54,7 @@ export class MtiResultsComponent implements OnInit {
     this.getCheckedItemList();
   }
 
+  //the following function uses http request to retrieve data according to search fields values and maintain it in compatible data structure
   getSearchResults() {
     var params: Params
     const mirnaName = this.route.snapshot.queryParamMap.get('mirnaName');
@@ -90,6 +88,7 @@ export class MtiResultsComponent implements OnInit {
     });
   }
 
+  //the following function filters results by seed type and base pairs
   filterResults() {
     this.isFiltered = true;
     if (this.searchResults.length == 0) {
@@ -109,6 +108,7 @@ export class MtiResultsComponent implements OnInit {
     });
   }
 
+  //the following function performs results download through browser according to requested features 
   downloadResults() {
     var params: Params
     const featureInputs: any = [];
@@ -117,17 +117,13 @@ export class MtiResultsComponent implements OnInit {
       input = 'Features_' + input;
       featureInputs.push(input);
     });
-    // console.log(featureInputs)
     params = new HttpParams()
       .set('featureInputs', featureInputs)
     var path = 'getFeaturesByCategory';
     this.httpRequestsService.getWithParams(path, { params }).subscribe((results) => {
-      // console.log(results) 
-      // console.log(this.allResults)
       this.downloadRes = results;
       if (this.downloadRes.length > 0) {
         this.downloadService.downloadFile(this.downloadRes, 'MTIs_Results', Object.keys(this.downloadRes[0]));
-            // console.log(this.downloadRes)
       }
       else {
         alert("There are no results to download. Please choose other filter inputs.")
@@ -135,6 +131,7 @@ export class MtiResultsComponent implements OnInit {
     });
   }
 
+  //the following function navigates to visualization component with summarized details about query results and filters
   showSummary() {
     const queryParams: any = {};
     queryParams.numOfResults = this.allResults.length;
@@ -145,10 +142,9 @@ export class MtiResultsComponent implements OnInit {
       queryParams
     };
     this.router.navigate(['/visualization'],navigationExtras);
-   // this.router.navigate(['/visualization']);
   }
 
-
+  //the following function updates checked check lists
   checkUncheckAll() {
     for (var i = 0; i < this.checkListDownload.length; i++) {
       this.checkListDownload[i].isSelected = this.masterSelected;
@@ -156,6 +152,7 @@ export class MtiResultsComponent implements OnInit {
     this.getCheckedItemList();
   }
 
+  //the following function checks whether all check boxes of feture categories are checked
   isAllSelected() {
     this.masterSelected = this.checkListDownload.every(function (item: any) {
       return item.isSelected == true;
@@ -163,6 +160,7 @@ export class MtiResultsComponent implements OnInit {
     this.getCheckedItemList();
   }
 
+  //the following function updates download feature categories check boxes values according to checked items
   getCheckedItemList() {
     this.downloadInputs = [];
     for (var i = 0; i < this.checkListDownload.length; i++) {
@@ -172,6 +170,7 @@ export class MtiResultsComponent implements OnInit {
     }
   }
 
+  //the following function navigates to detailed-results component with mtiId as parameter
   getMTIsDetailedResults(mtiId) {
     const queryParams: any = {};
     // Add the array of values to the query parameter as a JSON string
@@ -182,43 +181,4 @@ export class MtiResultsComponent implements OnInit {
     };
     this.router.navigate(['/detailed-results'], navigationExtras);
   }
-
-
-
-  // ************************* Pagination ************************* //
-    // createNumberOfPagesArray() {
-  //   this.pagesArr = []
-  //   for (var i = 1; i <= this.numberOfPages; i++) {
-  //     this.pagesArr.push(i);
-  //   }
-  // }
-
-  // getFirstIndexMtiPage(numberOfMtisPerPage, pageNumber) {
-  //   return ((pageNumber * numberOfMtisPerPage) - numberOfMtisPerPage);
-  // }
-
-  // getLastIndexMtiPage(firstIndex, numberOfMtisPerPage) {
-  //   return ((firstIndex + numberOfMtisPerPage) - 1);
-  // }
-
-  // calculateNumberOfPages() {
-  //   return Math.ceil(this.results.length / this.numberOfMtisPerPage);
-  // }
-
-  // updateIndexMtisView(pageNumber) {
-  //   this.firstIndexMtiPage = this.getFirstIndexMtiPage(this.numberOfMtisPerPage, pageNumber);
-  //   this.lastIndexMtiPage = this.getLastIndexMtiPage(this.firstIndexMtiPage, this.numberOfMtisPerPage);
-  //   this.addResultsPerPage();
-  // }
-
-  // addResultsPerPage() {
-  //   this.resultsPerPage = [];
-  //   for (var i = this.firstIndexMtiPage; i <= this.lastIndexMtiPage; i++) {
-  //     if (typeof this.results[i] != "undefined") {
-  //       this.resultsPerPage.push(this.results[i]['mirTar_id']);
-  //     }
-  //   }
-  // }
-
-
 }

@@ -10,6 +10,7 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
   templateUrl: './visualization.component.html',
   styleUrls: ['./visualization.component.css']
 })
+//the following component handles data statistics and visualization
 export class VisualizationComponent implements OnInit {
 
   constructor(private httpRequestsService: HttpRequestsService,
@@ -28,6 +29,7 @@ export class VisualizationComponent implements OnInit {
   isLoaded = false;
 
   ngOnInit(): void {
+    //get filter values from request
     this.numOfResults = this.route.snapshot.queryParamMap.get('numOfResults');
     this.seedType = this.route.snapshot.queryParamMap.get('seedType');
     this.fromBasePairs = this.route.snapshot.queryParamMap.get('fromBasePairs');
@@ -39,6 +41,7 @@ export class VisualizationComponent implements OnInit {
       this.isBasePairs = true;
     }
     var path = 'getDataVisualization'
+    //http request to get statistics computations and data visualized representation
     this.httpRequestsService.get(path).subscribe((results) => {
       this.encoded_pca = results[0]
       this.encoded_seed = results[1]
@@ -47,14 +50,17 @@ export class VisualizationComponent implements OnInit {
     });
   }
 
+  //get pca graph
   getPcaImgContent(): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(this.encoded_pca);
   }
 
+  //get seed type graph 
   getSeedImgContent(): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(this.encoded_seed);
   }
 
+  //maintain statistics in compatible data structure
   getStatistics() {
     var path = 'getStatistics'
     this.httpRequestsService.get(path).subscribe((results) => {

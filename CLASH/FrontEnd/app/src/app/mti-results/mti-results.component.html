@@ -6,33 +6,19 @@
 
   <div *ngIf="isLoaded && ((allResults.length > 0) || (allResults.length == 0 && isFiltered))" class="results">
     <h1>Results</h1>
-
-
-    <!-- <div class="row justify-content-center">
-      <div class="col">
-        <div class="btn-wrapper">
-          <a class="btn btn-primary" routerLink="/search" role="button">
-            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search
-          </a>
-        </div>     
-       </div>
-      <div class="col-sm-4">
-        <label *ngIf="isLoaded" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
-          found
-          ({{searchTime}} seconds)</label>
-      </div>
-    </div> -->
-
     <div class="btn-wrapper">
       <a class="btn btn-primary" routerLink="/search" role="button">
         <i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back To Search
       </a>
     </div>
-    <label *ngIf="isLoaded" id="animate-bottom" style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
+    <label *ngIf="isLoaded" id="animate-bottom"
+      style="color: rgb(69, 126, 128); font-weight: 500;">{{allResults.length}} results were
       found
       ({{searchTime}} seconds)</label>
     <br>
-    <u><h5>Filter By: </h5></u>
+    <u>
+      <h5>Filter By: </h5>
+    </u>
     <label class="filter-label">Base Pairs </label>
     <input [(ngModel)]="fromBasePairs" name="fromBasePairs" type="text" class="form-control" placeholder="From">
     <b>-</b>
@@ -44,18 +30,6 @@
       <option value="Canonic">Canonic</option>
       <option value="Non Canonic">Non Canonic</option>
     </select>
-    <!-- <label class="filter-label">filter 3 </label>
-     <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
-        <option value="None">None</option>
-        <option value="Canonic">Canonic</option>
-        <option value="Non Canonic">Non Canonic</option>
-     </select>
-     <label class="filter-label">filter 4 </label>
-     <select id="selectSeedType" class="form-control-mb-12" (change)="filterBySeedType($event.target.value)">
-        <option value="None">None</option>
-        <option value="Canonic">Canonic</option>
-        <option value="Non Canonic">Non Canonic</option>
-     </select> -->
     <button type="button" (click)="filterResults()" id="btn-apply" class="btn btn-primary">Apply</button>
     <br><br>
     <button type="button" (click)="showSummary()" class="btn btn-primary">Show summary information and
@@ -69,13 +43,6 @@
               class="list-group-item list-group-item-action">{{result.mirTar_id}}</a></li>
         </ul>
       </div>
-      <!-- <div class="nav-wrapper">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center" *ngFor="let page of pagesArr">
-                    <button class="page-item" (click)="updateIndexMtisView(page)">{{page}}</button>
-                </ul>
-            </nav>
-        </div> -->
       <b><label style="font-size: larger;">Download Results </label></b>
       <label><u>Choose Feature Families: </u></label>
       <div class="form-group row">

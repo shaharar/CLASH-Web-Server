@@ -8,8 +8,10 @@ import { Router, NavigationExtras } from '@angular/router'
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
+//the following component handles search queries
 export class SearchComponent implements OnInit {
 
+  //search fields
   public mirnaName = "";
   public mirnaSeq = "";
   public targetName = "";
@@ -20,16 +22,19 @@ export class SearchComponent implements OnInit {
   public mrnaRegionInputs: any;
   public protocolInputs: any;
   
+  //search fields options
   public allOrganisms = [];
   public allMethods = [];
   public allMrnaRegions = [];
   public allProtocols = [];
 
+  //flags - are all check boxes of certain category checked
   public masterSelectedOrganism = false;
   public masterSelectedMethod = false;
   public masterSelectedRegion = false;
   public masterSelectedProtocol = false;
 
+  //data structures that maintain checked check boxes
   public checkListOrganism = [];
   public checkListMethod = [];
   public checkListMrnaRegion = [];
@@ -49,6 +54,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //the following function initializes check lists status
   initialCheckLists() {
     //initial organism checklist
     this.allOrganisms.forEach(organism => {
@@ -83,6 +89,8 @@ export class SearchComponent implements OnInit {
     });  
     this.getCheckedItemList('protocol');
   }
+
+  //the following fuction updates checked check lists
   checkUncheckAll(type) {
     switch (type) {
       case 'organism':
@@ -111,6 +119,7 @@ export class SearchComponent implements OnInit {
     this.getCheckedItemList(type);
   }
 
+  //the following function checks whether all check boxes of a certain category are checked
   isAllSelected(type) {
     switch (type) {
       case 'organism':
@@ -139,6 +148,7 @@ export class SearchComponent implements OnInit {
     this.getCheckedItemList(type);
   }
  
+  //the following function updates search fields values according to checked items
   getCheckedItemList(type){
     switch (type) {
       case 'organism':
@@ -148,7 +158,6 @@ export class SearchComponent implements OnInit {
             this.organismInputs.push(this.checkListOrganism[i]);    
           }
         }            
-       // console.log(this.organismInputs);
         break;
       case 'method':
         this.methodInputs = [];
@@ -157,7 +166,6 @@ export class SearchComponent implements OnInit {
             this.methodInputs.push(this.checkListMethod[i]);    
           }
         }            
-      //  console.log(this.methodInputs);
         break;
       case 'protocol':
         this.protocolInputs = [];
@@ -166,7 +174,6 @@ export class SearchComponent implements OnInit {
             this.protocolInputs.push(this.checkListProtocol[i]);    
           }
         }            
-      //  console.log(this.protocolInputs);
         break;
       case 'mrnaRegion':
         this.mrnaRegionInputs = [];
@@ -175,13 +182,13 @@ export class SearchComponent implements OnInit {
             this.mrnaRegionInputs.push(this.checkListMrnaRegion[i]);    
           }
         }            
-      //  console.log(this.mrnaRegionInputs);
         break;
       default:
       break;
     }
   }
 
+  //the following function handles parameters for http request and navigates to mti-results component
   getMTIs() {
     console.log(this.dataset);
     const queryParams: any = {};
@@ -204,6 +211,7 @@ export class SearchComponent implements OnInit {
     this.router.navigate(['/mti-results'], navigationExtras);
   }
 
+  //the following function assigns "checked" value to all of the check boxes of certain category if none where checked by the user. 
   checkEmptyInputsArr(inputs, type) {
     //if inputs array is empty (the user didn't choose any checkbox) - search should be by all items
     if (inputs.length == 0) {
@@ -222,43 +230,4 @@ export class SearchComponent implements OnInit {
       return inputs.map(item => item.value);
     }
   }
-
-  // getExample() {
-  //   this.mirnaName = 'mmu-miR-92a'
-  //  // this.dataset = 'Unambiguous'
-  //   this.DBVersion = 'v1.0'
-  //   console.log(this.checkListOrganism)
-  //   console.log(this.checkListOrganism[1])
-  //   console.log(this.checkListOrganism[1].isSelected)
-
-  //   this.checkListOrganism[1].isSelected = true;
-  //   this.checkListMethod[1].isSelected = true;
-  // }
-
-  // onChange(organism, isChecked){
-  //   // console.log(this.organismInputs);
-  //   if (isChecked == true) {
-  //     this.organismInputs.push(organism);
-  //   }
-  //   else {
-  //     const index = this.organismInputs.indexOf(organism, 0);
-  //     if (index > -1) {
-  //       this.organismInputs.splice(index, 1);
-  //     }
-  //   }    
-  //   console.log(this.organismInputs);
-  // }
-
-  // onChangeAll(isChecked){
-  //   // console.log(this.organismInputs);
-  //   if (isChecked == true) {
-  //     this.allOrganisms.forEach(organism => {
-  //       this.organismInputs.push(organism);
-  //     });
-  //   }
-  //   else {
-  //     this.organismInputs = [];
-  //   }    
-  //   console.log(this.organismInputs);
-  // }
 }

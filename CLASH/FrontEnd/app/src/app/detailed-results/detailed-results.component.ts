@@ -10,9 +10,12 @@ import { FreeEnergyFeatures, IMTI, HotEncodingMirnaFeatures, HotEncodingMrnaFeat
   templateUrl: './detailed-results.component.html',
   styleUrls: ['./detailed-results.component.css']
 })
+//The following component represents mirna-target interaction detailed information
 export class DetailedResultsComponent implements OnInit {
 
   public mirTarId;
+
+  //data structures that hold feature categories related information
   public generalInfo = []
   public freeEnergyFeatures = []
   public hotEncodingMirnaFeatures = []
@@ -21,12 +24,15 @@ export class DetailedResultsComponent implements OnInit {
   public mrnaCompositionFeatures = []
   public seedFeatures = []
   public siteAccessibility = []
+
+  //flag - are data fully retrived from http request
   public isDataAvailable = false;
 
   constructor(private httpRequestsService: HttpRequestsService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    //retrieve mirna - target interaction features using helper function and maintain results in compatible data structures.
     this.mirTarId = this.route.snapshot.queryParamMap.get('mirTarId');
     this.getMTIsInfo('generalInfo')
       .forEach((value: IMTI) => this.generalInfo.push(value))
@@ -48,6 +54,7 @@ export class DetailedResultsComponent implements OnInit {
 
   }
 
+  //the following function retrieves feature category related information. cases represent feature categories.
   getMTIsInfo(info) {
 
     var params: Params
